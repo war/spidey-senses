@@ -11,5 +11,5 @@ public class SpiderModel
     public int X { get; set; }
     public int Y { get; set; }
 
-    public SpiderModel() {}
+    public SpiderModel(int x, int y) { X = x; Y = y; }
 }
