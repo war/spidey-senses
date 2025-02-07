@@ -7,8 +7,10 @@ public class SpiderTests
     [Fact]
     public void Position_AfterInitialization_ReturnsStartingPosition()
     {
-        var spider = new SpiderModel(2, 4);
+        // Arrange & Act
+        var spider = new SpiderModel(x: 2, y: 4);
 
+        // Assert
         Assert.Equal(2, spider.X);
         Assert.Equal(4, spider.Y);
     }
