@@ -1,13 +1,26 @@
-﻿using SpiderControl.Core.Interfaces;
+﻿using SpiderControl.Core.Factories;
+using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 
 namespace SpiderControl.Core.Services;
 
 public class InputParser : IInputParser
 {
+    private readonly ICommandFactory _commandFactory;
+
+    public InputParser()
+    {
+        _commandFactory = new CommandFactory();
+    }
+
     public IEnumerable<ICommand> ParseCommands(string input)
     {
-        return new List<ICommand>();
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            throw new ArgumentException("Commands cannot be empty");
+        }
+
+        return input.Select(x => _commandFactory.CreateCommand(x));
     }
 
     public SpiderModel ParseSpiderPosition(string input)
