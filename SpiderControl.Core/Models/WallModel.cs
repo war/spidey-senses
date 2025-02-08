@@ -13,6 +13,7 @@ public class WallModel
 
     public WallModel(int width, int height)
     {
-        
+        Width = width;
+        Height = height;
     }
 }
