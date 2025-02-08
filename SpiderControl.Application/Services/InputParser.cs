@@ -1,9 +1,10 @@
-﻿using SpiderControl.Core.Enums;
+﻿using SpiderControl.Application.Interfaces;
+using SpiderControl.Core.Enums;
 using SpiderControl.Core.Factories;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 
-namespace SpiderControl.Core.Services;
+namespace SpiderControl.Application.Services;
 
 public class InputParser : IInputParser
 {

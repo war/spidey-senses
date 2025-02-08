@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SpiderControl.Core\SpiderControl.Core.csproj" />
+  </ItemGroup>
+
 </Project>

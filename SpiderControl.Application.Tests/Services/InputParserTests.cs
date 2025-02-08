@@ -1,10 +1,9 @@
-﻿using SpiderControl.Core.Commands;
+﻿using SpiderControl.Application.Interfaces;
+using SpiderControl.Application.Services;
+using SpiderControl.Core.Commands;
 using SpiderControl.Core.Enums;
-using SpiderControl.Core.Interfaces;
-using SpiderControl.Core.Models;
-using SpiderControl.Core.Services;
 
-namespace SpiderControl.Core.Tests.Services;
+namespace SpiderControl.Application.Tests.Services;
 
 public class InputParserTests
 {

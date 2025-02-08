@@ -1,6 +1,7 @@
-﻿using SpiderControl.Core.Models;
+﻿using SpiderControl.Core.Interfaces;
+using SpiderControl.Core.Models;
 
-namespace SpiderControl.Core.Interfaces;
+namespace SpiderControl.Application.Interfaces;
 
 public interface IInputParser
 {
