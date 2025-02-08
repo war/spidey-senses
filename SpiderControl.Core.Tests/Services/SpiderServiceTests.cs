@@ -30,13 +30,13 @@ public class SpiderServiceTests
     [InlineData(Orientation.Left, Orientation.Down)]
     [InlineData(Orientation.Down, Orientation.Right)]
     [InlineData(Orientation.Right, Orientation.Up)]
-    public void TurnLeft_RotatesCorrectly(Orientation initial, Orientation expected)
+    public void RotateLeft_RotatesCorrectly(Orientation initial, Orientation expected)
     {
         // Arrange
         var spider = new SpiderModel(0, 0, initial);
 
         // Act
-        _spiderService.TurnLeft(spider);
+        _spiderService.RotateLeft(spider);
 
         // Assert
         Assert.Equal(expected, spider.Orientation);
@@ -47,13 +47,13 @@ public class SpiderServiceTests
     [InlineData(Orientation.Right, Orientation.Down)]
     [InlineData(Orientation.Down, Orientation.Left)]
     [InlineData(Orientation.Left, Orientation.Up)]
-    public void TurnRight_RotatesCorrectly(Orientation initial, Orientation expected)
+    public void RotateRight_RotatesCorrectly(Orientation initial, Orientation expected)
     {
         // Arrange
         var spider = new SpiderModel(0, 0, initial);
 
         // Act
-        _spiderService.TurnRight(spider);
+        _spiderService.RotateRight(spider);
 
         // Assert
         Assert.Equal(expected, spider.Orientation);

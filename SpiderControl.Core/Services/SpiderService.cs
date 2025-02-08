@@ -19,11 +19,12 @@ public class SpiderService : ISpiderService
     {
     }
 
-    public void TurnLeft(SpiderModel model)
+    public void RotateLeft(SpiderModel model)
     {
+
     }
 
-    public void TurnRight(SpiderModel model)
+    public void RotateRight(SpiderModel model)
     {
     }
 }

@@ -6,7 +6,7 @@ public interface ISpiderService
 {
     SpiderModel CreateSpider(int x, int y, Orientation orientation);
 
-    void TurnLeft(SpiderModel model);
-    void TurnRight(SpiderModel model);
+    void RotateLeft(SpiderModel model);
+    void RotateRight(SpiderModel model);
     void MoveForward(SpiderModel model);
 }
