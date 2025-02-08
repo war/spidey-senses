@@ -1,4 +1,5 @@
-﻿using SpiderControl.Core.Interfaces;
+﻿using SpiderControl.Core.Enums;
+using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 using SpiderControl.Core.Services;
 

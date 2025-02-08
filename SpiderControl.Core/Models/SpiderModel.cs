@@ -1,4 +1,6 @@
-﻿namespace SpiderControl.Core.Models;
+﻿using SpiderControl.Core.Enums;
+
+namespace SpiderControl.Core.Models;
 
 public class SpiderModel
 {

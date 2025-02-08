@@ -1,4 +1,4 @@
-﻿namespace SpiderControl.Core.Models;
+﻿namespace SpiderControl.Core.Enums;
 
 public enum Orientation
 {
