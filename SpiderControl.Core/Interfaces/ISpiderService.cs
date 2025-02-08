@@ -7,9 +7,9 @@ public interface ISpiderService
 {
     SpiderModel CreateSpider(int x, int y, Orientation orientation);
 
-    void RotateLeft(SpiderModel model);
-    void RotateRight(SpiderModel model);
-    void MoveForward(SpiderModel model);
+    void RotateLeft(SpiderModel spider);
+    void RotateRight(SpiderModel spider);
+    void MoveForward(SpiderModel spider);
 
     (int nextX, int nextY) GetNextForwardPosition(SpiderModel spider);
     bool IsValidMove(SpiderModel spider, WallModel wall, int nextX, int nextY);
@@ -17,5 +17,5 @@ public interface ISpiderService
     Orientation GetLeftOrientation(Orientation orientation);
     Orientation GetRightOrientation(Orientation orientation);
 
-    SpiderModel ProcessCommands(SpiderModel model, WallModel wall, IEnumerable<ICommand> command);
+    SpiderModel ProcessCommands(SpiderModel spider, WallModel wall, IEnumerable<ICommand> commands);
 }

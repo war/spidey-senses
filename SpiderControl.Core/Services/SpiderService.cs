@@ -88,8 +88,13 @@ public class SpiderService : ISpiderService
         spider.Orientation = orientation;
     }
 
-    public SpiderModel ProcessCommands(SpiderModel model, WallModel wall, IEnumerable<ICommand> command)
+    public SpiderModel ProcessCommands(SpiderModel spider, WallModel wall, IEnumerable<ICommand> commands)
     {
-        return new SpiderModel(0, 0, Orientation.Up);
+        foreach (var command in commands)
+        {
+            command.Execute(spider, wall, this);
+        }
+
+        return spider;
     }
 }
