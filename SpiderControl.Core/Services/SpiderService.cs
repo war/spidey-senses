@@ -40,6 +40,30 @@ public class SpiderService : ISpiderService
         return (nextX, nextY);
     }
 
+    public Orientation GetRightOrientation(Orientation orientation)
+    {
+        return orientation switch
+        {
+            Orientation.Up => Orientation.Right,
+            Orientation.Right => Orientation.Down,
+            Orientation.Down => Orientation.Left,
+            Orientation.Left => Orientation.Up,
+            _ => throw new ArgumentException("Invalid orientation")
+        };
+    }
+
+    public Orientation GetLeftOrientation(Orientation orientation)
+    {
+        return orientation switch
+        {
+            Orientation.Up => Orientation.Left,
+            Orientation.Left => Orientation.Down,
+            Orientation.Down => Orientation.Right,
+            Orientation.Right => Orientation.Up,
+            _ => throw new ArgumentException("Invalid orientation")
+        };
+    }
+
     public bool IsValidMove(SpiderModel spider, WallModel wall, int nextX, int nextY)
     {
         return nextX >= 0 && nextY >= 0 && nextX <= wall.Width && nextY <= wall.Height;
@@ -54,43 +78,13 @@ public class SpiderService : ISpiderService
 
     public void RotateLeft(SpiderModel spider)
     {
-        switch (spider.Orientation)
-        {
-            case Orientation.Up:
-                spider.Orientation = Orientation.Left; 
-                break;
-            case Orientation.Left:
-                spider.Orientation = Orientation.Down;
-                break;
-            case Orientation.Down:
-                spider.Orientation = Orientation.Right;
-                break;
-            case Orientation.Right:
-                spider.Orientation = Orientation.Up;
-                break;
-            default:
-                throw new ArgumentException("Invalid orientation");
-        }
+        var orientation = GetLeftOrientation(spider.Orientation);
+        spider.Orientation = orientation;
     }
 
     public void RotateRight(SpiderModel spider)
     {
-        switch (spider.Orientation)
-        {
-            case Orientation.Up:
-                spider.Orientation = Orientation.Right;
-                break;
-            case Orientation.Right:
-                spider.Orientation = Orientation.Down;
-                break;
-            case Orientation.Down:
-                spider.Orientation = Orientation.Left;
-                break;
-            case Orientation.Left:
-                spider.Orientation = Orientation.Up;
-                break;
-            default:
-                throw new ArgumentException("Invalid orientation");
-        }
+        var orientation = GetRightOrientation(spider.Orientation);
+        spider.Orientation = orientation;
     }
 }
