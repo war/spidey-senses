@@ -42,5 +42,22 @@ public class SpiderService : ISpiderService
 
     public void RotateRight(SpiderModel model)
     {
+        switch (model.Orientation)
+        {
+            case Orientation.Up:
+                model.Orientation = Orientation.Right;
+                break;
+            case Orientation.Right:
+                model.Orientation = Orientation.Down;
+                break;
+            case Orientation.Down:
+                model.Orientation = Orientation.Left;
+                break;
+            case Orientation.Left:
+                model.Orientation = Orientation.Up;
+                break;
+            default:
+                throw new ArgumentException("Invalid orientation");
+        }
     }
 }
