@@ -7,3 +7,7 @@
 /SpiderControl.Core/obj
 /SpiderControl.Core.Tests/bin
 /SpiderControl.Core.Tests/obj
+/SpiderControl.Console/bin/
+/SpiderControl.Console/obj
+/SpiderControl.Console.Tests/bin/
+/SpiderControl.Console.Tests/obj
