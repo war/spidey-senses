@@ -7,5 +7,6 @@ public class RotateRightCommand : ICommand
 {
     public void Execute(SpiderModel spider, WallModel wall, ISpiderService spiderService)
     {
+        spiderService.RotateRight(spider);
     }
 }
