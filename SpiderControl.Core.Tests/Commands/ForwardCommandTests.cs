@@ -37,7 +37,7 @@ public class ForwardCommandTests
     [Fact]
     public void Execute_InvalidMove_ThrowsException()
     {
-        var spider = new SpiderModel(3, 4, Orientation.Up);
+        var spider = new SpiderModel(3, 15, Orientation.Up);
 
         Assert.Throws<InvalidOperationException>(() => _command.Execute(spider, _wall, _spiderService));
     }
