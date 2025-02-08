@@ -71,9 +71,7 @@ public class SpiderService : ISpiderService
 
     public void MoveForward(SpiderModel spider)
     {
-        var getNextForward = GetNextForwardPosition(spider);
-        spider.X = getNextForward.nextX;
-        spider.Y = getNextForward.nextY;
+        (spider.X, spider.Y) = GetNextForwardPosition(spider);
     }
 
     public void RotateLeft(SpiderModel spider)
