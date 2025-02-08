@@ -2,7 +2,7 @@
 
 namespace SpiderControl.Core.Tests;
 
-public class SpiderTests
+public class SpiderModelTests
 {
     [Fact]
     public void Position_AfterInitialisation_ReturnsStartingPosition()
