@@ -15,8 +15,8 @@ public class SpiderModelTests
         var spider = new SpiderModel(x, y, Orientation.Up);
 
         // Assert
-        Assert.Equal(2, spider.X);
-        Assert.Equal(4, spider.Y);
+        Assert.Equal(x, spider.X);
+        Assert.Equal(y, spider.Y);
     }
 
     [Fact]
