@@ -7,7 +7,11 @@
 /SpiderControl.Core/obj
 /SpiderControl.Core.Tests/bin
 /SpiderControl.Core.Tests/obj
-/SpiderControl.Console/bin/
+/SpiderControl.Console/bin
 /SpiderControl.Console/obj
-/SpiderControl.Console.Tests/bin/
+/SpiderControl.Console.Tests/bin
 /SpiderControl.Console.Tests/obj
+/SpiderControl.Application/obj
+/SpiderControl.Application.Tests/obj
+/SpiderControl.Application/bin/Debug/net9.0
+/SpiderControl.Application.Tests/bin/Debug/net9.0
