@@ -17,7 +17,7 @@ public class SpiderServiceTests
     [Fact]
     public void CreateSpider_ReturnsSpiderWithCorrectPosition()
     {
-        // Act
+        // Arrange
         var spider = _spiderService.CreateSpider(3, 5, Orientation.Right);
 
         // Assert
