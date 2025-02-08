@@ -16,61 +16,78 @@ public class SpiderService : ISpiderService
         return new SpiderModel(x, y, orientation);
     }
 
-    public void MoveForward(SpiderModel model)
+    public (int nextX, int nextY) GetNextForwardPosition(SpiderModel spider)
     {
-        switch (model.Orientation)
+        var nextX = spider.X;
+        var nextY = spider.Y;
+
+        switch (spider.Orientation)
         {
             case Orientation.Up:
-                model.Y += 1;
+                nextY += 1;
                 break;
             case Orientation.Right:
-                model.X += 1;
+                nextX += 1;
                 break;
             case Orientation.Down:
-                model.Y -= 1;
+                nextY -= 1;
                 break;
             case Orientation.Left:
-                model.X -= 1;
+                nextX -= 1;
                 break;
         }
+
+        return (nextX, nextY);
     }
 
-    public void RotateLeft(SpiderModel model)
+    public bool IsValidMove(SpiderModel spider, WallModel wall, int nextX, int nextY)
     {
-        switch (model.Orientation)
+        return nextX >= 0 && nextY >= 0 && nextX <= wall.Width && nextY <= wall.Height;
+    }
+
+    public void MoveForward(SpiderModel spider)
+    {
+        var getNextForward = GetNextForwardPosition(spider);
+        spider.X = getNextForward.nextX;
+        spider.Y = getNextForward.nextY;
+    }
+
+    public void RotateLeft(SpiderModel spider)
+    {
+        switch (spider.Orientation)
         {
             case Orientation.Up:
-                model.Orientation = Orientation.Left; 
+                spider.Orientation = Orientation.Left; 
                 break;
             case Orientation.Left:
-                model.Orientation = Orientation.Down;
+                spider.Orientation = Orientation.Down;
                 break;
             case Orientation.Down:
-                model.Orientation = Orientation.Right;
+                spider.Orientation = Orientation.Right;
                 break;
             case Orientation.Right:
-                model.Orientation = Orientation.Up;
+                spider.Orientation = Orientation.Up;
                 break;
             default:
                 throw new ArgumentException("Invalid orientation");
         }
     }
 
-    public void RotateRight(SpiderModel model)
+    public void RotateRight(SpiderModel spider)
     {
-        switch (model.Orientation)
+        switch (spider.Orientation)
         {
             case Orientation.Up:
-                model.Orientation = Orientation.Right;
+                spider.Orientation = Orientation.Right;
                 break;
             case Orientation.Right:
-                model.Orientation = Orientation.Down;
+                spider.Orientation = Orientation.Down;
                 break;
             case Orientation.Down:
-                model.Orientation = Orientation.Left;
+                spider.Orientation = Orientation.Left;
                 break;
             case Orientation.Left:
-                model.Orientation = Orientation.Up;
+                spider.Orientation = Orientation.Up;
                 break;
             default:
                 throw new ArgumentException("Invalid orientation");
