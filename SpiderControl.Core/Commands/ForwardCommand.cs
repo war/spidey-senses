@@ -7,5 +7,6 @@ public class ForwardCommand : ICommand
 {
     public void Execute(SpiderModel spider, WallModel wall, ISpiderService spiderService)
     {
+        spiderService.MoveForward(spider);
     }
 }
