@@ -1,4 +1,5 @@
-﻿using SpiderControl.Core.Factories;
+﻿using SpiderControl.Core.Enums;
+using SpiderControl.Core.Factories;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 
@@ -25,7 +26,38 @@ public class InputParser : IInputParser
 
     public SpiderModel ParseSpiderPosition(string input)
     {
-        return new SpiderModel(1, 1, Enums.Orientation.Up);
+        var args = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (args.Length != 3)
+        {
+            throw new ArgumentException("Invalid wall dimension. Expected: 'x' 'y'");
+        }
+
+        int x, y;
+        if (!int.TryParse(args[0], out x))
+        {
+            throw new ArgumentException("Invalid spider x. Expected: 'x y orientation'");
+        }
+        else if (!int.TryParse(args[1], out y))
+        {
+            throw new ArgumentException("Invalid spider y. Expected: 'x y orientation'");
+        }
+
+        if (x < 0)
+        {
+            throw new ArgumentException("Invalid spider x. Spider position format should be above 0");
+        }
+        else if (y < 0)
+        {
+            throw new ArgumentException("Invalid spider y. Spider dimensions should be above 0");
+        }
+
+        Orientation orientation;
+        if (!Enum.TryParse<Orientation>(args[2], true, out orientation) || (int)orientation > 3)
+        {
+            throw new ArgumentException("Invalid spider orientation. Expected: Up, Down, Left, or Right");
+        }
+
+        return new SpiderModel(x, y, orientation);
     }
 
     public WallModel ParseWallDimensions(string input)
