@@ -1,4 +1,5 @@
-﻿using SpiderControl.Core.Enums;
+﻿using SpiderControl.Core.Commands;
+using SpiderControl.Core.Enums;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 using SpiderControl.Core.Services;
@@ -77,5 +78,29 @@ public class SpiderServiceTests
         Assert.Equal(expectedX, spider.X);
         Assert.Equal(expectedY, spider.Y);
         Assert.Equal(orientation, spider.Orientation);
+    }
+
+    [Fact]
+    public void ProcessCommands_ExecutesAllCommands()
+    {
+        // Arrange
+        var spider = new SpiderModel(2, 4, Orientation.Up);
+        var wall = new WallModel(5, 8);
+        var commands = new List<ICommand>()
+        {
+            new ForwardCommand(),
+            new RotateLeftCommand(),
+            new ForwardCommand(),
+            new ForwardCommand(),
+            new RotateRightCommand(),
+        };
+
+        // Act
+        _spiderService.ProcessCommands(spider, wall, commands);
+
+        // Assert
+        Assert.Equal(0, spider.X);
+        Assert.Equal(5, spider.Y);
+        Assert.Equal(Orientation.Up, spider.Orientation);
     }
 }

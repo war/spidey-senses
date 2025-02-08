@@ -87,4 +87,9 @@ public class SpiderService : ISpiderService
         var orientation = GetRightOrientation(spider.Orientation);
         spider.Orientation = orientation;
     }
+
+    public SpiderModel ProcessCommands(SpiderModel model, WallModel wall, IEnumerable<ICommand> command)
+    {
+        return new SpiderModel(0, 0, Orientation.Up);
+    }
 }

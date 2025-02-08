@@ -16,4 +16,6 @@ public interface ISpiderService
 
     Orientation GetLeftOrientation(Orientation orientation);
     Orientation GetRightOrientation(Orientation orientation);
+
+    SpiderModel ProcessCommands(SpiderModel model, WallModel wall, IEnumerable<ICommand> command);
 }
