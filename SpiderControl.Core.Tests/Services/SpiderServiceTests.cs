@@ -36,6 +36,7 @@ public class SpiderServiceTests
         var spider = new SpiderModel(0, 0, initial);
 
         // Act
+        _spiderService.TurnLeft(spider);
 
         // Assert
         Assert.Equal(expected, spider.Orientation);
@@ -52,6 +53,7 @@ public class SpiderServiceTests
         var spider = new SpiderModel(0, 0, initial);
 
         // Act
+        _spiderService.TurnRight(spider);
 
         // Assert
         Assert.Equal(expected, spider.Orientation);
@@ -68,6 +70,7 @@ public class SpiderServiceTests
         var spider = new SpiderModel(0, 0, orientation);
 
         // Act
+        _spiderService.TurnRight(spider);
 
         // Assert
         Assert.Equal(expectedX, spider.X);

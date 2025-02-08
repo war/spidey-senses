@@ -14,4 +14,16 @@ public class SpiderService : ISpiderService
     {
         return new SpiderModel(x, y, orientation);
     }
+
+    public void MoveForward(SpiderModel model)
+    {
+    }
+
+    public void TurnLeft(SpiderModel model)
+    {
+    }
+
+    public void TurnRight(SpiderModel model)
+    {
+    }
 }

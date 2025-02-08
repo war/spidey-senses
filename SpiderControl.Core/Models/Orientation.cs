@@ -1,10 +1,9 @@
-﻿namespace SpiderControl.Core.Models
+﻿namespace SpiderControl.Core.Models;
+
+public enum Orientation
 {
-    public enum Orientation
-    {
-        Up = 0,
-        Right = 1,
-        Left = 2,
-        Down = 3,
-    }
+    Up = 0,
+    Right = 1,
+    Left = 2,
+    Down = 3,
 }
