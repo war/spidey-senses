@@ -70,7 +70,7 @@ public class SpiderServiceTests
         var spider = new SpiderModel(0, 0, orientation);
 
         // Act
-        _spiderService.TurnRight(spider);
+        _spiderService.MoveForward(spider);
 
         // Assert
         Assert.Equal(expectedX, spider.X);
