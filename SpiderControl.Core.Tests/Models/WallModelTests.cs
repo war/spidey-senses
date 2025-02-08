@@ -5,7 +5,7 @@ namespace SpiderControl.Core.Tests.Models;
 public class WallModelTests
 {
     [Fact]
-    public void Position_AfterInitialisation_ReturnsStartingDimensions()
+    public void Dimensions_AfterInitialisation_ReturnsStartingDimensions()
     {
         // Arrange
         const int width = 15;
