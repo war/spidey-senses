@@ -1,15 +1,12 @@
-﻿using SpiderControl.Core.Models;
+﻿using SpiderControl.Core.Interfaces;
+using SpiderControl.Core.Models;
 using SpiderControl.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpiderControl.Core.Tests.Services;
+
 public class SpiderServiceTests
 {
-    private readonly SpiderService _spiderService;
+    private readonly ISpiderService _spiderService;
 
     public SpiderServiceTests()
     {
@@ -19,10 +16,8 @@ public class SpiderServiceTests
     [Fact]
     public void CreateSpider_ReturnsSpiderWithCorrectPosition()
     {
-        // Arrange
-        var spider = new SpiderModel(3, 5, Orientation.Right);
-
         // Act
+        var spider = _spiderService.CreateSpider(3, 5, Orientation.Right);
 
         // Assert
         Assert.Equal(3, spider.X);

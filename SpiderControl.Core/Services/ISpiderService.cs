@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SpiderControl.Core.Models;
 
-namespace SpiderControl.Core.Services;
+namespace SpiderControl.Core.Interfaces;
 
 public interface ISpiderService
 {
+    SpiderModel CreateSpider(int x, int y, Orientation orientation);
 }
