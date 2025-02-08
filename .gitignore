@@ -13,5 +13,5 @@
 /SpiderControl.Console.Tests/obj
 /SpiderControl.Application/obj
 /SpiderControl.Application.Tests/obj
-/SpiderControl.Application/bin/Debug/net9.0
-/SpiderControl.Application.Tests/bin/Debug/net9.0
+/SpiderControl.Application/bin/Debug
+/SpiderControl.Application.Tests/bin/Debug

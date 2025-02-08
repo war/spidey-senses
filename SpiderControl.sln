@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Console", "Sp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Console.Tests", "SpiderControl.Console.Tests\SpiderControl.Console.Tests.csproj", "{2CC512C9-D527-4E4E-8F0C-000C322D88C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Application", "SpiderControl.Application\SpiderControl.Application.csproj", "{F8617E91-DB79-4B08-866B-258FAA15A299}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Application.Tests", "SpiderControl.Application.Tests\SpiderControl.Application.Tests.csproj", "{6832368F-3B67-4E7E-B505-382B56D5F87B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{2CC512C9-D527-4E4E-8F0C-000C322D88C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CC512C9-D527-4E4E-8F0C-000C322D88C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CC512C9-D527-4E4E-8F0C-000C322D88C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8617E91-DB79-4B08-866B-258FAA15A299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8617E91-DB79-4B08-866B-258FAA15A299}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8617E91-DB79-4B08-866B-258FAA15A299}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8617E91-DB79-4B08-866B-258FAA15A299}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6832368F-3B67-4E7E-B505-382B56D5F87B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6832368F-3B67-4E7E-B505-382B56D5F87B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6832368F-3B67-4E7E-B505-382B56D5F87B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6832368F-3B67-4E7E-B505-382B56D5F87B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
