@@ -87,4 +87,15 @@ public class InputParserTests
         Assert.IsType<RotateLeftCommand>(commands[2]);
         Assert.IsType<ForwardCommand>(commands[3]);
     }
+
+    [Theory]
+    [InlineData("")]
+    public void ParseCommands_InvalidInput_ThrowsException(string input)
+    {
+        // Arrange
+        var commands = () => _inputParser.ParseCommands(input);
+
+        // Assert
+        Assert.Throws<ArgumentException>(commands);
+    }
 }
