@@ -33,6 +33,4 @@ public class SpiderModelTests
         // Assert
         Assert.Equal(Orientation.Right, spider.Orientation);
     }
-
-
 }
