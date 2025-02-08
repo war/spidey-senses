@@ -17,6 +17,21 @@ public class SpiderService : ISpiderService
 
     public void MoveForward(SpiderModel model)
     {
+        switch (model.Orientation)
+        {
+            case Orientation.Up:
+                model.Y += 1;
+                break;
+            case Orientation.Right:
+                model.X += 1;
+                break;
+            case Orientation.Down:
+                model.Y -= 1;
+                break;
+            case Orientation.Left:
+                model.X -= 1;
+                break;
+        }
     }
 
     public void RotateLeft(SpiderModel model)
