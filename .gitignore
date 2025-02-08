@@ -2,7 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/SpiderControl
+/.vs
 /SpiderControl.Core/bin
 /SpiderControl.Core/obj
 /SpiderControl.Core.Tests/bin
