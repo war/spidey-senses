@@ -1,6 +1,6 @@
 ﻿using SpiderControl.Core.Models;
 
-namespace SpiderControl.Core.Tests;
+namespace SpiderControl.Core.Tests.Models;
 
 public class WallModelTests
 {
