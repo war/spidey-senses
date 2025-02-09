@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "SpiderControl.Web": {
+    "spider-control-web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/spider-control.web",
+            "outputPath": "dist/spider-control-web",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "SpiderControl.Web:build:production"
+              "buildTarget": "spider-control-web:build:production"
             },
             "development": {
-              "buildTarget": "SpiderControl.Web:build:development"
+              "buildTarget": "spider-control-web:build:development"
             }
           },
           "defaultConfiguration": "development"
