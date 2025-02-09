@@ -1,10 +1,5 @@
 ﻿using SpiderControl.Application.Interfaces;
 using SpiderControl.Application.Services;
-using SpiderControl.Core.Enums;
-using SpiderControl.Core.Factories;
-using SpiderControl.Core.Interfaces;
-using SpiderControl.Core.Models;
-using SpiderControl.Core.Services;
 
 namespace SpiderControl.Application.Tests.Services;
 
