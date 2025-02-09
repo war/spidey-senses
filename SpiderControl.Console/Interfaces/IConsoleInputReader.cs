@@ -4,5 +4,5 @@ namespace SpiderControl.Console.Interfaces;
 
 public interface IConsoleInputReader
 {
-    InputModel ReadInputs();
+    public InputModel ReadInputs();
 }
