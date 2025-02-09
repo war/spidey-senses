@@ -21,11 +21,11 @@ public class SpiderApplicationServiceTests
     public void ProcessSpiderCommand_ValidInput_ReturnsCorrectOutput()
     {
         // Arrange
-        var wallInput = "5 12";
-        var spiderInput = "6 10 Right";
+        var wallInput = "10 12";
+        var spiderInput = "6 8 Right";
         var commandInput = "FLFLFLRRFF";
 
-        var expectedOutput = "6 13 Right";
+        var expectedOutput = "6 11 Up";
 
         // Act
         var result = _spiderApplicationService.ProcessSpiderCommands(wallInput, spiderInput, commandInput);
@@ -37,9 +37,9 @@ public class SpiderApplicationServiceTests
     }
 
     [Theory]
-    [InlineData("7 10", "2 4 Left", "FLFLFRFFLF", "1 1 Left")]
+    [InlineData("7 10", "2 4 Left", "FLFLFRFFLF", "3 1 Right")]
     [InlineData("5 5", "3 3 Up", "FLFLFRFFLFRR", "0 2 Up")]
-    [InlineData("3 3", "0 0 Right", "FLFLFRFFLFLL", "0 3 Right")]
+    [InlineData("3 3", "0 0 Right", "FLFLFRFFLLL", "0 3 Right")]
     public void ProcessSpiderCommand_ValidInputs_ReturnsCorrectOutput(string wallInput, string spiderInput, string commandInput, string expectedOutput)
     {
         // Act
