@@ -14,4 +14,18 @@ public class SpiderModel
         Y = y;
         Orientation = orientation;
     }
+
+    public override string ToString()
+    {
+        var orientation = this.Orientation switch
+        {
+            Orientation.Up => "Up",
+            Orientation.Right => "Right",
+            Orientation.Down => "Down",
+            Orientation.Left => "Left",
+            _ => throw new ArgumentException($"Invalid orientation: {this.Orientation}")
+        };
+
+        return $"{this.X} {this.Y} {orientation}";
+    }
 }
