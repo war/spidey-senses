@@ -21,8 +21,8 @@ public class Program
 
         var inputs = inputReader.ReadInputs();
         var result = spiderApplicationService.ProcessSpiderCommands(
+            inputs.SpiderPosition,
             inputs.WallDimensions, 
-            inputs.SpiderPosition, 
             inputs.Commands
         );
 
