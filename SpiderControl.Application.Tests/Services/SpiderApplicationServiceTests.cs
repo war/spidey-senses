@@ -1,5 +1,6 @@
 ﻿using Moq;
 using SpiderControl.Application.Interfaces;
+using SpiderControl.Application.Models;
 using SpiderControl.Application.Services;
 using SpiderControl.Core.Enums;
 using SpiderControl.Core.Interfaces;
@@ -47,8 +48,15 @@ public class SpiderApplicationServiceTests
             It.IsAny<IEnumerable<ICommand>>()
         )).Returns(resultSpider);
 
+        var processCommandModel = new ProcessCommandModel
+        {
+            SpiderInput = spiderInput,
+            WallInput = wallInput,
+            CommandInput = commandInput,
+        };
+
         // Act
-        var result = _spiderApplicationService.ProcessSpiderCommands(spiderInput, wallInput, commandInput);
+        var result = _spiderApplicationService.ProcessSpiderCommands(processCommandModel);
 
         // Assert
         Assert.NotNull(result);
@@ -79,8 +87,15 @@ public class SpiderApplicationServiceTests
             It.IsAny<IEnumerable<ICommand>>()
         )).Returns(expectedResult);
 
+        var processCommandModel = new ProcessCommandModel
+        {
+            SpiderInput = spiderInput,
+            WallInput = wallInput,
+            CommandInput = commandInput,
+        };
+
         // Act
-        var result = _spiderApplicationService.ProcessSpiderCommands(spiderInput, wallInput, commandInput);
+        var result = _spiderApplicationService.ProcessSpiderCommands(processCommandModel);
 
         // Assert
         Assert.Equal(expectedOutput, result);

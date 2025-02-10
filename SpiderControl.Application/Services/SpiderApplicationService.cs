@@ -1,4 +1,5 @@
 ﻿using SpiderControl.Application.Interfaces;
+using SpiderControl.Application.Models;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Services;
 
@@ -15,11 +16,11 @@ namespace SpiderControl.Application.Services
             _inputParser = inputParser ?? throw new ArgumentNullException(nameof(inputParser)); ;
         }
 
-        public string ProcessSpiderCommands(string spiderInput, string wallInput, string commandInput)
+        public string ProcessSpiderCommands(ProcessCommandModel model)
         {
-            var parsedSpider = _inputParser.ParseSpiderPosition(spiderInput);
-            var parsedWall = _inputParser.ParseWallDimensions(wallInput);
-            var parsedCommands = _inputParser.ParseCommands(commandInput);
+            var parsedSpider = _inputParser.ParseSpiderPosition(model.SpiderInput);
+            var parsedWall = _inputParser.ParseWallDimensions(model.WallInput);
+            var parsedCommands = _inputParser.ParseCommands(model.CommandInput);
 
             var finalSpiderPosition = _spiderService.ProcessCommands(parsedSpider, parsedWall, parsedCommands);
 

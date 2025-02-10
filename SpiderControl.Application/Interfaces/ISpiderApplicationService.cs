@@ -1,6 +1,8 @@
-﻿namespace SpiderControl.Application.Interfaces;
+﻿using SpiderControl.Application.Models;
+
+namespace SpiderControl.Application.Interfaces;
 
 public interface ISpiderApplicationService
 {
-    public string ProcessSpiderCommands(string spiderInput, string wallInput, string commandInput);
+    public string ProcessSpiderCommands(ProcessCommandModel model);
 }

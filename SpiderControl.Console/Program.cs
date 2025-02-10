@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SpiderControl.Application;
 using SpiderControl.Application.Interfaces;
+using SpiderControl.Application.Models;
 using SpiderControl.Console.IO;
 using SysConsole = System.Console;
 
@@ -21,11 +22,15 @@ public class Program
         var inputReader = new ConsoleInputReader();
 
         var inputs = inputReader.ReadInputs();
-        var result = spiderApplicationService.ProcessSpiderCommands(
-            inputs.SpiderPosition,
-            inputs.WallDimensions, 
-            inputs.Commands
-        );
+
+        var processCommandModel = new ProcessCommandModel
+        {
+            SpiderInput = inputs.SpiderPosition,
+            WallInput = inputs.WallDimensions,
+            CommandInput = inputs.Commands
+        };
+
+        var result = spiderApplicationService.ProcessSpiderCommands(processCommandModel);
 
         SysConsole.WriteLine($"Final Output: {result}.");
         SysConsole.WriteLine("Press any key to continue...");
