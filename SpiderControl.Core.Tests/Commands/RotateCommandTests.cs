@@ -1,4 +1,6 @@
-﻿using SpiderControl.Core.Commands;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
+using SpiderControl.Core.Commands;
 using SpiderControl.Core.Enums;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
@@ -9,15 +11,21 @@ namespace SpiderControl.Core.Tests.Commands;
 public class RotateCommandTests
 {
     private readonly ISpiderService _spiderService;
+    private readonly Mock<ILogger<SpiderService>> _loggerMock;
+
     private readonly ICommand _rotateRightCommand;
     private readonly ICommand _rotateLeftCommand;
+
     private readonly WallModel _wall;
 
     public RotateCommandTests()
     {
-        _spiderService = new SpiderService();
+        _loggerMock = new Mock<ILogger<SpiderService>>();
+        _spiderService = new SpiderService(_loggerMock.Object);
+
         _rotateRightCommand = new RotateRightCommand();
         _rotateLeftCommand = new RotateLeftCommand();
+
         _wall = new WallModel(3, 15);
     }
 

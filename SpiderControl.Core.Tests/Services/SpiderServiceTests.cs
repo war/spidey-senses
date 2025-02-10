@@ -1,4 +1,6 @@
-﻿using SpiderControl.Core.Commands;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
+using SpiderControl.Core.Commands;
 using SpiderControl.Core.Enums;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
@@ -9,10 +11,12 @@ namespace SpiderControl.Core.Tests.Services;
 public class SpiderServiceTests
 {
     private readonly ISpiderService _spiderService;
+    private readonly Mock<ILogger<SpiderService>> _loggerMock;
 
     public SpiderServiceTests()
     {
-        _spiderService = new SpiderService();
+        _loggerMock = new Mock<ILogger<SpiderService>>();
+        _spiderService = new SpiderService(_loggerMock.Object);
     }
 
     [Fact]

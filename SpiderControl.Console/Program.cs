@@ -1,19 +1,20 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SpiderControl.Application;
 using SpiderControl.Application.Interfaces;
 using SpiderControl.Console.IO;
 
 namespace SpiderControl.Console;
 
-public class Progam
+public class Program
 {
     public static void Main(String[] args)
     {
         var services = new ServiceCollection();
         ConfigureServices(services);
-
+        
         var serviceProvider = services.BuildServiceProvider();
-
+        var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
         var spiderApplicationService = serviceProvider.GetRequiredService<ISpiderApplicationService>();
 
         var inputReader = new ConsoleInputReader();
@@ -32,6 +33,12 @@ public class Progam
 
     public static void ConfigureServices(IServiceCollection services)
     {
+        services.AddLogging(builder =>
+        {
+            builder.Services.AddLogging();
+            builder.SetMinimumLevel(LogLevel.Information);
+        });
+
         services.AddSpiderControlServices();
     }
 }

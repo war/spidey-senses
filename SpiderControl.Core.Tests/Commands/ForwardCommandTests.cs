@@ -1,22 +1,30 @@
-﻿using SpiderControl.Core.Commands;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
+using SpiderControl.Core.Commands;
 using SpiderControl.Core.Enums;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 using SpiderControl.Core.Services;
-using System;
+
 namespace SpiderControl.Core.Tests.Commands;
 
 public class ForwardCommandTests
 {
     private readonly ISpiderService _spiderService;
     private readonly ICommand _command;
+
+    private readonly Mock<ILogger<SpiderService>> _loggerMock;
+
     private readonly WallModel _wall;
 
     public ForwardCommandTests()
     {
-        _spiderService = new SpiderService();
+        _loggerMock = new Mock<ILogger<SpiderService>>();
+        _spiderService = new SpiderService(_loggerMock.Object);
+
         _command = new ForwardCommand();
-        _wall= new WallModel(3, 15);
+
+        _wall = new WallModel(3, 15);
     }
 
     [Fact]
