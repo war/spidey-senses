@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SpiderControl.Application;
 using SpiderControl.Application.Interfaces;
 using SpiderControl.Console.IO;
+using SysConsole = System.Console;
 
 namespace SpiderControl.Console;
 
@@ -26,9 +27,9 @@ public class Program
             inputs.Commands
         );
 
-        System.Console.WriteLine($"Final Output: {result}.");
-        System.Console.WriteLine("Press any key to continue...");
-        System.Console.ReadLine();
+        SysConsole.WriteLine($"Final Output: {result}.");
+        SysConsole.WriteLine("Press any key to continue...");
+        SysConsole.ReadLine();
     }
 
     public static void ConfigureServices(IServiceCollection services)
