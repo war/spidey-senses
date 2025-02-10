@@ -2,5 +2,5 @@
 
 public interface ISpiderApplicationService
 {
-    public string ProcessSpiderCommands(string wallInput, string spiderInput, string commandInput);
+    public string ProcessSpiderCommands(string spiderInput, string wallInput, string commandInput);
 }
