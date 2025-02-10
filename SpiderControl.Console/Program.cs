@@ -4,6 +4,7 @@ using SpiderControl.Application;
 using SpiderControl.Application.Interfaces;
 using SpiderControl.Application.Models;
 using SpiderControl.Console.IO;
+
 using SysConsole = System.Console;
 
 namespace SpiderControl.Console;
@@ -39,12 +40,6 @@ public class Program
 
     public static void ConfigureServices(IServiceCollection services)
     {
-        services.AddLogging(builder =>
-        {
-            builder.Services.AddLogging();
-            builder.SetMinimumLevel(LogLevel.Information);
-        });
-
         services.AddSpiderControlServices();
     }
 }

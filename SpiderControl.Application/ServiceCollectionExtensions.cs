@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SpiderControl.Application.Interfaces;
 using SpiderControl.Application.Services;
 using SpiderControl.Core.Factories;
@@ -15,6 +16,12 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ICommandFactory, CommandFactory>();
         services.AddSingleton<IInputParser, InputParser>();
         services.AddSingleton<ISpiderApplicationService, SpiderApplicationService>();
+
+        services.AddLogging(builder =>
+        {
+            builder.Services.AddLogging();
+            builder.SetMinimumLevel(LogLevel.Information);
+        });
 
         return services;
     }
