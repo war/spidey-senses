@@ -1,14 +1,17 @@
 ﻿using SpiderControl.Core.Models;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace SpiderControl.Core.Services;
 
 public class SpiderService : ISpiderService
 {
-    public SpiderService()
+    private readonly ILogger _logger;
+
+    public SpiderService(ILogger<SpiderService> logger)
     {
-        
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public SpiderModel CreateSpider(int x, int y, Orientation orientation)
@@ -90,8 +93,20 @@ public class SpiderService : ISpiderService
     {
         foreach (var command in commands)
         {
-            command.Execute(spider, wall, this);
+            try
+            {
+                command.Execute(spider, wall, this);
+
+                _logger.LogInformation("Executed command {Command}. New position: (x:{X}, y:{Y}) facing {Orientation})",
+                    command.GetType().Name, spider.X, spider.Y, spider.Orientation);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, "Invalid move.");
+            }
         }
+
+        _logger.LogInformation("Command processing complete");
 
         return spider;
     }

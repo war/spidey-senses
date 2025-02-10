@@ -9,16 +9,16 @@ namespace SpiderControl.Application.Services
         private readonly ISpiderService _spiderService;
         private readonly IInputParser _inputParser;
 
-        public SpiderApplicationService()
+        public SpiderApplicationService(ISpiderService spiderService, IInputParser inputParser)
         {
-            _spiderService = new SpiderService();
-            _inputParser = new InputParser();
+            _spiderService = spiderService ?? throw new ArgumentNullException(nameof(spiderService));
+            _inputParser = inputParser ?? throw new ArgumentNullException(nameof(inputParser)); ;
         }
 
-        public string ProcessSpiderCommands(string wallInput, string spiderInput, string commandInput)
+        public string ProcessSpiderCommands(string spiderInput, string wallInput, string commandInput)
         {
-            var parsedWall = _inputParser.ParseWallDimensions(wallInput);
             var parsedSpider = _inputParser.ParseSpiderPosition(spiderInput);
+            var parsedWall = _inputParser.ParseWallDimensions(wallInput);
             var parsedCommands = _inputParser.ParseCommands(commandInput);
 
             var finalSpiderPosition = _spiderService.ProcessCommands(parsedSpider, parsedWall, parsedCommands);
