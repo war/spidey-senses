@@ -11,7 +11,7 @@ public class ValidatorService : IValidatorService
 
     public ValidatorService(ILogger<ValidatorService> logger)
     {
-        _logger = logger;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public ValidationResult ValidateSpider(SpiderModel spider, WallModel wall)
