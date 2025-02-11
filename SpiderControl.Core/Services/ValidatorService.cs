@@ -24,7 +24,9 @@ public class ValidatorService : IValidatorService
 
     public ValidationResult ValidateWall(WallModel wall)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("Validating wall dimensions");
+        var validator = new WallModelValidator();
+        return validator.Validate(wall);
     }
 
     public ValidationResult ValidateCommand(char command)
