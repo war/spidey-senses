@@ -8,5 +8,5 @@ public interface IValidatorService
     ValidationResult ValidateWall(WallModel wall);
     ValidationResult ValidateSpider(SpiderModel spider, WallModel wall);
     ValidationResult ValidateCommand(char command);
-    ValidationResult ValidateCommands(IEnumerable<char> comamnds);
+    ValidationResult ValidateCommands(IEnumerable<char> commands);
 }

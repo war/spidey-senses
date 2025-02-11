@@ -36,8 +36,14 @@ public class ValidatorService : IValidatorService
         return validator.Validate(command);
     }
 
-    public ValidationResult ValidateCommands(IEnumerable<char> comamnds)
+    public ValidationResult ValidateCommands(IEnumerable<char> commands)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("Validating command sequence");
+        
+        var validator = new CommandValidator();
+        var results = commands.Select(c => validator.Validate(c));
+        var failures = results.SelectMany(c => c.Errors).ToList();
+
+        return new ValidationResult(failures);
     }
 }
