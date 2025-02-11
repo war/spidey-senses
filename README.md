@@ -6,7 +6,9 @@ SpiderControl.Console&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp
 
 ## experimental
 This was fun, so I'm continuing dev work in the experimental branch. Next steps:
-1. Simple angular web UI to show the spider on the grid/wall.
-2. Web API to get/use results from SpiderControl.Application to move the web UI spider around.
+
+0. Optimise some bits and pieces that I didn't get to finish
+1. Simple angular web UI to show the spider on the grid/wall
+2. Web API to get/use results from SpiderControl.Application to move the web UI spider around
 3. Docker
 4. Kubernetes
