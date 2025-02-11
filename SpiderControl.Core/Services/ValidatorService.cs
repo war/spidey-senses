@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
+using SpiderControl.Core.Validators;
 
 namespace SpiderControl.Core.Services;
 
@@ -16,7 +17,9 @@ public class ValidatorService : IValidatorService
 
     public ValidationResult ValidateSpider(SpiderModel spider, WallModel wall)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("Validating spider position");
+        var validator = new SpiderModelValidator(wall);
+        return validator.Validate(spider);
     }
 
     public ValidationResult ValidateWall(WallModel wall)
