@@ -31,7 +31,9 @@ public class ValidatorService : IValidatorService
 
     public ValidationResult ValidateCommand(char command)
     {
-        throw new NotImplementedException();
+        _logger.LogDebug("Validating single command");
+        var validator = new CommandValidator();
+        return validator.Validate(command);
     }
 
     public ValidationResult ValidateCommands(IEnumerable<char> comamnds)
