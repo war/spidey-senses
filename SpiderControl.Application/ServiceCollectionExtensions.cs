@@ -16,6 +16,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ICommandFactory, CommandFactory>();
         services.AddSingleton<IInputParser, InputParser>();
         services.AddSingleton<ISpiderApplicationService, SpiderApplicationService>();
+        services.AddSingleton<IValidationService, ValidationService>();
 
         services.AddLogging(builder =>
         {
