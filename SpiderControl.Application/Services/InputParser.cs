@@ -1,6 +1,6 @@
 ﻿using SpiderControl.Application.Interfaces;
 using SpiderControl.Core.Enums;
-using SpiderControl.Core.Factories;
+using SpiderControl.Core.Exceptions;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 
@@ -9,56 +9,66 @@ namespace SpiderControl.Application.Services;
 public class InputParser : IInputParser
 {
     private readonly ICommandFactory _commandFactory;
+    private readonly IValidatorService _validatorService;
 
-    public InputParser()
+    public InputParser(ICommandFactory commandFactory, IValidatorService validatorService)
     {
-        _commandFactory = new CommandFactory();
+        _commandFactory = commandFactory ?? throw new ArgumentNullException();
+        _validatorService = validatorService ?? throw new ArgumentNullException();
     }
 
     public IEnumerable<ICommand> ParseCommands(string input)
     {
-        if (string.IsNullOrWhiteSpace(input))
-        {
-            throw new ArgumentException("Commands cannot be empty");
-        }
+        try
+        { 
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                throw new InputParseException("Command input cannot be empty");
+            }
 
-        return input.Select(x => _commandFactory.CreateCommand(x));
+            var validationResult = _validatorService.ValidateCommands(input);
+            if (!validationResult.IsValid)
+            {
+                throw new ModelValidationException(validationResult);
+            }
+
+            var commands = input.Select(x => _commandFactory.CreateCommand(x));
+
+            return commands;
+        }
+        catch (Exception ex)
+        {
+            throw new InputParseException($"Failed to parse commands: {ex.Message}", ex);
+        }
     }
 
     public SpiderModel ParseSpiderPosition(string input)
     {
-        var args = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        if (args.Length != 3)
+        try
         {
-            throw new ArgumentException("Invalid wall dimension. Expected: 'x' 'y'");
-        }
+            var args = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (args.Length != 3 ||
+                !int.TryParse(args[0], out int x) ||
+                !int.TryParse(args[1], out int y) ||
+                !Enum.TryParse<Orientation>(args[2], true, out var orientation) || (int)orientation > 3)
+            {
+                throw new InputParseException("Invalid spider position format. Expected: 'x y orientation' where x and y are integers and orientation is Up/Down/Left/Right");
+            }
 
-        int x, y;
-        if (!int.TryParse(args[0], out x))
-        {
-            throw new ArgumentException("Invalid spider x. Expected: 'x y orientation'");
-        }
-        else if (!int.TryParse(args[1], out y))
-        {
-            throw new ArgumentException("Invalid spider y. Expected: 'x y orientation'");
-        }
+            var spider = new SpiderModel(x, y, orientation);
+            var validationResult = _validatorService.ValidateSpider(spider);
 
-        if (x < 0)
-        {
-            throw new ArgumentException("Invalid spider x. Spider position format should be above 0");
-        }
-        else if (y < 0)
-        {
-            throw new ArgumentException("Invalid spider y. Spider dimensions should be above 0");
-        }
+            if (!validationResult.IsValid)
+            {
+                throw new ModelValidationException(validationResult);
+            }
 
-        Orientation orientation;
-        if (!Enum.TryParse<Orientation>(args[2], true, out orientation) || (int)orientation > 3)
-        {
-            throw new ArgumentException("Invalid spider orientation. Expected: Up, Down, Left, or Right");
+            return new SpiderModel(x, y, orientation);
         }
-
-        return new SpiderModel(x, y, orientation);
+        catch (Exception ex) when (ex is not InputParseException and not ModelValidationException)
+        {
+            throw new InputParseException($"Failed to parse spider position: {ex.Message}");
+        }
     }
 
     public WallModel ParseWallDimensions(string input)
@@ -66,28 +76,22 @@ public class InputParser : IInputParser
         var args = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         if (args.Length != 2)
         {
-            throw new ArgumentException("Invalid wall dimension. Expected: 'width' 'height'");
+            throw new InputParseException("Invalid wall dimensions format. Expected: 'width height' where width and height are integers");
         }
 
         int width, height;
         if (!int.TryParse(args[0], out width))
         {
-            throw new ArgumentException("Invalid wall width. Expected: 'width height'");
+            throw new InputParseException("Invalid wall width. Expected: 'width height'");
         } 
         else if (!int.TryParse(args[1], out height))
         {
-            throw new ArgumentException("Invalid wall height. Expected: 'width height'");
+            throw new InputParseException("Invalid wall height. Expected: 'width height'");
         }
 
-        if (width < 0)
-        {
-            throw new ArgumentException("Invalid wall width. Wall dimensions should be above 0");
-        }
-        else if (height < 0)
-        {
-            throw new ArgumentException("Invalid wall height. Wall dimensions should be above 0");
-        }
+        var wall = new WallModel(width, height);
+        var validationResult = _validatorService.ValidateWall(wall);
 
-        return new WallModel(width, height);
+        return wall;
     }
 }

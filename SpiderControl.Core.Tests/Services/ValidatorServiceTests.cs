@@ -27,11 +27,16 @@ public class ValidatorServiceTests
         var wall = new WallModel(10, 10);
 
         // Act
-        var result = _validatorService.ValidateSpider(spider, wall);
+        var resultModel = _validatorService.ValidateSpider(spider);
+        var resultPosition = _validatorService.ValidateSpiderPosition(spider, wall);
+
+        var resultBool = resultModel.IsValid && resultPosition.IsValid;
+        var resultErrors = resultModel.Errors;
+        resultErrors.AddRange(resultPosition.Errors);
 
         // Assert
-        Assert.True(result.IsValid);
-        Assert.Empty(result.Errors);
+        Assert.True(resultBool);
+        Assert.Empty(resultErrors);
     }
 
     [Fact]

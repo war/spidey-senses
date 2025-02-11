@@ -5,15 +5,15 @@ using SpiderControl.Core.Validators;
 
 namespace SpiderControl.Core.Tests.Validators;
 
-public class SpiderModelValidatorTests
+public class SpiderPositionValidatorTests
 {
     private readonly WallModel _wallModel;
-    private readonly SpiderModelValidator _spiderValidator;
+    private readonly SpiderPositionValidator _spiderPositionValidator;
 
-    public SpiderModelValidatorTests()
+    public SpiderPositionValidatorTests()
     {
         _wallModel = new WallModel(10, 10);
-        _spiderValidator = new SpiderModelValidator();
+        _spiderPositionValidator = new SpiderPositionValidator(_wallModel);
     }
 
     [Theory]
@@ -27,22 +27,22 @@ public class SpiderModelValidatorTests
         var spider = new SpiderModel(x, y, orientation);
 
         // Act
-        var result = _spiderValidator.TestValidate(spider);
+        var result = _spiderPositionValidator.TestValidate(spider);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
     }
 
     [Theory]
-    [InlineData(-1, 5, Orientation.Up, "X")]
-    [InlineData(5, -1, Orientation.Right, "Y")]
+    [InlineData(11, 5, Orientation.Down, "X")]      // X > wall width
+    [InlineData(5, 11, Orientation.Down, "Y")]      // Y > wall height
     public void Validate_InvalidDimensions_ShouldHaveValidationError(int x, int y, Orientation orientation, string propertyName)
     {
         // Arrange
         var spider = new SpiderModel(x, y, orientation);
 
         // Act
-        var result = _spiderValidator.TestValidate(spider);
+        var result = _spiderPositionValidator.TestValidate(spider);
 
         // Assert
         result.ShouldHaveValidationErrorFor(propertyName);
