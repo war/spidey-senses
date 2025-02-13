@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+
 using SpiderControl.Application;
 using SpiderControl.Application.Interfaces;
 using SpiderControl.Application.Models;
@@ -13,15 +15,18 @@ public class Program
 {
     public static void Main(String[] args)
     {
-        var services = new ServiceCollection();
-        ConfigureServices(services);
-        
-        var serviceProvider = services.BuildServiceProvider();
+        IConfiguration configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+        var serviceProvider = ConfigureServices(configuration);
+
         var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+
         var spiderApplicationService = serviceProvider.GetRequiredService<ISpiderApplicationService>();
 
         var inputReader = new ConsoleInputReader();
-
         var inputs = inputReader.ReadInputs();
 
         var processCommandModel = new ProcessCommandModel
@@ -38,9 +43,22 @@ public class Program
         SysConsole.ReadLine();
     }
 
-    public static void ConfigureServices(IServiceCollection services)
+    public static ServiceProvider ConfigureServices(IConfiguration configuration)
     {
+        var services = new ServiceCollection();
+
+        services.AddLogging(builder =>
+        {
+            builder
+                .SetMinimumLevel(LogLevel.Information)
+                .AddConsole();
+
+            builder.AddConfiguration(configuration.GetSection("Logging"));
+        });
+
         services.AddSpiderControlServices();
+
+        return services.BuildServiceProvider();
     }
 }
 
