@@ -14,15 +14,13 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton<ISpiderService, SpiderService>();
         services.AddSingleton<ICommandFactory, CommandFactory>();
-        services.AddSingleton<IInputParser, InputParser>();
+        services.AddSingleton<IWallInputParser, WallInputParser>();
         services.AddSingleton<ISpiderApplicationService, SpiderApplicationService>();
         services.AddSingleton<IValidatorService, ValidatorService>();
 
-        services.AddLogging(builder =>
-        {
-            builder.Services.AddLogging();
-            builder.SetMinimumLevel(LogLevel.Information);
-        });
+        services.AddSingleton<ISpiderInputParser, SpiderInputParser>();
+        services.AddSingleton<IWallInputParser, WallInputParser>();
+        services.AddSingleton<ICommandInputParser, CommandInputParser>();
 
         return services;
     }

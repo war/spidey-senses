@@ -3,9 +3,7 @@ using SpiderControl.Core.Models;
 
 namespace SpiderControl.Application.Interfaces;
 
-public interface IInputParser
+public interface ISpiderInputParser
 {
-    WallModel ParseWallDimensions(string input);
     SpiderModel ParseSpiderPosition(string input);
-    IEnumerable<ICommand> ParseCommands(string input);
 }

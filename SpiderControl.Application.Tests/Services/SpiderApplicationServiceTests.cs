@@ -5,23 +5,33 @@ using SpiderControl.Application.Services;
 using SpiderControl.Core.Enums;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
-using SpiderControl.Core.Services;
 
 namespace SpiderControl.Application.Tests.Services;
 
 public class SpiderApplicationServiceTests
 {
     private readonly Mock<ISpiderService> _spiderServiceMock;
-    private readonly Mock<IInputParser> _inputParserMock;
+
+    private readonly Mock<ISpiderInputParser> _spiderInputParserMock;
+    private readonly Mock<IWallInputParser> _wallInputParserMock;
+    private readonly Mock<ICommandInputParser> _commandInputParserMock;
 
     private readonly ISpiderApplicationService _spiderApplicationService;
 
     public SpiderApplicationServiceTests()
     {
         _spiderServiceMock = new Mock<ISpiderService>();
-        _inputParserMock = new Mock<IInputParser>();
 
-        _spiderApplicationService = new SpiderApplicationService(_spiderServiceMock.Object, _inputParserMock.Object);
+        _spiderInputParserMock = new Mock<ISpiderInputParser>();
+        _wallInputParserMock = new Mock<IWallInputParser>();
+        _commandInputParserMock = new Mock<ICommandInputParser>();
+
+        _spiderApplicationService = new SpiderApplicationService(
+            _spiderServiceMock.Object, 
+            _wallInputParserMock.Object, 
+            _spiderInputParserMock.Object, 
+            _commandInputParserMock.Object
+        );
     }
 
     [Fact]
@@ -39,9 +49,9 @@ public class SpiderApplicationServiceTests
         var expectedOutput = "6 11 Up";
         var resultSpider = CreateSpider(expectedOutput);
 
-        _inputParserMock.Setup(x => x.ParseSpiderPosition(spiderInput)).Returns(spider);
-        _inputParserMock.Setup(x => x.ParseWallDimensions(wallInput)).Returns(wall);
-        _inputParserMock.Setup(x => x.ParseCommands(commandInput)).Returns(commands);
+        _spiderInputParserMock.Setup(x => x.ParseSpiderPosition(spiderInput)).Returns(spider);
+        _wallInputParserMock.Setup(x => x.ParseWallDimensions(wallInput)).Returns(wall);
+        _commandInputParserMock.Setup(x => x.ParseCommands(commandInput)).Returns(commands);
         _spiderServiceMock.Setup(x => x.ProcessCommands(
             It.IsAny<SpiderModel>(),
             It.IsAny<WallModel>(),
@@ -62,9 +72,9 @@ public class SpiderApplicationServiceTests
         Assert.NotNull(result);
         Assert.Equal(expectedOutput, result);
 
-        _inputParserMock.Verify(x => x.ParseSpiderPosition(spiderInput), Times.Once());
-        _inputParserMock.Verify(x => x.ParseWallDimensions(wallInput), Times.Once());
-        _inputParserMock.Verify(x => x.ParseCommands(commandInput), Times.Once());
+        _spiderInputParserMock.Verify(x => x.ParseSpiderPosition(spiderInput), Times.Once());
+        _wallInputParserMock.Verify(x => x.ParseWallDimensions(wallInput), Times.Once());
+        _commandInputParserMock.Verify(x => x.ParseCommands(commandInput), Times.Once());
         _spiderServiceMock.Verify(x => x.ProcessCommands(spider, wall, commands), Times.Once());
     }
 
@@ -77,9 +87,9 @@ public class SpiderApplicationServiceTests
         // Arrange
         var expectedResult = CreateSpider(expectedOutput);
 
-        _inputParserMock.Setup(x => x.ParseSpiderPosition(spiderInput)).Returns(It.IsAny<SpiderModel>());
-        _inputParserMock.Setup(x => x.ParseWallDimensions(wallInput)).Returns(It.IsAny<WallModel>());
-        _inputParserMock.Setup(x => x.ParseCommands(commandInput)).Returns(It.IsAny<IEnumerable<ICommand>>());
+        _spiderInputParserMock.Setup(x => x.ParseSpiderPosition(spiderInput)).Returns(It.IsAny<SpiderModel>());
+        _wallInputParserMock.Setup(x => x.ParseWallDimensions(wallInput)).Returns(It.IsAny<WallModel>());
+        _commandInputParserMock.Setup(x => x.ParseCommands(commandInput)).Returns(It.IsAny<IEnumerable<ICommand>>());
 
         _spiderServiceMock.Setup(x => x.ProcessCommands(
             It.IsAny<SpiderModel>(),
@@ -108,23 +118,16 @@ public class SpiderApplicationServiceTests
         // declaring ISpiderService for the use of nameof(spiderService) in the assert
         // not perfect, but better than strings
         ISpiderService spiderService;
-        var spiderApplicationService = () => new SpiderApplicationService(null!, _inputParserMock.Object);
+        var spiderApplicationService = () => new SpiderApplicationService(
+            null!, 
+            _wallInputParserMock.Object, 
+            _spiderInputParserMock.Object, 
+            _commandInputParserMock.Object
+        );
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentNullException>(spiderApplicationService);
         Assert.Equal(nameof(spiderService), exception.ParamName);
-    }
-
-    [Fact]
-    public void Constructor_NullInputParser_ThrowsException()
-    {
-        // Arrange
-        IInputParser inputParser;
-        var spiderApplicationService = () => new SpiderApplicationService(_spiderServiceMock.Object, null!);
-
-        // Act & Assert
-        var exception = Assert.Throws<ArgumentNullException>(spiderApplicationService);
-        Assert.Equal(nameof(inputParser), exception.ParamName);
     }
 
     private static SpiderModel CreateSpider(string position)
