@@ -8,6 +8,7 @@ using SpiderControl.Application.Models;
 using SpiderControl.Console.IO;
 
 using SysConsole = System.Console;
+using SpiderControl.Console.Interfaces;
 
 namespace SpiderControl.Console;
 
@@ -26,7 +27,7 @@ public class Program
 
         var spiderApplicationService = serviceProvider.GetRequiredService<ISpiderApplicationService>();
 
-        var inputReader = new ConsoleInputReader();
+        var inputReader = serviceProvider.GetRequiredService<IConsoleInputReader>();
         var inputs = inputReader.ReadInputs();
 
         var processCommandModel = new ProcessCommandModel
@@ -40,7 +41,7 @@ public class Program
 
         SysConsole.WriteLine($"Final Output: {result}.");
         SysConsole.WriteLine("Press any key to continue...");
-        SysConsole.ReadLine();
+        SysConsole.ReadKey();
     }
 
     public static ServiceProvider ConfigureServices(IConfiguration configuration)
@@ -56,9 +57,10 @@ public class Program
             builder.AddConfiguration(configuration.GetSection("Logging"));
         });
 
+        services.AddSingleton<IConsoleInputReader, ConsoleInputReader>();
+
         services.AddSpiderControlServices();
 
         return services.BuildServiceProvider();
     }
 }
-

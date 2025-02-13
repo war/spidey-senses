@@ -1,9 +1,21 @@
-﻿using SpiderControl.Console.IO;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
+using SpiderControl.Console.Interfaces;
+using SpiderControl.Console.IO;
 
 namespace SpiderControl.Console.Tests;
 
 public class ConsoleInputReaderTests
 {
+    private readonly Mock<ILogger<IConsoleInputReader>> _logger;
+    private readonly IConsoleInputReader _consoleInputReader;
+
+    public ConsoleInputReaderTests()
+    {
+        _logger = new Mock<ILogger<IConsoleInputReader>>();
+        _consoleInputReader = new ConsoleInputReader(_logger.Object);
+    }
+
     [Fact]
     public void ReadInputs_ValidInput_ReturnsExpectedInput()
     {
@@ -16,10 +28,8 @@ public class ConsoleInputReaderTests
 
         System.Console.SetIn(input);
 
-        var inputReader = new ConsoleInputReader();
-
         // Act
-        var result = inputReader.ReadInputs();
+        var result = _consoleInputReader.ReadInputs();
 
         // Assert
         Assert.Equal("7 15", result.WallDimensions);
@@ -35,10 +45,8 @@ public class ConsoleInputReaderTests
 
         System.Console.SetIn(input);
 
-        var inputReader = new ConsoleInputReader();
-
         // Act
-        var result = () => inputReader.ReadInputs();
+        var result = () => _consoleInputReader.ReadInputs();
 
         // Assert
         Assert.Throws<InvalidOperationException>(result);
