@@ -14,11 +14,6 @@ public class SpiderService : ISpiderService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public Spider CreateSpider(int x, int y, Orientation orientation)
-    {
-        return new Spider(x, y, orientation);
-    }
-
     public bool IsValidMove(Spider spider, WallModel wall, int nextX, int nextY)
     {
         return nextX >= 0 && nextY >= 0 && nextX <= wall.Width && nextY <= wall.Height;
