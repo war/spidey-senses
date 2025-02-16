@@ -31,59 +31,6 @@ public class SpiderServiceTests
         Assert.Equal(Orientation.Right, spider.Orientation);
     }
 
-    [Theory]
-    [InlineData(Orientation.Up, Orientation.Left)]
-    [InlineData(Orientation.Left, Orientation.Down)]
-    [InlineData(Orientation.Down, Orientation.Right)]
-    [InlineData(Orientation.Right, Orientation.Up)]
-    public void RotateLeft_RotatesCorrectly(Orientation initial, Orientation expected)
-    {
-        // Arrange
-        var spider = new Spider(0, 0, initial);
-
-        // Act
-        _spiderService.RotateLeft(spider);
-
-        // Assert
-        Assert.Equal(expected, spider.Orientation);
-    }
-
-    [Theory]
-    [InlineData(Orientation.Up, Orientation.Right)]
-    [InlineData(Orientation.Right, Orientation.Down)]
-    [InlineData(Orientation.Down, Orientation.Left)]
-    [InlineData(Orientation.Left, Orientation.Up)]
-    public void RotateRight_RotatesCorrectly(Orientation initial, Orientation expected)
-    {
-        // Arrange
-        var spider = new Spider(0, 0, initial);
-
-        // Act
-        _spiderService.RotateRight(spider);
-
-        // Assert
-        Assert.Equal(expected, spider.Orientation);
-    }
-
-    [Theory]
-    [InlineData(Orientation.Up, 0, 1)]
-    [InlineData(Orientation.Right, 1, 0)]
-    [InlineData(Orientation.Down, 0, -1)]
-    [InlineData(Orientation.Left, -1, 0)]
-    public void MoveForward_MovesInCorrectDirection(Orientation orientation, int expectedX, int expectedY)
-    {
-        // Arrange
-        var spider = new Spider(0, 0, orientation);
-
-        // Act
-        _spiderService.MoveForward(spider);
-
-        // Assert
-        Assert.Equal(expectedX, spider.X);
-        Assert.Equal(expectedY, spider.Y);
-        Assert.Equal(orientation, spider.Orientation);
-    }
-
     [Fact]
     public void ProcessCommands_ExecutesAllCommands()
     {

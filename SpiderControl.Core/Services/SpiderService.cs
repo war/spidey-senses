@@ -19,50 +19,9 @@ public class SpiderService : ISpiderService
         return new Spider(x, y, orientation);
     }
 
-    public (int nextX, int nextY) GetNextForwardPosition(Spider spider)
-    {
-        var nextX = spider.X;
-        var nextY = spider.Y;
-
-        switch (spider.Orientation)
-        {
-            case Orientation.Up:
-                nextY += 1;
-                break;
-            case Orientation.Right:
-                nextX += 1;
-                break;
-            case Orientation.Down:
-                nextY -= 1;
-                break;
-            case Orientation.Left:
-                nextX -= 1;
-                break;
-        }
-
-        return (nextX, nextY);
-    }
-
     public bool IsValidMove(Spider spider, WallModel wall, int nextX, int nextY)
     {
         return nextX >= 0 && nextY >= 0 && nextX <= wall.Width && nextY <= wall.Height;
-    }
-
-    public void MoveForward(Spider spider)
-    {
-        (spider.X, spider.Y) = GetNextForwardPosition(spider);
-    }
-
-    public void RotateLeft(Spider spider)
-    {
-        var orientation = spider.GetLeftOrientation();
-        spider.Orientation = orientation;
-    }
-
-    public void RotateRight(Spider spider)
-    {
-        var orientation = spider.GetRightOrientation();
-        spider.Orientation = orientation;
     }
 
     public Spider ProcessCommands(Spider spider, WallModel wall, IEnumerable<ICommand> commands)

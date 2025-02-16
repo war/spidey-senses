@@ -15,6 +15,50 @@ public class Spider
         Orientation = orientation;
     }
 
+    public void MoveForward()
+    {
+        var newSpider = GetNextForwardPosition();
+
+        this.X = newSpider.X;
+        this.Y = newSpider.Y;
+    }
+
+    public void RotateLeft()
+    {
+        var orientation = this.GetLeftOrientation();
+        this.Orientation = orientation;
+    }
+
+    public void RotateRight()
+    {
+        var orientation = this.GetRightOrientation();
+        this.Orientation = orientation;
+    }
+
+    public Spider GetNextForwardPosition()
+    {
+        var nextX = this.X;
+        var nextY = this.Y;
+
+        switch (this.Orientation)
+        {
+            case Orientation.Up:
+                nextY += 1;
+                break;
+            case Orientation.Right:
+                nextX += 1;
+                break;
+            case Orientation.Down:
+                nextY -= 1;
+                break;
+            case Orientation.Left:
+                nextX -= 1;
+                break;
+        }
+
+        return new Spider(nextX, nextY, this.Orientation);
+    }
+
     public Orientation GetRightOrientation()
     {
         return this.Orientation switch

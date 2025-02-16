@@ -12,12 +12,12 @@ public class ForwardCommand : ICommand
             throw new InvalidOperationException("Invalid move: Spider would fall off the wall :(.");
         }
 
-        spiderService.MoveForward(spider);
+        spider.MoveForward();
     }
 
     public bool Validate(Spider spider, WallModel wall, ISpiderService spiderService)
     {
-        var getNextMove = spiderService.GetNextForwardPosition(spider);
-        return spiderService.IsValidMove(spider, wall, getNextMove.nextX, getNextMove.nextY);
+        var getNextMove = spider.GetNextForwardPosition();
+        return spiderService.IsValidMove(spider, wall, getNextMove.X, getNextMove.Y);
     }
 }
