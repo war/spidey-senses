@@ -14,12 +14,12 @@ public class SpiderService : ISpiderService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public SpiderModel CreateSpider(int x, int y, Orientation orientation)
+    public Spider CreateSpider(int x, int y, Orientation orientation)
     {
-        return new SpiderModel(x, y, orientation);
+        return new Spider(x, y, orientation);
     }
 
-    public (int nextX, int nextY) GetNextForwardPosition(SpiderModel spider)
+    public (int nextX, int nextY) GetNextForwardPosition(Spider spider)
     {
         var nextX = spider.X;
         var nextY = spider.Y;
@@ -43,53 +43,29 @@ public class SpiderService : ISpiderService
         return (nextX, nextY);
     }
 
-    public Orientation GetRightOrientation(Orientation orientation)
-    {
-        return orientation switch
-        {
-            Orientation.Up => Orientation.Right,
-            Orientation.Right => Orientation.Down,
-            Orientation.Down => Orientation.Left,
-            Orientation.Left => Orientation.Up,
-            _ => throw new ArgumentException("Invalid orientation")
-        };
-    }
-
-    public Orientation GetLeftOrientation(Orientation orientation)
-    {
-        return orientation switch
-        {
-            Orientation.Up => Orientation.Left,
-            Orientation.Left => Orientation.Down,
-            Orientation.Down => Orientation.Right,
-            Orientation.Right => Orientation.Up,
-            _ => throw new ArgumentException("Invalid orientation")
-        };
-    }
-
-    public bool IsValidMove(SpiderModel spider, WallModel wall, int nextX, int nextY)
+    public bool IsValidMove(Spider spider, WallModel wall, int nextX, int nextY)
     {
         return nextX >= 0 && nextY >= 0 && nextX <= wall.Width && nextY <= wall.Height;
     }
 
-    public void MoveForward(SpiderModel spider)
+    public void MoveForward(Spider spider)
     {
         (spider.X, spider.Y) = GetNextForwardPosition(spider);
     }
 
-    public void RotateLeft(SpiderModel spider)
+    public void RotateLeft(Spider spider)
     {
-        var orientation = GetLeftOrientation(spider.Orientation);
+        var orientation = spider.GetLeftOrientation();
         spider.Orientation = orientation;
     }
 
-    public void RotateRight(SpiderModel spider)
+    public void RotateRight(Spider spider)
     {
-        var orientation = GetRightOrientation(spider.Orientation);
+        var orientation = spider.GetRightOrientation();
         spider.Orientation = orientation;
     }
 
-    public SpiderModel ProcessCommands(SpiderModel spider, WallModel wall, IEnumerable<ICommand> commands)
+    public Spider ProcessCommands(Spider spider, WallModel wall, IEnumerable<ICommand> commands)
     {
         foreach (var command in commands)
         {

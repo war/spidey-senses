@@ -43,7 +43,7 @@ public class SpiderApplicationServiceTests
         var commandInput = "FLFLFLRRFF";
 
         var wall = new WallModel(10, 12);
-        var spider = new SpiderModel(6, 8, Orientation.Right);
+        var spider = new Spider(6, 8, Orientation.Right);
         var commands = new List<ICommand>();
 
         var expectedOutput = "6 11 Up";
@@ -53,7 +53,7 @@ public class SpiderApplicationServiceTests
         _wallInputParserMock.Setup(x => x.ParseWallDimensions(wallInput)).Returns(wall);
         _commandInputParserMock.Setup(x => x.ParseCommands(commandInput)).Returns(commands);
         _spiderServiceMock.Setup(x => x.ProcessCommands(
-            It.IsAny<SpiderModel>(),
+            It.IsAny<Spider>(),
             It.IsAny<WallModel>(),
             It.IsAny<IEnumerable<ICommand>>()
         )).Returns(resultSpider);
@@ -87,12 +87,12 @@ public class SpiderApplicationServiceTests
         // Arrange
         var expectedResult = CreateSpider(expectedOutput);
 
-        _spiderInputParserMock.Setup(x => x.ParseSpiderPosition(spiderInput)).Returns(It.IsAny<SpiderModel>());
+        _spiderInputParserMock.Setup(x => x.ParseSpiderPosition(spiderInput)).Returns(It.IsAny<Spider>());
         _wallInputParserMock.Setup(x => x.ParseWallDimensions(wallInput)).Returns(It.IsAny<WallModel>());
         _commandInputParserMock.Setup(x => x.ParseCommands(commandInput)).Returns(It.IsAny<IEnumerable<ICommand>>());
 
         _spiderServiceMock.Setup(x => x.ProcessCommands(
-            It.IsAny<SpiderModel>(),
+            It.IsAny<Spider>(),
             It.IsAny<WallModel>(),
             It.IsAny<IEnumerable<ICommand>>()
         )).Returns(expectedResult);
@@ -130,10 +130,10 @@ public class SpiderApplicationServiceTests
         Assert.Equal(nameof(spiderService), exception.ParamName);
     }
 
-    private static SpiderModel CreateSpider(string position)
+    private static Spider CreateSpider(string position)
     {
         var positionArray = position.Split(' ');
-        return new SpiderModel(
+        return new Spider(
             int.Parse(positionArray[0]),
             int.Parse(positionArray[1]),
             Enum.Parse<Orientation>(positionArray[2])

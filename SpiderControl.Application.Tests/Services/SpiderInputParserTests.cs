@@ -27,7 +27,7 @@ public class SpiderInputParserTests
     public void ParseSpiderPosition_ValidInput_ReturnsSpiderModel(string input, int expectedX, int expectedY, Orientation expectedOrientation)
     {
         // Act
-        _validationServiceMock.Setup(x => x.ValidateSpider(It.IsAny<SpiderModel>()))
+        _validationServiceMock.Setup(x => x.ValidateSpider(It.IsAny<Spider>()))
             .Returns(new ValidationResult());
         _validationServiceMock.Setup(x => x.ValidateWall(It.IsAny<WallModel>()))
             .Returns(new ValidationResult());

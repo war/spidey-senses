@@ -3,7 +3,7 @@ using SpiderControl.Core.Models;
 
 namespace SpiderControl.Core.Validators;
 
-public class SpiderPositionValidator : AbstractValidator<SpiderModel>
+public class SpiderPositionValidator : AbstractValidator<Spider>
 {
     private readonly WallModel _wall;
 

@@ -23,7 +23,7 @@ public class ValidatorServiceTests
     public void ValidateSpider_ValidInput_ReturnsSuccessResult()
     {
         // Arrange
-        var spider = new SpiderModel(5, 5, Enums.Orientation.Up);
+        var spider = new Spider(5, 5, Enums.Orientation.Up);
         var wall = new WallModel(10, 10);
 
         // Act

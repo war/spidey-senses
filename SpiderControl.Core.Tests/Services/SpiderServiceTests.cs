@@ -39,7 +39,7 @@ public class SpiderServiceTests
     public void RotateLeft_RotatesCorrectly(Orientation initial, Orientation expected)
     {
         // Arrange
-        var spider = new SpiderModel(0, 0, initial);
+        var spider = new Spider(0, 0, initial);
 
         // Act
         _spiderService.RotateLeft(spider);
@@ -56,7 +56,7 @@ public class SpiderServiceTests
     public void RotateRight_RotatesCorrectly(Orientation initial, Orientation expected)
     {
         // Arrange
-        var spider = new SpiderModel(0, 0, initial);
+        var spider = new Spider(0, 0, initial);
 
         // Act
         _spiderService.RotateRight(spider);
@@ -73,7 +73,7 @@ public class SpiderServiceTests
     public void MoveForward_MovesInCorrectDirection(Orientation orientation, int expectedX, int expectedY)
     {
         // Arrange
-        var spider = new SpiderModel(0, 0, orientation);
+        var spider = new Spider(0, 0, orientation);
 
         // Act
         _spiderService.MoveForward(spider);
@@ -88,7 +88,7 @@ public class SpiderServiceTests
     public void ProcessCommands_ExecutesAllCommands()
     {
         // Arrange
-        var spider = new SpiderModel(2, 4, Orientation.Up);
+        var spider = new Spider(2, 4, Orientation.Up);
         var wall = new WallModel(5, 8);
         var commands = new List<ICommand>()
         {

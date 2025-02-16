@@ -22,7 +22,7 @@ public class CommandInputParserTests
 
         _commandInputParser = new CommandInputParser(_commandFactoryMock.Object, _validatorServiceMock.Object);
 
-        _validatorServiceMock.Setup(x => x.ValidateSpider(It.IsAny<SpiderModel>()))
+        _validatorServiceMock.Setup(x => x.ValidateSpider(It.IsAny<Spider>()))
             .Returns(new ValidationResult());
         _validatorServiceMock.Setup(x => x.ValidateWall(It.IsAny<WallModel>()))
             .Returns(new ValidationResult());

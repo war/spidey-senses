@@ -5,5 +5,5 @@ namespace SpiderControl.Application.Interfaces;
 
 public interface ISpiderInputParser
 {
-    SpiderModel ParseSpiderPosition(string input);
+    Spider ParseSpiderPosition(string input);
 }

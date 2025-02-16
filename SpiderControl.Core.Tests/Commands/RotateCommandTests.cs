@@ -33,7 +33,7 @@ public class RotateCommandTests
     public void Execute_RotateLeft_RotatesCorrectly()
     {
         // Arrange
-        var spider = new SpiderModel(2, 2, Orientation.Up);
+        var spider = new Spider(2, 2, Orientation.Up);
 
         // Act
         _rotateLeftCommand.Execute(spider, _wall, _spiderService);
@@ -48,7 +48,7 @@ public class RotateCommandTests
     public void Execute_RotateRight_RotatesCorrectly()
     {
         // Arrange
-        var spider = new SpiderModel(2, 2, Orientation.Up);
+        var spider = new Spider(2, 2, Orientation.Up);
 
         // Act
         _rotateRightCommand.Execute(spider, _wall, _spiderService);

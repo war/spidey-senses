@@ -15,14 +15,14 @@ public class ValidatorService : IValidatorService
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public ValidationResult ValidateSpider(SpiderModel spider)
+    public ValidationResult ValidateSpider(Spider spider)
     {
         _logger.LogDebug("Validating basic spider properties");
         var validator = new SpiderModelValidator();
         return validator.Validate(spider);
     }
 
-    public ValidationResult ValidateSpiderPosition(SpiderModel spider, WallModel wall)
+    public ValidationResult ValidateSpiderPosition(Spider spider, WallModel wall)
     {
         _logger.LogDebug("Validating spider position");
         var validator = new SpiderPositionValidator(wall);

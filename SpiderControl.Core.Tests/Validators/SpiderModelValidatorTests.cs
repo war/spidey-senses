@@ -24,7 +24,7 @@ public class SpiderModelValidatorTests
     public void Validate_ValidDimensions_ShouldNotHaveValidationError(int x, int y, Orientation orientation)
     {
         // Arrange
-        var spider = new SpiderModel(x, y, orientation);
+        var spider = new Spider(x, y, orientation);
 
         // Act
         var result = _spiderValidator.TestValidate(spider);
@@ -39,7 +39,7 @@ public class SpiderModelValidatorTests
     public void Validate_InvalidDimensions_ShouldHaveValidationError(int x, int y, Orientation orientation, string propertyName)
     {
         // Arrange
-        var spider = new SpiderModel(x, y, orientation);
+        var spider = new Spider(x, y, orientation);
 
         // Act
         var result = _spiderValidator.TestValidate(spider);

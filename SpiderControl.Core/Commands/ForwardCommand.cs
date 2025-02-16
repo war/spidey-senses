@@ -5,7 +5,7 @@ namespace SpiderControl.Core.Commands;
 
 public class ForwardCommand : ICommand
 {
-    public void Execute(SpiderModel spider, WallModel wall, ISpiderService spiderService)
+    public void Execute(Spider spider, WallModel wall, ISpiderService spiderService)
     {
         if (!Validate(spider, wall, spiderService))
         {
@@ -15,7 +15,7 @@ public class ForwardCommand : ICommand
         spiderService.MoveForward(spider);
     }
 
-    public bool Validate(SpiderModel spider, WallModel wall, ISpiderService spiderService)
+    public bool Validate(Spider spider, WallModel wall, ISpiderService spiderService)
     {
         var getNextMove = spiderService.GetNextForwardPosition(spider);
         return spiderService.IsValidMove(spider, wall, getNextMove.nextX, getNextMove.nextY);

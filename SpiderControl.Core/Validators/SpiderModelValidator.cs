@@ -3,7 +3,7 @@ using SpiderControl.Core.Models;
 
 namespace SpiderControl.Core.Validators;
 
-public class SpiderModelValidator : AbstractValidator<SpiderModel>
+public class SpiderModelValidator : AbstractValidator<Spider>
 {
     public SpiderModelValidator()
     {

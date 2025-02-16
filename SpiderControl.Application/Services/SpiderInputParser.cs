@@ -15,7 +15,7 @@ public class SpiderInputParser : ISpiderInputParser
         _validatorService = validatorService ?? throw new ArgumentNullException();
     }
 
-    public SpiderModel ParseSpiderPosition(string input)
+    public Spider ParseSpiderPosition(string input)
     {
         try
         {
@@ -28,7 +28,7 @@ public class SpiderInputParser : ISpiderInputParser
                 throw new InputParseException("Invalid spider position format. Expected: 'x y orientation' where x and y are integers and orientation is Up/Down/Left/Right");
             }
 
-            var spider = new SpiderModel(x, y, orientation);
+            var spider = new Spider(x, y, orientation);
             var validationResult = _validatorService.ValidateSpider(spider);
 
             if (!validationResult.IsValid)
@@ -36,7 +36,7 @@ public class SpiderInputParser : ISpiderInputParser
                 throw new ModelValidationException(validationResult);
             }
 
-            return new SpiderModel(x, y, orientation);
+            return new Spider(x, y, orientation);
         }
         catch (Exception ex) when (ex is not InputParseException and not ModelValidationException)
         {

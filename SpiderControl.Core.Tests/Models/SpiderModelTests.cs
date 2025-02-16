@@ -13,7 +13,7 @@ public class SpiderModelTests
         const int y = 4;
 
         // Act
-        var spider = new SpiderModel(x, y, Orientation.Up);
+        var spider = new Spider(x, y, Orientation.Up);
 
         // Assert
         Assert.Equal(x, spider.X);
@@ -29,7 +29,7 @@ public class SpiderModelTests
         const Orientation orientation = Orientation.Right;
 
         // Act
-        var spider = new SpiderModel(x, y, orientation);
+        var spider = new Spider(x, y, orientation);
 
         // Assert
         Assert.Equal(Orientation.Right, spider.Orientation);
