@@ -1,5 +1,6 @@
 ﻿using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SpiderControl.Core.Commands;
 
@@ -7,7 +8,7 @@ public class ForwardCommand : ICommand
 {
     public void Execute(Spider spider, WallModel wall, ISpiderService spiderService)
     {
-        if (!Validate(spider, wall, spiderService))
+        if (!IsValidMove(spider, wall, spiderService))
         {
             throw new InvalidOperationException("Invalid move: Spider would fall off the wall :(.");
         }
@@ -15,9 +16,9 @@ public class ForwardCommand : ICommand
         spider.MoveForward();
     }
 
-    public bool Validate(Spider spider, WallModel wall, ISpiderService spiderService)
+    public bool IsValidMove(Spider spider, WallModel wall, ISpiderService spiderService)
     {
         var getNextMove = spider.GetNextForwardPosition();
-        return spiderService.IsValidMove(spider, wall, getNextMove.X, getNextMove.Y);
+        return getNextMove.X >= 0 && getNextMove.Y >= 0 && getNextMove.X <= wall.Width && getNextMove.X <= wall.Height;
     }
 }

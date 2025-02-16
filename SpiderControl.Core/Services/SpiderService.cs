@@ -1,6 +1,5 @@
 ﻿using SpiderControl.Core.Models;
 using SpiderControl.Core.Interfaces;
-using SpiderControl.Core.Enums;
 using Microsoft.Extensions.Logging;
 
 namespace SpiderControl.Core.Services;
@@ -12,11 +11,6 @@ public class SpiderService : ISpiderService
     public SpiderService(ILogger<SpiderService> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
-    public bool IsValidMove(Spider spider, WallModel wall, int nextX, int nextY)
-    {
-        return nextX >= 0 && nextY >= 0 && nextX <= wall.Width && nextY <= wall.Height;
     }
 
     public Spider ProcessCommands(Spider spider, WallModel wall, IEnumerable<ICommand> commands)

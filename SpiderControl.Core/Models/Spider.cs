@@ -25,14 +25,12 @@ public class Spider
 
     public void RotateLeft()
     {
-        var orientation = this.GetLeftOrientation();
-        this.Orientation = orientation;
+        this.Orientation = this.GetLeftOrientation();
     }
 
     public void RotateRight()
     {
-        var orientation = this.GetRightOrientation();
-        this.Orientation = orientation;
+        this.Orientation = this.GetRightOrientation(); ;
     }
 
     public Spider GetNextForwardPosition()
