@@ -19,6 +19,6 @@ public class ForwardCommand : ICommand
     public bool IsValidMove(Spider spider, WallModel wall, ISpiderService spiderService)
     {
         var getNextMove = spider.GetNextForwardPosition();
-        return getNextMove.X >= 0 && getNextMove.Y >= 0 && getNextMove.X <= wall.Width && getNextMove.X <= wall.Height;
+        return getNextMove.X >= 0 && getNextMove.Y >= 0 && getNextMove.X <= wall.Width && getNextMove.Y <= wall.Height;
     }
 }
