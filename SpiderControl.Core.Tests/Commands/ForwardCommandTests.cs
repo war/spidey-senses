@@ -10,20 +10,12 @@ namespace SpiderControl.Core.Tests.Commands;
 
 public class ForwardCommandTests
 {
-    private readonly ISpiderService _spiderService;
     private readonly ICommand _command;
-
-    private readonly Mock<ILogger<SpiderService>> _loggerMock;
-
     private readonly WallModel _wall;
 
     public ForwardCommandTests()
     {
-        _loggerMock = new Mock<ILogger<SpiderService>>();
-        _spiderService = new SpiderService(_loggerMock.Object);
-
         _command = new ForwardCommand();
-
         _wall = new WallModel(3, 15);
     }
 
@@ -34,7 +26,7 @@ public class ForwardCommandTests
         var spider = new Spider(3, 4, Orientation.Up);
 
         // Act
-        _command.Execute(spider, _wall, _spiderService);
+        _command.Execute(spider, _wall);
 
         // Assert
         Assert.Equal(3, spider.X);
@@ -47,6 +39,6 @@ public class ForwardCommandTests
     {
         var spider = new Spider(3, 15, Orientation.Up);
 
-        Assert.Throws<InvalidOperationException>(() => _command.Execute(spider, _wall, _spiderService));
+        Assert.Throws<InvalidOperationException>(() => _command.Execute(spider, _wall));
     }
 }

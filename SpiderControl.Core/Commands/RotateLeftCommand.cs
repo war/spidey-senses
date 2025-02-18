@@ -5,7 +5,7 @@ namespace SpiderControl.Core.Commands;
 
 public class RotateLeftCommand : ICommand
 {
-    public void Execute(Spider spider, WallModel wall, ISpiderService spiderService)
+    public void Execute(Spider spider, WallModel wall)
     {
         spider.RotateLeft();
     }

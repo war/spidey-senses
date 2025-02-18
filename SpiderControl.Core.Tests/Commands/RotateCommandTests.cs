@@ -10,9 +10,6 @@ namespace SpiderControl.Core.Tests.Commands;
 
 public class RotateCommandTests
 {
-    private readonly ISpiderService _spiderService;
-    private readonly Mock<ILogger<SpiderService>> _loggerMock;
-
     private readonly ICommand _rotateRightCommand;
     private readonly ICommand _rotateLeftCommand;
 
@@ -20,9 +17,6 @@ public class RotateCommandTests
 
     public RotateCommandTests()
     {
-        _loggerMock = new Mock<ILogger<SpiderService>>();
-        _spiderService = new SpiderService(_loggerMock.Object);
-
         _rotateRightCommand = new RotateRightCommand();
         _rotateLeftCommand = new RotateLeftCommand();
 
@@ -36,7 +30,7 @@ public class RotateCommandTests
         var spider = new Spider(2, 2, Orientation.Up);
 
         // Act
-        _rotateLeftCommand.Execute(spider, _wall, _spiderService);
+        _rotateLeftCommand.Execute(spider, _wall);
 
         // Assert
         Assert.Equal(2, spider.X);
@@ -51,7 +45,7 @@ public class RotateCommandTests
         var spider = new Spider(2, 2, Orientation.Up);
 
         // Act
-        _rotateRightCommand.Execute(spider, _wall, _spiderService);
+        _rotateRightCommand.Execute(spider, _wall);
 
         // Assert
         Assert.Equal(2, spider.X);

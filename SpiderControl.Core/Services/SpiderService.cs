@@ -19,7 +19,7 @@ public class SpiderService : ISpiderService
         {
             try
             {
-                command.Execute(spider, wall, this);
+                command.Execute(spider, wall);
 
                 _logger.LogInformation("Executed command {Command}. New position: (x:{X}, y:{Y}) facing {Orientation})",
                     command.GetType().Name, spider.X, spider.Y, spider.Orientation);

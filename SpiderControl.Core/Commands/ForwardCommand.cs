@@ -6,9 +6,9 @@ namespace SpiderControl.Core.Commands;
 
 public class ForwardCommand : ICommand
 {
-    public void Execute(Spider spider, WallModel wall, ISpiderService spiderService)
+    public void Execute(Spider spider, WallModel wall)
     {
-        if (!IsValidMove(spider, wall, spiderService))
+        if (!IsValidMove(spider, wall))
         {
             throw new InvalidOperationException("Invalid move: Spider would fall off the wall :(.");
         }
@@ -16,7 +16,7 @@ public class ForwardCommand : ICommand
         spider.MoveForward();
     }
 
-    public bool IsValidMove(Spider spider, WallModel wall, ISpiderService spiderService)
+    public bool IsValidMove(Spider spider, WallModel wall)
     {
         var getNextMove = spider.GetNextForwardPosition();
         return getNextMove.X >= 0 && getNextMove.Y >= 0 && getNextMove.X <= wall.Width && getNextMove.Y <= wall.Height;
