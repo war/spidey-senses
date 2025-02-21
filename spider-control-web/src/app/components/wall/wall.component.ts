@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { SpiderService } from '../../services/spider.service';
+import { SpiderComponent } from '../spider/spider.component';
 
 @Component({
   selector: 'app-wall',
   standalone: true,
+  imports: [SpiderComponent],
   template: `
     <div class="w-full max-w-2xl mx-auto mt-6">
       <div class="bg-white rounded-lg shadow-lg relative flex justify-center items-center p-10">
@@ -12,9 +14,12 @@ import { SpiderService } from '../../services/spider.service';
             <div class="grid-row flex">
               @for (cell of row; track cell) {
                 <div 
-                  class="grid-cell border border-gray-200 flex-1 aspect-square"
-                  [class.bg-blue-200]="cell.hasSpider"
+                  class="grid-cell border border-gray-200 flex-1 aspect-square relative"
+                  [class.bg-blue-100]="cell.hasSpider"
                 >
+                  @if (cell.hasSpider) {
+                    <app-spider></app-spider>
+                  }
                 </div>
               }
             </div>
@@ -38,7 +43,7 @@ import { SpiderService } from '../../services/spider.service';
       min-height: 0;
     }
   `]
- })
+})
 
 export class WallComponent {
   @Input() wallWidth = 0;
