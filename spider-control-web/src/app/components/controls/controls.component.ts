@@ -22,7 +22,6 @@ import { ReactiveFormsModule } from '@angular/forms';
                   type="number"
                   formControlName="WallWidth"
                   class="w-full p-2 border rounded"
-                  min="1"
                 />
                 @if (showValidation && spiderForm.get('WallWidth')?.errors?.['required']) {
                   <span class="text-red-500 text-sm">Wall width is required</span>
@@ -35,7 +34,6 @@ import { ReactiveFormsModule } from '@angular/forms';
                   type="number"
                   formControlName="WallHeight"
                   class="w-full p-2 border rounded"
-                  min="1"
                 />
                 @if (showValidation && spiderForm.get('WallHeight')?.errors?.['required']) {
                   <span class="text-red-500 text-sm">Wall height is required</span>
@@ -51,7 +49,6 @@ import { ReactiveFormsModule } from '@angular/forms';
                   type="number"
                   formControlName="SpiderX"
                   class="w-full p-2 border rounded"
-                  min="0"
                 />
                 @if (showValidation && spiderForm.get('SpiderX')?.errors?.['required']) {
                   <span class="text-red-500 text-sm">X position is required</span>
@@ -64,7 +61,6 @@ import { ReactiveFormsModule } from '@angular/forms';
                   type="number"
                   formControlName="SpiderY"
                   class="w-full p-2 border rounded"
-                  min="0"
                 />
                 @if (showValidation && spiderForm.get('SpiderY')?.errors?.['required']) {
                   <span class="text-red-500 text-sm">Y position is required</span>
@@ -153,7 +149,7 @@ export class ControlsComponent {
     this.errorMessage = '';
     this.successMessage = '';
 
-    // Console log form data to send to the API
+    // Console log form data to send to the API and show success message
     if (this.spiderForm.valid) {
       console.log('Form data:', this.spiderForm.value);
       this.successMessage = 'Commands submitted successfully!';
