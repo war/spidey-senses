@@ -83,6 +83,20 @@ import { ReactiveFormsModule } from '@angular/forms';
               />
             </div>
 
+            <!-- Error Message -->
+            @if (errorMessage) {
+              <div class="bg-red-50 text-red-800 p-4 rounded-md">
+                {{ errorMessage }}
+              </div>
+            }
+
+            <!-- Success Message -->
+            @if (successMessage) {
+              <div class="bg-green-50 text-green-800 p-4 rounded-md">
+                {{ successMessage }}
+              </div>
+            }
+
             <!-- Submit Button -->
             <button
               type="submit"
@@ -100,6 +114,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class ControlsComponent {
   spiderForm: FormGroup;
   orientations = ['Up', 'Right', 'Down', 'Left'];
+  errorMessage = '';
+  successMessage = '';
 
   constructor(private fb: FormBuilder) {
     this.spiderForm = this.fb.group({
@@ -113,7 +129,13 @@ export class ControlsComponent {
   }
 
   onSubmit() {
-    // send form data
+    // Reset messages on form submit
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    // Console log form data to send to the API
     console.log('Form data:', this.spiderForm.value);
+    
+    this.successMessage = 'Commands submitted successfully!';
   }
 }
