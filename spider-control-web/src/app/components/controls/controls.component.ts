@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -24,6 +24,9 @@ import { ReactiveFormsModule } from '@angular/forms';
                   class="w-full p-2 border rounded"
                   min="1"
                 />
+                @if (showValidation && spiderForm.get('WallWidth')?.errors?.['required']) {
+                  <span class="text-red-500 text-sm">Wall width is required</span>
+                }
               </div>
               
               <div class="space-y-2">
@@ -34,6 +37,9 @@ import { ReactiveFormsModule } from '@angular/forms';
                   class="w-full p-2 border rounded"
                   min="1"
                 />
+                @if (showValidation && spiderForm.get('WallHeight')?.errors?.['required']) {
+                  <span class="text-red-500 text-sm">Wall height is required</span>
+                }
               </div>
             </div>
 
@@ -47,6 +53,9 @@ import { ReactiveFormsModule } from '@angular/forms';
                   class="w-full p-2 border rounded"
                   min="0"
                 />
+                @if (showValidation && spiderForm.get('SpiderX')?.errors?.['required']) {
+                  <span class="text-red-500 text-sm">X position is required</span>
+                }
               </div>
               
               <div class="space-y-2">
@@ -57,6 +66,9 @@ import { ReactiveFormsModule } from '@angular/forms';
                   class="w-full p-2 border rounded"
                   min="0"
                 />
+                @if (showValidation && spiderForm.get('SpiderY')?.errors?.['required']) {
+                  <span class="text-red-500 text-sm">Y position is required</span>
+                }
               </div>
               
               <div class="space-y-2">
@@ -81,6 +93,12 @@ import { ReactiveFormsModule } from '@angular/forms';
                 class="w-full p-2 border rounded uppercase"
                 placeholder="e.g., LRFFLRFF"
               />
+              @if (showValidation && spiderForm.get('Commands')?.errors?.['required']) {
+                <span class="text-red-500 text-sm">Commands are required</span>
+              }
+              @if (showValidation && spiderForm.get('Commands')?.errors?.['pattern']) {
+                <span class="text-red-500 text-sm">Commands can only contain L, R, and F</span>
+              }
             </div>
 
             <!-- Error Message -->
@@ -116,26 +134,29 @@ export class ControlsComponent {
   orientations = ['Up', 'Right', 'Down', 'Left'];
   errorMessage = '';
   successMessage = '';
+  showValidation = false;
 
   constructor(private fb: FormBuilder) {
     this.spiderForm = this.fb.group({
-      WallWidth: [''],
-      WallHeight: [''],
-      SpiderX: [''],
-      SpiderY: [''],
-      Orientation: ['Up'],
-      Commands: ['']
+      WallWidth: ['', [Validators.required]],
+      WallHeight: ['', [Validators.required]],
+      SpiderX: ['', [Validators.required]],
+      SpiderY: ['', [Validators.required]],
+      Orientation: ['Up', Validators.required],
+      Commands: ['', [Validators.required, Validators.pattern(/^[LRF]+$/i)]]
     });
   }
 
   onSubmit() {
-    // Reset messages on form submit
+    // Reset messages on form submit and enable validation
+    this.showValidation = true;
     this.errorMessage = '';
     this.successMessage = '';
 
     // Console log form data to send to the API
-    console.log('Form data:', this.spiderForm.value);
-    
-    this.successMessage = 'Commands submitted successfully!';
+    if (this.spiderForm.valid) {
+      console.log('Form data:', this.spiderForm.value);
+      this.successMessage = 'Commands submitted successfully!';
+    }
   }
 }
