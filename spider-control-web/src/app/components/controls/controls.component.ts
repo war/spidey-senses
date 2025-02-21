@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ValidationMessageComponent } from './validation-message.component';
+import { SpiderService } from '../../services/spider.service';
+import { SpiderFormData } from '../../models/SpiderFormData';
 
 @Component({
   selector: 'app-controls',
@@ -151,7 +153,7 @@ export class ControlsComponent {
   successMessage = '';
   showValidation = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private spiderService: SpiderService) {
     this.spiderForm = this.fb.group({
       WallWidth: ['', [Validators.required]],
       WallHeight: ['', [Validators.required]],
@@ -159,6 +161,12 @@ export class ControlsComponent {
       SpiderY: ['', [Validators.required]],
       Orientation: ['Up', Validators.required],
       Commands: ['', [Validators.required, Validators.pattern(/^[LRF]+$/i)]]
+    });
+    
+    this.spiderForm.valueChanges.subscribe(() => {
+      if (this.spiderForm.valid) {
+        this.spiderService.updateFormData(this.spiderForm.value);
+      }
     });
   }
 
