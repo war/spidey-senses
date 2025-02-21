@@ -10,7 +10,7 @@ import { SpiderFormData } from '../../models/SpiderFormData';
   standalone: true,
   imports: [ReactiveFormsModule, ValidationMessageComponent],
   template: `
-    <div class="w-full max-w-2xl mx-auto p-6">
+    <div class="w-full mx-auto p-4">
       <div class="bg-white rounded-lg shadow-lg">
         <div class="p-6">
           <h2 class="text-2xl font-bold mb-6">Spider Control Interface</h2>
@@ -143,7 +143,13 @@ import { SpiderFormData } from '../../models/SpiderFormData';
         </div>
       </div>
     </div>
-  `
+  `,
+  styles: [`
+    :host {
+      display: block;
+      height: 100%;
+    }
+  `]
 })
 
 export class ControlsComponent {

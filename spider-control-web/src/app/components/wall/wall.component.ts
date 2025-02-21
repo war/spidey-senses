@@ -7,9 +7,9 @@ import { SpiderComponent } from '../spider/spider.component';
   standalone: true,
   imports: [SpiderComponent],
   template: `
-    <div class="w-full max-w-2xl mx-auto mt-6">
-      <div class="bg-white rounded-lg shadow-lg relative flex justify-center items-center p-10">
-        <div class="grid-container aspect-square" style="height: 400px">
+    <div class="w-full mx-auto p-4">
+      <div class="w-full h-full bg-white rounded-lg shadow-lg relative flex justify-center items-center p-10">
+        <div class="grid-container aspect-square w-full max-h-full">
           @for (row of gridRows; track row) {
             <div class="grid-row flex">
               @for (cell of row; track cell) {
