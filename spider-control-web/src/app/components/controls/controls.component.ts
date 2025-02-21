@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ValidationMessageComponent } from './validation-message.component';
 
 @Component({
   selector: 'app-controls',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ValidationMessageComponent],
   template: `
     <div class="w-full max-w-2xl mx-auto p-6">
       <div class="bg-white rounded-lg shadow-lg">
@@ -23,9 +24,12 @@ import { ReactiveFormsModule } from '@angular/forms';
                   formControlName="WallWidth"
                   class="w-full p-2 border rounded"
                 />
-                @if (showValidation && spiderForm.get('WallWidth')?.errors?.['required']) {
-                  <span class="text-red-500 text-sm">Wall width is required</span>
-                }
+                <app-validation-message
+                  [control]="spiderForm.get('WallWidth')"
+                  [showValidation]="showValidation"
+                  errorType="required"
+                  message="Wall width is required"
+                />
               </div>
               
               <div class="space-y-2">
@@ -35,9 +39,12 @@ import { ReactiveFormsModule } from '@angular/forms';
                   formControlName="WallHeight"
                   class="w-full p-2 border rounded"
                 />
-                @if (showValidation && spiderForm.get('WallHeight')?.errors?.['required']) {
-                  <span class="text-red-500 text-sm">Wall height is required</span>
-                }
+                <app-validation-message
+                  [control]="spiderForm.get('WallHeight')"
+                  [showValidation]="showValidation"
+                  errorType="required"
+                  message="Wall height is required"
+                />
               </div>
             </div>
 
@@ -50,9 +57,12 @@ import { ReactiveFormsModule } from '@angular/forms';
                   formControlName="SpiderX"
                   class="w-full p-2 border rounded"
                 />
-                @if (showValidation && spiderForm.get('SpiderX')?.errors?.['required']) {
-                  <span class="text-red-500 text-sm">X position is required</span>
-                }
+                <app-validation-message
+                  [control]="spiderForm.get('SpiderX')"
+                  [showValidation]="showValidation"
+                  errorType="required"
+                  message="X position is required"
+                />
               </div>
               
               <div class="space-y-2">
@@ -62,9 +72,12 @@ import { ReactiveFormsModule } from '@angular/forms';
                   formControlName="SpiderY"
                   class="w-full p-2 border rounded"
                 />
-                @if (showValidation && spiderForm.get('SpiderY')?.errors?.['required']) {
-                  <span class="text-red-500 text-sm">Y position is required</span>
-                }
+                <app-validation-message
+                  [control]="spiderForm.get('SpiderY')"
+                  [showValidation]="showValidation"
+                  errorType="required"
+                  message="Y position is required"
+                />
               </div>
               
               <div class="space-y-2">
@@ -89,12 +102,18 @@ import { ReactiveFormsModule } from '@angular/forms';
                 class="w-full p-2 border rounded uppercase"
                 placeholder="e.g., LRFFLRFF"
               />
-              @if (showValidation && spiderForm.get('Commands')?.errors?.['required']) {
-                <span class="text-red-500 text-sm">Commands are required</span>
-              }
-              @if (showValidation && spiderForm.get('Commands')?.errors?.['pattern']) {
-                <span class="text-red-500 text-sm">Commands can only contain L, R, and F</span>
-              }
+              <app-validation-message
+                [control]="spiderForm.get('Commands')"
+                [showValidation]="showValidation"
+                errorType="required"
+                message="Commands are required"
+              />
+              <app-validation-message
+                [control]="spiderForm.get('Commands')"
+                [showValidation]="showValidation"
+                errorType="pattern"
+                message="Commands can only contain L, R, and F"
+              />
             </div>
 
             <!-- Error Message -->
