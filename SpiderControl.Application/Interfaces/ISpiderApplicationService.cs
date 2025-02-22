@@ -4,5 +4,5 @@ namespace SpiderControl.Application.Interfaces;
 
 public interface ISpiderApplicationService
 {
-    public string ProcessSpiderCommands(ProcessCommandModel model);
+    string ProcessSpiderCommands(ProcessCommandModel model);
 }
