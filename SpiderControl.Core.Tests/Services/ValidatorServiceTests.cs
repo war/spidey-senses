@@ -1,5 +1,4 @@
-﻿using Castle.Core.Logging;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -121,7 +120,7 @@ public class ValidatorServiceTests
         {
             Assert.Contains($"Command must be one of: {string.Join(", ", _defaultConfig.ValidCommands)}",
                 error.ErrorMessage);
-    }
+        }
     }
 
     [Fact]
@@ -142,5 +141,23 @@ public class ValidatorServiceTests
 
         // Assert
         Assert.Throws<ArgumentNullException>(validationService);
+    }
+
+    [Fact]
+    public void ValidateCommand_CustomCommands_ValidatesCorrectly()
+    {
+        // Arrange
+        var customConfig = new SpiderControlConfig { ValidCommands = new[] { 'X', 'Y', 'Z' } };
+        var customConfigMock = new Mock<IOptions<SpiderControlConfig>>();
+
+        customConfigMock.Setup(x => x.Value).Returns(customConfig);
+
+        var customValidatorService = new ValidatorService(_loggerMock.Object, customConfigMock.Object);
+
+        // Act & Assert
+        Assert.True(customValidatorService.ValidateCommand('X').IsValid);
+        Assert.True(customValidatorService.ValidateCommand('Y').IsValid);
+        Assert.True(customValidatorService.ValidateCommand('Z').IsValid);
+        Assert.False(customValidatorService.ValidateCommand('F').IsValid);
     }
 }
