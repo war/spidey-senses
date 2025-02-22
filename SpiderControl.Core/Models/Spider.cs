@@ -1,4 +1,5 @@
 ﻿using SpiderControl.Core.Enums;
+using SpiderControl.Core.Exceptions;
 
 namespace SpiderControl.Core.Models;
 
@@ -65,7 +66,7 @@ public class Spider
             Orientation.Right => Orientation.Down,
             Orientation.Down => Orientation.Left,
             Orientation.Left => Orientation.Up,
-            _ => throw new ArgumentException("Invalid orientation")
+            _ => throw new InvalidOrientationException($"Invalid orientation: {this.Orientation}")
         };
     }
 
@@ -77,7 +78,7 @@ public class Spider
             Orientation.Left => Orientation.Down,
             Orientation.Down => Orientation.Right,
             Orientation.Right => Orientation.Up,
-            _ => throw new ArgumentException("Invalid orientation")
+            _ => throw new InvalidOrientationException($"Invalid orientation: {this.Orientation}")
         };
     }
 
@@ -89,7 +90,7 @@ public class Spider
             Orientation.Right => "Right",
             Orientation.Down => "Down",
             Orientation.Left => "Left",
-            _ => throw new ArgumentException($"Invalid orientation: {this.Orientation}")
+            _ => throw new InvalidSpiderToStringException($"Invalid orientation: {this.Orientation}")
         };
 
         return $"{this.X} {this.Y} {orientation}";
