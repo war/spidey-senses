@@ -16,4 +16,10 @@
 /SpiderControl.Application/bin/Debug
 /SpiderControl.Application.Tests/bin/Debug
 /spider-control-web/.vscode
-/SpiderControl.Application.Tests/bin/
+/SpiderControl.Application.Tests/bin
+/API/SpiderControl.Api.Shared/obj
+/API/SpiderControl.WebApiV2/obj
+/API/SpiderControl.Api.Shared/bin
+/API/SpiderControl.WebApiV2/bin
+/API/SpiderControl.WebApiV2.Tests/bin
+/API/SpiderControl.WebApiV2.Tests/obj
