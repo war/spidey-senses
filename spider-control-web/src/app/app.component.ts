@@ -20,12 +20,12 @@ import { WallComponent } from "./components/wall/wall.component";
     </nav>
 
     <main class="h-[calc(100vh-4rem)]">
-      <div class="items-center justify-center w-full h-full h-full py-6 sm:px-6 lg:px-8">
-        <div class="flex flex-row gap-6 items-center justify-center">
-          <div class="w-2/4 h-full">
+      <div class="h-full w-full mx-auto max-w-7xl py-6 lg:px-8">
+        <div class="h-full flex flex-row gap-6 items-center justify-center">
+          <div class="w-1/2 flex items-center">
             <app-wall></app-wall>
           </div>
-          <div class="w-2/4 h-full overflow-y-auto">
+          <div class="w-1/2 flex items-center">
             <app-controls></app-controls>
           </div>
         </div>

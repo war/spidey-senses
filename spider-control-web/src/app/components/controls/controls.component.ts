@@ -10,8 +10,8 @@ import { SpiderFormData } from '../../models/SpiderFormData';
   standalone: true,
   imports: [ReactiveFormsModule, ValidationMessageComponent],
   template: `
-    <div class="w-full mx-auto p-4">
-      <div class="bg-white rounded-lg shadow-lg">
+    <div class="flex items-center justify-center w-full h-full mx-auto p-4">
+      <div class="bg-white rounded-lg shadow-lg border-2 border-gray-200">
         <div class="p-6">
           <h2 class="text-2xl font-bold mb-6">Spider Control Interface</h2>
           

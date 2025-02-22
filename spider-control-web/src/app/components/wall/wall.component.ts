@@ -7,8 +7,8 @@ import { SpiderComponent } from '../spider/spider.component';
   standalone: true,
   imports: [SpiderComponent],
   template: `
-    <div class="w-full mx-auto p-4">
-      <div class="w-full h-full bg-white rounded-lg shadow-lg relative flex justify-center items-center p-10">
+    <div class="flex w-full h-full">
+      <div class="w-full h-full bg-white border-2 border-gray-200 rounded-lg shadow-lg relative flex justify-center items-center p-10">
         <div class="grid-container aspect-square w-full max-h-full">
           @for (row of gridRows; track row) {
             <div class="grid-row flex">
@@ -29,6 +29,10 @@ import { SpiderComponent } from '../spider/spider.component';
     </div>
   `,
   styles: [`
+    :host {
+      display: block;
+      width: 100%;
+    }
     .grid-container {
       display: flex;
       flex-direction: column;
