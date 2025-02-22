@@ -1,5 +1,7 @@
 ﻿using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using SpiderControl.Core.Configuration;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 using SpiderControl.Core.Validators;
@@ -9,10 +11,18 @@ namespace SpiderControl.Core.Services;
 public class ValidatorService : IValidatorService
 {
     private readonly ILogger<ValidatorService> _logger;
+    private readonly CommandValidator _commandValidator;
 
-    public ValidatorService(ILogger<ValidatorService> logger)
+    public ValidatorService(ILogger<ValidatorService> logger, IOptions<SpiderControlConfig> config)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        if (logger == null)
+            throw new ArgumentNullException(nameof(logger));
+
+        if (config == null)
+            throw new ArgumentNullException(nameof(config));
+
+        _logger = logger;
+        _commandValidator = new CommandValidator(config);
     }
 
     public ValidationResult ValidateSpider(Spider spider)
@@ -39,16 +49,14 @@ public class ValidatorService : IValidatorService
     public ValidationResult ValidateCommand(char command)
     {
         _logger.LogDebug("Validating single command");
-        var validator = new CommandValidator();
-        return validator.Validate(command);
+        return _commandValidator.Validate(command);
     }
 
     public ValidationResult ValidateCommands(IEnumerable<char> commands)
     {
         _logger.LogDebug("Validating command sequence");
         
-        var validator = new CommandValidator();
-        var results = commands.Select(c => validator.Validate(c));
+        var results = commands.Select(c => _commandValidator.Validate(c));
         var failures = results.SelectMany(c => c.Errors).ToList();
 
         return new ValidationResult(failures);

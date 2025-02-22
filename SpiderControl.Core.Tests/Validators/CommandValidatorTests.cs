@@ -1,4 +1,7 @@
 ﻿using FluentValidation.TestHelper;
+using Microsoft.Extensions.Options;
+using Moq;
+using SpiderControl.Core.Configuration;
 using SpiderControl.Core.Models;
 using SpiderControl.Core.Validators;
 
@@ -7,10 +10,19 @@ namespace SpiderControl.Core.Tests.Validators;
 public class CommandValidatorTests
 {
     private readonly CommandValidator _validator;
+    private readonly SpiderControlConfig _defaultConfig;
+    private readonly Mock<IOptions<SpiderControlConfig>> _configMock;
 
     public CommandValidatorTests()
     {
-        _validator = new CommandValidator();
+        _defaultConfig = new SpiderControlConfig
+        {
+            ValidCommands = new[] { 'F', 'L', 'R' }
+        };
+
+        _configMock = new Mock<IOptions<SpiderControlConfig>>();
+        _configMock.Setup(x => x.Value).Returns(_defaultConfig);
+        _validator = new CommandValidator(_configMock.Object);
     }
 
     [Theory]

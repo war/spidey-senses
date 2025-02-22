@@ -1,7 +1,9 @@
 ﻿using Castle.Core.Logging;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
+using SpiderControl.Core.Configuration;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 using SpiderControl.Core.Services;
@@ -12,11 +14,16 @@ public class ValidatorServiceTests
 {
     private readonly IValidatorService _validatorService;
     private readonly Mock<ILogger<ValidatorService>> _loggerMock;
+    private readonly Mock<IOptions<SpiderControlConfig>> _configMock;
+    private readonly SpiderControlConfig _defaultConfig;
 
     public ValidatorServiceTests()
     {
         _loggerMock = new Mock<ILogger<ValidatorService>>();
-        _validatorService = new ValidatorService(_loggerMock.Object);
+        _defaultConfig = new SpiderControlConfig { ValidCommands = new[] { 'F', 'L', 'R' } };
+        _configMock = new Mock<IOptions<SpiderControlConfig>>();
+        _configMock.Setup(x => x.Value).Returns(_defaultConfig);
+        _validatorService = new ValidatorService(_loggerMock.Object, _configMock.Object);
     }
 
     [Fact]
@@ -71,7 +78,7 @@ public class ValidatorServiceTests
     [InlineData('y')]
     [InlineData('5')]
     [InlineData(' ')]
-    public void ValidateCommand_ValidInput_ReturnsFailureResult(char command)
+    public void ValidateCommand_InvalidInput_ReturnsFailureResult(char command)
     {
         // Act
         var result = _validatorService.ValidateCommand(command);
@@ -79,6 +86,8 @@ public class ValidatorServiceTests
         // Assert
         Assert.False(result.IsValid);
         Assert.Single(result.Errors);
+        Assert.Contains($"Command must be one of: {string.Join(", ", _defaultConfig.ValidCommands)}",
+            result.Errors.First().ErrorMessage);
     }
 
     [Fact]
@@ -107,13 +116,29 @@ public class ValidatorServiceTests
         // Assert
         Assert.False(result.IsValid);
         Assert.Equal(2, result.Errors.Count);
+
+        foreach (var error in result.Errors)
+        {
+            Assert.Contains($"Command must be one of: {string.Join(", ", _defaultConfig.ValidCommands)}",
+                error.ErrorMessage);
+    }
     }
 
     [Fact]
-    public void Contructor_NullLogger_ThrowsArgumentNullException()
+    public void Constructor_NullLogger_ThrowsArgumentNullException()
     {
         // Act
-        var validationService = () => new ValidatorService(null!);
+        var validationService = () => new ValidatorService(null!, _configMock.Object);
+
+        // Assert
+        Assert.Throws<ArgumentNullException>(validationService);
+    }
+
+    [Fact]
+    public void Constructor_NullConfig_ThrowsArgumentNullException()
+    {
+        // Act
+        var validationService = () => new ValidatorService(_loggerMock.Object, null!);
 
         // Assert
         Assert.Throws<ArgumentNullException>(validationService);

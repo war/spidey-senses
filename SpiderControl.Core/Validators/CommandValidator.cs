@@ -1,20 +1,21 @@
 ﻿using FluentValidation;
-using SpiderControl.Core.Models;
-using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Options;
+using SpiderControl.Core.Configuration;
 
 namespace SpiderControl.Core.Validators;
 
 public class CommandValidator : AbstractValidator<char>
 {
-    // TODO move this to config
-    private static readonly HashSet<char> ValidCommands = new(new[] { 'F', 'R', 'L' });
+    private readonly HashSet<char> _validCommands;
 
-    public CommandValidator()
+    public CommandValidator(IOptions<SpiderControlConfig> config)
     {
+        _validCommands = new HashSet<char>(config.Value.ValidCommands);
+
         RuleFor(x => x)
             .Must(IsValidCommand)
-            .WithMessage($"Command must be one of: { string.Join(", ", ValidCommands) }");
+            .WithMessage($"Command must be one of: { string.Join(", ", _validCommands) }");
     }
 
-    private bool IsValidCommand(char command) => ValidCommands.Contains(char.ToUpper(command));
+    private bool IsValidCommand(char command) => _validCommands.Contains(char.ToUpper(command));
 }

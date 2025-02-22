@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using SpiderControl.Application.Interfaces;
 using SpiderControl.Application.Services;
 using SpiderControl.Core.Factories;

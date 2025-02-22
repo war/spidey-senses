@@ -2,12 +2,15 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
+using SysConsole = System.Console;
+
+using SpiderControl.Core.Configuration;
+
 using SpiderControl.Application;
 using SpiderControl.Application.Interfaces;
 using SpiderControl.Application.Models;
-using SpiderControl.Console.IO;
 
-using SysConsole = System.Console;
+using SpiderControl.Console.IO;
 using SpiderControl.Console.Interfaces;
 
 namespace SpiderControl.Console;
@@ -47,6 +50,10 @@ public class Program
     public static ServiceProvider ConfigureServices(IConfiguration configuration)
     {
         var services = new ServiceCollection();
+
+        services.Configure<SpiderControlConfig>(
+            configuration.GetSection("SpiderControl")
+        );
 
         services.AddLogging(builder =>
         {
