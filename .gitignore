@@ -23,3 +23,5 @@
 /API/SpiderControl.WebApiV2/bin
 /API/SpiderControl.WebApiV2.Tests/bin
 /API/SpiderControl.WebApiV2.Tests/obj
+/API/SpiderControl.Api.Shared.Testing/bin
+/API/SpiderControl.Api.Shared.Testing/obj

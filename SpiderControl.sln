@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.WebApiV2", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.WebApiV2.Tests", "API\SpiderControl.WebApiV2.Tests\SpiderControl.WebApiV2.Tests.csproj", "{F60C906B-277B-4815-8069-A254A8007F28}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Api.Shared.Testing", "API\SpiderControl.Api.Shared.Testing\SpiderControl.Api.Shared.Testing.csproj", "{6D7BB641-4226-46E9-A920-0DF9C11BCBA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{F60C906B-277B-4815-8069-A254A8007F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F60C906B-277B-4815-8069-A254A8007F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F60C906B-277B-4815-8069-A254A8007F28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D7BB641-4226-46E9-A920-0DF9C11BCBA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D7BB641-4226-46E9-A920-0DF9C11BCBA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D7BB641-4226-46E9-A920-0DF9C11BCBA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D7BB641-4226-46E9-A920-0DF9C11BCBA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,5 +93,6 @@ Global
 		{88AFAA81-014C-440C-A30A-EF72677D8112} = {DA1D1D88-BF0D-47F1-9B4B-DD1C09D02501}
 		{7CA58137-510A-4DC3-81F6-8A1418EC6545} = {DA1D1D88-BF0D-47F1-9B4B-DD1C09D02501}
 		{F60C906B-277B-4815-8069-A254A8007F28} = {DA1D1D88-BF0D-47F1-9B4B-DD1C09D02501}
+		{6D7BB641-4226-46E9-A920-0DF9C11BCBA4} = {DA1D1D88-BF0D-47F1-9B4B-DD1C09D02501}
 	EndGlobalSection
 EndGlobal
