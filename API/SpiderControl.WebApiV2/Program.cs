@@ -1,5 +1,7 @@
 using Asp.Versioning;
+using SpiderControl.Api.Shared.Features.Spider.Commands;
 using SpiderControl.Application;
+using SpiderControl.Core.Configuration;
 
 namespace SpiderControl.WebApiV2;
 
@@ -17,16 +19,29 @@ public class Program
 
     public static WebApplication ConfigureServices(WebApplicationBuilder builder)
     {
+        IConfiguration configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+        builder.Services.Configure<SpiderControlConfig>(
+            configuration.GetSection("SpiderControl")
+        );
+
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssembly(typeof(ProcessSpiderCommand).Assembly);
+            cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+        });
+
         builder.Services.AddOpenApiDocument(options =>
         {
             options.Title = "Spider Control API";
             options.Version = "v1";
             options.Description = "An API for controlling robotic spiders";
         });
-
-        builder.Services.AddSpiderControlServices();
 
         builder.Services.AddApiVersioning(options =>
         {
@@ -45,6 +60,8 @@ public class Program
             options.GroupNameFormat = "'v'VVV";
             options.SubstituteApiVersionInUrl = true;
         });
+
+        builder.Services.AddSpiderControlServices();
 
         return builder.Build();
     }
