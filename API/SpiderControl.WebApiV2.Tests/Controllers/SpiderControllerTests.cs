@@ -5,11 +5,11 @@ using System.Net;
 using FluentAssertions;
 using SpiderControl.Api.Shared.Testing.Infrastructure;
 
-namespace SpiderControl.WebApiV2.Tests;
+namespace SpiderControl.WebApiV2.Tests.Controllers;
 
 public class SpiderControllerTests : TestBase<Program>
 {
-    public SpiderControllerTests(WebApplicationFactory<Program> factory) : base(factory) {}
+    public SpiderControllerTests(WebApplicationFactory<Program> factory) : base(factory) { }
 
     [Fact]
     public async Task ProcessCommands_ValidInput_ReturnsExpectedPosition()
