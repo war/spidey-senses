@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using SpiderControl.Api.Shared.Features.Spider.Commands;
 
 namespace SpiderControl.WebApiV2.Features.Spider;
@@ -9,9 +11,28 @@ namespace SpiderControl.WebApiV2.Features.Spider;
 [Route("api/v{version:apiVersion}/spider")]
 public class SpiderController : ControllerBase
 {
-    [HttpPost("process")]
-    public ActionResult<ProcessSpiderCommandResponse> Process([FromBody] ProcessSpiderCommandRequest request)
+    private readonly IMediator _mediator;
+
+    public SpiderController(IMediator mediator)
     {
-        return Ok(new ProcessSpiderCommandResponse { FinalPosition = string.Empty });
+        _mediator = mediator;
+    }
+
+    [HttpPost("process")]
+    [ProducesResponseType(typeof(ProcessSpiderCommandResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ProcessSpiderCommandResponse>> Process(
+        [FromBody] ProcessSpiderCommandRequest request,
+        ApiVersion apiVersion,
+        CancellationToken ct)
+    {
+        var command = new ProcessSpiderCommand(
+            request.WallInput,
+            request.SpiderInput,
+            request.CommandInput);
+
+        var result = await _mediator.Send(command, ct);
+        Response.Headers.Append("api-version", apiVersion.ToString());
+        return Ok(result);
     }
 }
