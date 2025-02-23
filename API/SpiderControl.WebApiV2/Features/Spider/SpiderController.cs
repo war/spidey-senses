@@ -4,7 +4,9 @@ using SpiderControl.Api.Shared.Features.Spider.Commands;
 namespace SpiderControl.WebApiV2.Features.Spider;
 
 [ApiController]
-[Route("api/v2/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/spider")]
+[Route("api/v{version:apiVersion}/spider")]
 public class SpiderController : ControllerBase
 {
     [HttpPost("process")]
