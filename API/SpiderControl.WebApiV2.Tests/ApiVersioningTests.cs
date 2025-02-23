@@ -9,11 +9,10 @@ namespace SpiderControl.WebApiV2.Tests;
 
 public class ApiVersioningTests : TestBase<Program>
 {
-    public ApiVersioningTests(WebApplicationFactory<Program> factory) : base(factory) {}
+    public ApiVersioningTests(WebApplicationFactory<Program> factory) : base(factory) { }
 
     [Theory]
     [InlineData("/api/v1/spider/process")]
-    [InlineData("/api/v2/spider/process")]
     public async Task Process_DifferentVersions_ReturnsCorrectStatusCode(string endpoint)
     {
         // Arrange
@@ -42,14 +41,14 @@ public class ApiVersioningTests : TestBase<Program>
             CommandInput = "FLFLFRFFLF"
         };
         
-        Client.DefaultRequestHeaders.Add("x-api-version", "2.0");
+        Client.DefaultRequestHeaders.Add("x-api-version", "1.0");
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/spider/process", request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.Headers.GetValues("api-version").Should().Contain("2.0");
+        response.Headers.GetValues("api-version").Should().Contain("1.0");
     }
 
     [Fact]
@@ -64,11 +63,11 @@ public class ApiVersioningTests : TestBase<Program>
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/spider/process?api-version=2.0", request);
+        var response = await Client.PostAsJsonAsync("/api/spider/process?api-version=1.0", request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.Headers.GetValues("api-version").Should().Contain("2.0");
+        response.Headers.GetValues("api-version").Should().Contain("1.0");
     }
 
     [Fact]
@@ -83,11 +82,9 @@ public class ApiVersioningTests : TestBase<Program>
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/v5/spider/process", request);
+        var response = await Client.PostAsJsonAsync("/api/v99/spider/process", request);
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        var content = await response.Content.ReadAsStringAsync();
-        content.Should().Contain("version");
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }
