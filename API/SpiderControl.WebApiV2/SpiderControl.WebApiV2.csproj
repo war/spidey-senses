@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SpiderControl.Application\SpiderControl.Application.csproj" />
+    <ProjectReference Include="..\SpiderControl.Api.Shared\SpiderControl.Api.Shared.csproj" />
   </ItemGroup>
 
 </Project>
