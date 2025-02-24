@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Spider\Models\" />
     <Folder Include="Features\Spider\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>

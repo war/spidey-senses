@@ -1,6 +1,8 @@
-﻿namespace SpiderControl.Core.Interfaces;
+﻿using SpiderControl.Core.Common;
+
+namespace SpiderControl.Core.Interfaces;
 
 public interface ICommandFactory
 {
-    ICommand CreateCommand(char commandChar);
+    Result<ICommand> CreateCommand(char commandChar);
 }

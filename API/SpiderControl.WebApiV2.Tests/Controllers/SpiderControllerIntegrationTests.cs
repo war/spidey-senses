@@ -23,11 +23,12 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
         string expectedPosition)
     {
         // Arrange
-        var request = new ProcessSpiderCommand(
-            wallInput,
-            spiderInput,
-            commandInput
-        );
+        var request = new ProcessSpiderCommand
+        {
+            WallInput = wallInput,
+            SpiderInput = spiderInput,
+            CommandInput = commandInput
+        };
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/v1/spider/process", request);
@@ -50,11 +51,12 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
         string expectedError)
     {
         // Arrange
-        var request = new ProcessSpiderCommand(
-            wallInput,
-            spiderInput,
-            commandInput
-        );
+        var request = new ProcessSpiderCommand
+        {
+            WallInput = wallInput,
+            SpiderInput = spiderInput,
+            CommandInput = commandInput
+        };
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/v1/spider/process", request);
@@ -70,11 +72,12 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
     public async Task Process_SpiderWouldFallOff_ReturnsBadRequest()
     {
         // Arrange
-        var request = new ProcessSpiderCommand(
-            "5 5",
-            "0 0 Left",
-            "F"
-        );
+        var request = new ProcessSpiderCommand
+        {
+            WallInput = "5 5",
+            SpiderInput = "0 0 Left",
+            CommandInput = "F"
+        };
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/v1/spider/process", request);
@@ -92,11 +95,12 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
     public async Task Process_DifferentVersionEndpoints_ReturnsOk(string endpoint)
     {
         // Arrange
-        var request = new ProcessSpiderCommand(
-            "7 15",
-            "2 4 Left",
-            "RR"
-        );
+        var request = new ProcessSpiderCommand
+        {
+            WallInput = "7 15",
+            SpiderInput = "2 4 Left",
+            CommandInput = "RR"
+        };
 
         // Act
         var response = await Client.PostAsJsonAsync(endpoint, request);
@@ -113,11 +117,12 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
     public async Task Process_InvalidVersion_ReturnsNotFound(string url)
     {
         // Arrange
-        var request = new ProcessSpiderCommand(
-            "7 15",
-            "2 4 Left",
-            "FLFLFRFFLF"
-        );
+        var request = new ProcessSpiderCommand
+        {
+            WallInput = "7 15",
+            SpiderInput = "2 4 Left",
+            CommandInput = "FLFLFRFFLF"
+        };
 
         // Act
         var response = await Client.PostAsJsonAsync(url, request);

@@ -1,8 +1,6 @@
 ﻿using SpiderControl.Application.Interfaces;
-using SpiderControl.Core.Enums;
-using SpiderControl.Core.Exceptions;
+using SpiderControl.Core.Common;
 using SpiderControl.Core.Interfaces;
-using SpiderControl.Core.Models;
 
 namespace SpiderControl.Application.Services;
 
@@ -13,32 +11,31 @@ public class CommandInputParser : ICommandInputParser
 
     public CommandInputParser(ICommandFactory commandFactory, IValidatorService validatorService)
     {
-        _commandFactory = commandFactory ?? throw new ArgumentNullException();
-        _validatorService = validatorService ?? throw new ArgumentNullException();
+        _commandFactory = commandFactory;
+        _validatorService = validatorService;
     }
 
-    public IEnumerable<ICommand> ParseCommands(string input)
+    public Result<IEnumerable<ICommand>> ParseCommands(string input)
     {
-        try
-        { 
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                throw new InputParseException("Command input cannot be empty");
-            }
+        if (string.IsNullOrWhiteSpace(input))
+            return Result<IEnumerable<ICommand>>.Failure("Command input cannot be empty");
 
-            var validationResult = _validatorService.ValidateCommands(input);
-            if (!validationResult.IsValid)
-            {
-                throw new ModelValidationException(validationResult);
-            }
+        var validationResult = _validatorService.ValidateCommands(input);
 
-            var commands = input.Select(x => _commandFactory.CreateCommand(x));
+        if (!validationResult.IsSuccess)
+            return Result<IEnumerable<ICommand>>.Failure(validationResult.Error);
 
-            return commands;
-        }
-        catch (Exception ex)
+        var commands = new List<ICommand>();
+
+        foreach (var c in input)
         {
-            throw new InputParseException($"Failed to parse commands: {ex.Message}", ex);
+            var commandResult = _commandFactory.CreateCommand(c);
+            if (!commandResult.IsSuccess)
+                return Result<IEnumerable<ICommand>>.Failure(commandResult.Error);
+
+            commands.Add(commandResult.Value);
         }
+
+        return Result<IEnumerable<ICommand>>.Success(commands);
     }
 }

@@ -1,9 +1,9 @@
-﻿using SpiderControl.Core.Interfaces;
-using SpiderControl.Core.Models;
+﻿using SpiderControl.Core.Common;
+using SpiderControl.Core.Interfaces;
 
 namespace SpiderControl.Application.Interfaces;
 
 public interface ICommandInputParser
 {
-    IEnumerable<ICommand> ParseCommands(string input);
+    Result<IEnumerable<ICommand>> ParseCommands(string input);
 }

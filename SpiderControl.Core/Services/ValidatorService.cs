@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SpiderControl.Core.Common;
 using SpiderControl.Core.Configuration;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
@@ -12,6 +13,8 @@ public class ValidatorService : IValidatorService
 {
     private readonly ILogger<ValidatorService> _logger;
     private readonly CommandValidator _commandValidator;
+    private readonly SpiderModelValidator _spiderValidator;
+    private readonly WallModelValidator _wallValidator;
 
     public ValidatorService(ILogger<ValidatorService> logger, IOptions<SpiderControlConfig> config)
     {
@@ -22,43 +25,74 @@ public class ValidatorService : IValidatorService
             throw new ArgumentNullException(nameof(config));
 
         _logger = logger;
+
+        _spiderValidator = new SpiderModelValidator();
+        _wallValidator = new WallModelValidator();
         _commandValidator = new CommandValidator(config);
     }
 
-    public ValidationResult ValidateSpider(Spider spider)
+    public Result<Unit> ValidateSpider(Spider spider)
     {
         _logger.LogDebug("Validating basic spider properties");
-        var validator = new SpiderModelValidator();
-        return validator.Validate(spider);
+        var result = _spiderValidator.Validate(spider);
+
+        return result.IsValid
+            ? Result<Unit>.Success(Unit.Value)
+            : Result<Unit>.Failure(FormatValidationErrors(result));
     }
 
-    public ValidationResult ValidateSpiderPosition(Spider spider, WallModel wall)
+    public Result<Unit> ValidateSpiderPosition(Spider spider, WallModel wall)
     {
         _logger.LogDebug("Validating spider position");
         var validator = new SpiderPositionValidator(wall);
-        return validator.Validate(spider);
+        var result = validator.Validate(spider);
+
+        return result.IsValid
+            ? Result<Unit>.Success(Unit.Value)
+            : Result<Unit>.Failure(FormatValidationErrors(result));
     }
 
-    public ValidationResult ValidateWall(WallModel wall)
+    public Result<Unit> ValidateWall(WallModel wall)
     {
         _logger.LogDebug("Validating wall dimensions");
-        var validator = new WallModelValidator();
-        return validator.Validate(wall);
+        var result = _wallValidator.Validate(wall);
+
+        return result.IsValid
+            ? Result<Unit>.Success(Unit.Value)
+            : Result<Unit>.Failure(FormatValidationErrors(result));
     }
 
-    public ValidationResult ValidateCommand(char command)
+    public Result<Unit> ValidateCommand(char command)
     {
         _logger.LogDebug("Validating single command");
-        return _commandValidator.Validate(command);
+        var result = _commandValidator.Validate(command);
+
+        return result.IsValid
+            ? Result<Unit>.Success(Unit.Value)
+            : Result<Unit>.Failure(FormatValidationErrors(result));
     }
 
-    public ValidationResult ValidateCommands(IEnumerable<char> commands)
+    public Result<Unit> ValidateCommands(IEnumerable<char> commands)
     {
         _logger.LogDebug("Validating command sequence");
-        
-        var results = commands.Select(c => _commandValidator.Validate(c));
-        var failures = results.SelectMany(c => c.Errors).ToList();
+        var failures = new List<ValidationFailure>();
 
-        return new ValidationResult(failures);
+        foreach (var command in commands)
+        {
+            var result = _commandValidator.Validate(command);
+            if (!result.IsValid)
+            {
+                failures.AddRange(result.Errors);
+            }
+        }
+
+        return failures.Count == 0
+            ? Result<Unit>.Success(Unit.Value)
+            : Result<Unit>.Failure(FormatValidationErrors(new ValidationResult(failures)));
+    }
+
+    private static string FormatValidationErrors(ValidationResult validationResult)
+    {
+        return string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
     }
 }

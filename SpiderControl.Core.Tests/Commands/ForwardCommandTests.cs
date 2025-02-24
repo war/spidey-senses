@@ -26,19 +26,26 @@ public class ForwardCommandTests
         var spider = new Spider(3, 4, Orientation.Up);
 
         // Act
-        _command.Execute(spider, _wall);
+        var result = _command.Execute(spider, _wall);
 
         // Assert
+        Assert.True(result.IsSuccess);
         Assert.Equal(3, spider.X);
         Assert.Equal(5, spider.Y);
         Assert.Equal(Orientation.Up, spider.Orientation);
     }
 
     [Fact]
-    public void Execute_InvalidMove_ThrowsException()
+    public void Execute_InvalidMove_ReturnsFailure()
     {
+        // Arrange
         var spider = new Spider(3, 15, Orientation.Up);
 
-        Assert.Throws<InvalidOperationException>(() => _command.Execute(spider, _wall));
+        // Act
+        var result = _command.Execute(spider, _wall);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Contains("fall off", result.Error);
     }
 }

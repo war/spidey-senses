@@ -1,6 +1,7 @@
 ﻿using SpiderControl.Core.Models;
 using SpiderControl.Core.Interfaces;
 using Microsoft.Extensions.Logging;
+using SpiderControl.Core.Common;
 
 namespace SpiderControl.Core.Services;
 
@@ -8,30 +9,28 @@ public class SpiderService : ISpiderService
 {
     private readonly ILogger _logger;
 
-    public SpiderService(ILogger<SpiderService> logger)
+    public SpiderService(ILogger<ISpiderService> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public Spider ProcessCommands(Spider spider, WallModel wall, IEnumerable<ICommand> commands)
+    public Result<Spider> ProcessCommands(Spider spider, WallModel wall, IEnumerable<ICommand> commands)
     {
-        foreach (var command in commands)
-        {
-            try
-            {
-                command.Execute(spider, wall);
+        var commandList = commands.ToList();
 
-                _logger.LogInformation("Executed command {Command}. New position: (x:{X}, y:{Y}) facing {Orientation})",
-                    command.GetType().Name, spider.X, spider.Y, spider.Orientation);
-            }
-            catch (InvalidOperationException ex)
+        for (int i = 0; i < commandList.Count; i++)
+        {
+            var result = commandList[i].Execute(spider, wall);
+
+            if (!result.IsSuccess)
             {
-                _logger.LogError(ex, "Invalid move.");
+                _logger.LogWarning("Command {Index} failed: {Error}", i + 1, result.Error);
+                return Result<Spider>.Failure($"Command {i + 1} failed: {result.Error}");
             }
+
+            _logger.LogInformation("Command {Index}/{Total} executed successfully", i + 1, commandList.Count);
         }
 
-        _logger.LogInformation("Command processing complete");
-
-        return spider;
+        return Result<Spider>.Success(spider);
     }
 }

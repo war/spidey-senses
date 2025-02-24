@@ -1,9 +1,9 @@
-﻿using SpiderControl.Core.Interfaces;
+﻿using SpiderControl.Core.Common;
 using SpiderControl.Core.Models;
 
 namespace SpiderControl.Application.Interfaces;
 
 public interface IWallInputParser
 {
-    WallModel ParseWallDimensions(string input);
+    Result<WallModel> ParseWallDimensions(string input);
 }

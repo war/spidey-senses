@@ -12,10 +12,12 @@ namespace SpiderControl.WebApiV2.Features.Spider;
 public class SpiderController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<SpiderController> _logger;
 
-    public SpiderController(IMediator mediator)
+    public SpiderController(IMediator mediator, ILogger<SpiderController> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     [HttpPost("process")]
@@ -26,10 +28,14 @@ public class SpiderController : ControllerBase
         ApiVersion apiVersion,
         CancellationToken ct)
     {
-        var command = new ProcessSpiderCommand(
-            request.WallInput,
-            request.SpiderInput,
-            request.CommandInput);
+        _logger.LogInformation("Received spider command request");
+
+        var command = new ProcessSpiderCommand
+        {
+            WallInput = request.WallInput,
+            SpiderInput = request.SpiderInput,
+            CommandInput = request.CommandInput
+        };
 
         var result = await _mediator.Send(command, ct);
         Response.Headers.Append("api-version", apiVersion.ToString());

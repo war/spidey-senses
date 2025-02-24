@@ -1,19 +1,19 @@
 ﻿using SpiderControl.Core.Commands;
+using SpiderControl.Core.Common;
 using SpiderControl.Core.Interfaces;
 
-namespace SpiderControl.Core.Factories
+namespace SpiderControl.Core.Factories;
+
+public class CommandFactory : ICommandFactory
 {
-    public class CommandFactory : ICommandFactory
+    public Result<ICommand> CreateCommand(char commandChar)
     {
-        public ICommand CreateCommand(char commandChar)
+        return char.ToUpper(commandChar) switch
         {
-            return char.ToUpper(commandChar) switch
-            {
-                'F' => new ForwardCommand(),
-                'R' => new RotateRightCommand(),
-                'L' => new RotateLeftCommand(),
-                _ => throw new ArgumentException($"Invalid command character: {commandChar}")
-            };
-        }
+            'F' => Result<ICommand>.Success(new ForwardCommand()),
+            'R' => Result<ICommand>.Success(new RotateRightCommand()),
+            'L' => Result<ICommand>.Success(new RotateLeftCommand()),
+            _ => Result<ICommand>.Failure($"Invalid command character: {commandChar}")
+        };
     }
 }

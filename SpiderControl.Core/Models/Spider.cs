@@ -1,86 +1,78 @@
-﻿using SpiderControl.Core.Enums;
+﻿using SpiderControl.Core.Common;
+using SpiderControl.Core.Enums;
 using SpiderControl.Core.Exceptions;
 
 namespace SpiderControl.Core.Models;
 
 public class Spider
 {
-    public int X { get; set; }
-    public int Y { get; set; }
-    public Orientation Orientation { get; set; }
+    public int X { get; private set; }
+    public int Y { get; private set; }
+    public Orientation Orientation { get; private set; }
 
     public Spider(int x, int y, Orientation orientation)
     {
-        X = x; 
+        X = x;
         Y = y;
         Orientation = orientation;
     }
 
-    public void MoveForward()
+    public Result<Unit> MoveForward()
     {
-        var newSpider = GetNextForwardPosition();
+        var nextPosition = GetNextForwardPosition();
 
-        this.X = newSpider.X;
-        this.Y = newSpider.Y;
+        if (!nextPosition.IsSuccess) 
+            return Result<Unit>.Failure(nextPosition.Error);
+
+        X = nextPosition.Value.X;
+        Y = nextPosition.Value.Y;
+
+        return Result<Unit>.Success(Unit.Value);
     }
 
-    public void RotateLeft()
+    public Result<Unit> RotateLeft()
     {
-        this.Orientation = this.GetLeftOrientation();
+        Orientation = GetLeftOrientation();
+        return Result<Unit>.Success(Unit.Value);
     }
 
-    public void RotateRight()
+    public Result<Unit> RotateRight()
     {
-        this.Orientation = this.GetRightOrientation(); ;
+        Orientation = GetRightOrientation();
+        return Result<Unit>.Success(Unit.Value);
     }
 
-    public Spider GetNextForwardPosition()
+    public Result<Spider> GetNextForwardPosition()
     {
-        var nextX = this.X;
-        var nextY = this.Y;
-
-        switch (this.Orientation)
+        var (nextX, nextY) = Orientation switch
         {
-            case Orientation.Up:
-                nextY += 1;
-                break;
-            case Orientation.Right:
-                nextX += 1;
-                break;
-            case Orientation.Down:
-                nextY -= 1;
-                break;
-            case Orientation.Left:
-                nextX -= 1;
-                break;
-        }
-
-        return new Spider(nextX, nextY, this.Orientation);
-    }
-
-    public Orientation GetRightOrientation()
-    {
-        return this.Orientation switch
-        {
-            Orientation.Up => Orientation.Right,
-            Orientation.Right => Orientation.Down,
-            Orientation.Down => Orientation.Left,
-            Orientation.Left => Orientation.Up,
-            _ => throw new InvalidOrientationException($"Invalid orientation: {this.Orientation}")
+            Orientation.Up => (X, Y + 1),
+            Orientation.Right => (X + 1, Y),
+            Orientation.Down => (X, Y - 1),
+            Orientation.Left => (X - 1, Y),
+            _ => (X, Y)
         };
+
+        return Result<Spider>.Success(new Spider(nextX, nextY, Orientation));
     }
 
-    public Orientation GetLeftOrientation()
+    private Orientation GetRightOrientation() => Orientation switch
     {
-        return this.Orientation switch
-        {
-            Orientation.Up => Orientation.Left,
-            Orientation.Left => Orientation.Down,
-            Orientation.Down => Orientation.Right,
-            Orientation.Right => Orientation.Up,
-            _ => throw new InvalidOrientationException($"Invalid orientation: {this.Orientation}")
-        };
-    }
+        Orientation.Up => Orientation.Right,
+        Orientation.Right => Orientation.Down,
+        Orientation.Down => Orientation.Left,
+        Orientation.Left => Orientation.Up,
+        _ => throw new ArgumentOutOfRangeException()
+    };
+
+    private Orientation GetLeftOrientation() => Orientation switch
+    {
+        Orientation.Up => Orientation.Left,
+        Orientation.Left => Orientation.Down,
+        Orientation.Down => Orientation.Right,
+        Orientation.Right => Orientation.Up,
+        _ => throw new ArgumentOutOfRangeException()
+    };
 
     public override string ToString()
     {

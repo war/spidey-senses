@@ -1,12 +1,13 @@
-﻿using SpiderControl.Core.Interfaces;
+﻿using SpiderControl.Core.Common;
+using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 
 namespace SpiderControl.Core.Commands;
 
 public class RotateLeftCommand : ICommand
 {
-    public void Execute(Spider spider, WallModel wall)
+    public Result<Unit> Execute(Spider spider, WallModel wall)
     {
-        spider.RotateLeft();
+        return spider.RotateLeft();
     }
 }
