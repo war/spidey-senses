@@ -133,10 +133,11 @@ public class SpiderApplicationServiceTests
         var wallInput = "10 12";
         var spiderInput = "invalid input";
         var commandInput = "FLFLFLRRFF";
-        var errorMessage = "Invalid spider position format";
+
+        var expectedError = "Invalid spider position format";
 
         _spiderInputParserMock.Setup(x => x.ParseSpiderPosition(spiderInput))
-            .Returns(Result<Spider>.Failure(errorMessage));
+            .Returns(Result<Spider>.Failure(expectedError));
 
         var processCommandModel = new ProcessCommandModel
         {
@@ -150,11 +151,16 @@ public class SpiderApplicationServiceTests
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains(errorMessage, result.Error);
+        Assert.Contains(expectedError, result.Error);
 
         _spiderInputParserMock.Verify(x => x.ParseSpiderPosition(spiderInput), Times.Once());
         _wallInputParserMock.Verify(x => x.ParseWallDimensions(It.IsAny<string>()), Times.Never());
         _commandInputParserMock.Verify(x => x.ParseCommands(It.IsAny<string>()), Times.Never());
+        _spiderServiceMock.Verify(x => x.ProcessCommands(
+            It.IsAny<Spider>(),
+            It.IsAny<WallModel>(),
+            It.IsAny<IEnumerable<ICommand>>()),
+            Times.Never());
     }
 
     [Fact]
