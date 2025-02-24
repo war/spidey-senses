@@ -9,7 +9,7 @@ public class SpiderModelValidator : AbstractValidator<Spider>
     {
         RuleFor(x => x.X)
             .GreaterThanOrEqualTo(0)
-            .WithMessage("Wall X must be greater than or equal to 0");
+            .WithMessage("Spider X must be greater than or equal to 0");
 
         RuleFor(x => x.Y)
             .GreaterThanOrEqualTo(0)
