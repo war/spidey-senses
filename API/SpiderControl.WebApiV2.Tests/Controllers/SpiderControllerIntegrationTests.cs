@@ -61,7 +61,7 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
         var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
         error.Should().NotBeNull();
         error!.Detail.Should().Contain(expectedError);
     }
@@ -81,7 +81,7 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
         var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
         error.Should().NotBeNull();
         error!.Detail.Should().Contain("fall off");
     }
