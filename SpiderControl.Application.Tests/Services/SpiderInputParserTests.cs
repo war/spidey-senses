@@ -45,19 +45,23 @@ public class SpiderInputParserTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData("1")]
-    [InlineData("1 2")]
-    [InlineData("1 9 15")]
-    [InlineData("1 2 Invalid")]
-    public void ParseSpiderPosition_InvalidInput_ReturnsFailureResult(string input)
+    [InlineData("", "cannot be empty")]
+    [InlineData("1", "Invalid format")]
+    [InlineData("1 2", "Invalid format")]
+    [InlineData("1 2 Invalid", "Invalid orientation")]
+    [InlineData("1 2 Right Right", "Invalid format")]
+    [InlineData("1 9 15", "Spider validation failed")]
+    public void ParseSpiderPosition_InvalidInput_ReturnsFailureResult(string input, string errorSubString)
     {
+        _validatorServiceMock.Setup(x => x.ValidateSpider(It.IsAny<Spider>()))
+            .Returns(Result<Unit>.Failure("Spider validation failed"));
+
         // Act
         var result = _spiderInputParser.ParseSpiderPosition(input);
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains("Invalid format", result.Error);
+        Assert.Contains(errorSubString, result.Error);
     }
 
     [Fact]
