@@ -13,10 +13,10 @@ public class SpiderPositionValidator : AbstractValidator<Spider>
 
         RuleFor(x => x.X)
             .LessThanOrEqualTo(_wall.Width)
-            .WithMessage("Spider X must be greater than or equal to 0");
+            .WithMessage("Spider X must be less than or equal to wall width");
 
         RuleFor(x => x.Y)
             .LessThanOrEqualTo(_wall.Height)
-            .WithMessage("Spider Y must be greater than or equal to 0");
+            .WithMessage("Spider Y must be less than or equal to wall height");
     }
 }
