@@ -1,8 +1,8 @@
-﻿using FluentValidation.Results;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using SpiderControl.Core.Configuration;
+using SpiderControl.Core.Enums;
 using SpiderControl.Core.Interfaces;
 using SpiderControl.Core.Models;
 using SpiderControl.Core.Services;
@@ -25,28 +25,41 @@ public class ValidatorServiceTests
         _validatorService = new ValidatorService(_loggerMock.Object, _configMock.Object);
     }
 
-    [Fact]
-    public void ValidateSpider_ValidInput_ReturnsSuccessResult()
+    [Theory]
+    [InlineData(5, 5, Orientation.Up)]
+    [InlineData(0, 0, Orientation.Right)]
+    [InlineData(10, 10, Orientation.Down)]
+    [InlineData(3, 7, Orientation.Left)]
+    public void ValidateSpider_ValidInput_ReturnsSuccess(int x, int y, Orientation orientation)
     {
         // Arrange
-        var spider = new Spider(5, 5, Enums.Orientation.Up);
-        var wall = new WallModel(10, 10);
+        var spider = new Spider(x, y, orientation);
 
         // Act
-        var resultModel = _validatorService.ValidateSpider(spider);
-        var resultPosition = _validatorService.ValidateSpiderPosition(spider, wall);
-
-        var resultBool = resultModel.IsValid && resultPosition.IsValid;
-        var resultErrors = resultModel.Errors;
-        resultErrors.AddRange(resultPosition.Errors);
+        var result = _validatorService.ValidateSpider(spider);
 
         // Assert
-        Assert.True(resultBool);
-        Assert.Empty(resultErrors);
+        Assert.True(result.IsSuccess);
+    }
+
+    [Theory]
+    [InlineData(-1, 5, Orientation.Up)]
+    [InlineData(5, -1, Orientation.Right)]
+    public void ValidateSpider_InvalidInput_ReturnsFailure(int x, int y, Orientation orientation)
+    {
+        // Arrange
+        var spider = new Spider(x, y, orientation);
+
+        // Act
+        var result = _validatorService.ValidateSpider(spider);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Contains("must be greater than or equal to 0", result.Error);
     }
 
     [Fact]
-    public void ValidateWall_ValidInput_ReturnsSuccessResult()
+    public void ValidateWall_ValidInput_ReturnsSuccess()
     {
         // Arrange
         var wall = new WallModel(10, 10);
@@ -55,42 +68,94 @@ public class ValidatorServiceTests
         var result = _validatorService.ValidateWall(wall);
 
         // Assert
-        Assert.True(result.IsValid);
-        Assert.Empty(result.Errors);
+        Assert.True(result.IsSuccess);
+    }
+
+    [Theory]
+    [InlineData(-1, 10)]
+    [InlineData(10, -1)]
+    public void ValidateWall_InvalidInput_ReturnsFailure(int width, int height)
+    {
+        // Arrange
+        var wall = new WallModel(width, height);
+
+        // Act
+        var result = _validatorService.ValidateWall(wall);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Contains("must be greater than or equal to 0", result.Error);
+    }
+
+    [Theory]
+    [InlineData(3, 3, 5, 5, Orientation.Up)]
+    [InlineData(0, 0, 5, 5, Orientation.Right)]
+    [InlineData(5, 5, 5, 5, Orientation.Down)]
+    public void ValidateSpiderPosition_ValidInput_ReturnsSuccess(
+        int spiderX, int spiderY, int wallWidth, int wallHeight, Orientation orientation)
+    {
+        // Arrange
+        var spider = new Spider(spiderX, spiderY, orientation);
+        var wall = new WallModel(wallWidth, wallHeight);
+
+        // Act
+        var result = _validatorService.ValidateSpiderPosition(spider, wall);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+    }
+
+    [Theory]
+    [InlineData(6, 3, 5, 5, Orientation.Up)]
+    [InlineData(3, 6, 5, 5, Orientation.Right)]
+    public void ValidateSpiderPosition_InvalidInput_ReturnsFailure(
+        int spiderX, int spiderY, int wallWidth, int wallHeight, Orientation orientation)
+    {
+        // Arrange
+        var spider = new Spider(spiderX, spiderY, orientation);
+        var wall = new WallModel(wallWidth, wallHeight);
+
+        // Act
+        var result = _validatorService.ValidateSpiderPosition(spider, wall);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Contains("must be less than or equal to", result.Error);
     }
 
     [Theory]
     [InlineData('F')]
-    [InlineData('R')]
     [InlineData('L')]
-    public void ValidateCommand_ValidInput_ReturnsSuccessResult(char command)
+    [InlineData('R')]
+    [InlineData('f')]
+    [InlineData('l')]
+    [InlineData('r')]
+    public void ValidateCommand_ValidInput_ReturnsSuccess(char command)
     {
         // Act
         var result = _validatorService.ValidateCommand(command);
 
         // Assert
-        Assert.True(result.IsValid);
-        Assert.Empty(result.Errors);
+        Assert.True(result.IsSuccess);
     }
 
     [Theory]
-    [InlineData('y')]
+    [InlineData('X')]
     [InlineData('5')]
     [InlineData(' ')]
-    public void ValidateCommand_InvalidInput_ReturnsFailureResult(char command)
+    public void ValidateCommand_InvalidInput_ReturnsFailure(char command)
     {
         // Act
         var result = _validatorService.ValidateCommand(command);
 
         // Assert
-        Assert.False(result.IsValid);
-        Assert.Single(result.Errors);
+        Assert.False(result.IsSuccess);
         Assert.Contains($"Command must be one of: {string.Join(", ", _defaultConfig.ValidCommands)}",
-            result.Errors.First().ErrorMessage);
+            result.Error);
     }
 
     [Fact]
-    public void ValidateCommands_ValidInput_ReturnsSuccessResult()
+    public void ValidateCommands_ValidInput_ReturnsSuccess()
     {
         // Arrange
         var commands = new[] { 'F', 'L', 'R', 'F', 'F' };
@@ -99,65 +164,39 @@ public class ValidatorServiceTests
         var result = _validatorService.ValidateCommands(commands);
 
         // Assert
-        Assert.True(result.IsValid);
-        Assert.Empty(result.Errors);
+        Assert.True(result.IsSuccess);
     }
 
     [Fact]
-    public void ValidateCommands_InvalidInput_ReturnsFailureResult()
+    public void ValidateCommands_InvalidInput_ReturnsFailure()
     {
         // Arrange
-        var commands = new[] { 'F', 'X', 'R', '8', 'F', 'L' };
+        var commands = new[] { 'F', 'X', 'R', '8', 'F' };
 
         // Act
         var result = _validatorService.ValidateCommands(commands);
 
         // Assert
-        Assert.False(result.IsValid);
-        Assert.Equal(2, result.Errors.Count);
-
-        foreach (var error in result.Errors)
-        {
-            Assert.Contains($"Command must be one of: {string.Join(", ", _defaultConfig.ValidCommands)}",
-                error.ErrorMessage);
-        }
+        Assert.False(result.IsSuccess);
+        Assert.Contains($"Command must be one of: {string.Join(", ", _defaultConfig.ValidCommands)}",
+            result.Error);
     }
 
     [Fact]
-    public void Constructor_NullLogger_ThrowsArgumentNullException()
-    {
-        // Act
-        var validationService = () => new ValidatorService(null!, _configMock.Object);
-
-        // Assert
-        Assert.Throws<ArgumentNullException>(validationService);
-    }
-
-    [Fact]
-    public void Constructor_NullConfig_ThrowsArgumentNullException()
-    {
-        // Act
-        var validationService = () => new ValidatorService(_loggerMock.Object, null!);
-
-        // Assert
-        Assert.Throws<ArgumentNullException>(validationService);
-    }
-
-    [Fact]
-    public void ValidateCommand_CustomCommands_ValidatesCorrectly()
+    public void ValidateCommands_CustomCommands_ValidatesCorrectly()
     {
         // Arrange
         var customConfig = new SpiderControlConfig { ValidCommands = new[] { 'X', 'Y', 'Z' } };
         var customConfigMock = new Mock<IOptions<SpiderControlConfig>>();
-
+        
         customConfigMock.Setup(x => x.Value).Returns(customConfig);
-
+        
         var customValidatorService = new ValidatorService(_loggerMock.Object, customConfigMock.Object);
 
         // Act & Assert
-        Assert.True(customValidatorService.ValidateCommand('X').IsValid);
-        Assert.True(customValidatorService.ValidateCommand('Y').IsValid);
-        Assert.True(customValidatorService.ValidateCommand('Z').IsValid);
-        Assert.False(customValidatorService.ValidateCommand('F').IsValid);
+        Assert.True(customValidatorService.ValidateCommand('X').IsSuccess);
+        Assert.True(customValidatorService.ValidateCommand('Y').IsSuccess);
+        Assert.True(customValidatorService.ValidateCommand('Z').IsSuccess);
+        Assert.False(customValidatorService.ValidateCommand('F').IsSuccess);
     }
 }

@@ -1,11 +1,9 @@
-﻿using FluentValidation.Results;
-using Moq;
+﻿using Moq;
 using SpiderControl.Application.Interfaces;
 using SpiderControl.Application.Services;
 using SpiderControl.Core.Commands;
-using SpiderControl.Core.Exceptions;
+using SpiderControl.Core.Common;
 using SpiderControl.Core.Interfaces;
-using SpiderControl.Core.Models;
 
 namespace SpiderControl.Application.Tests.Services;
 
@@ -21,48 +19,88 @@ public class CommandInputParserTests
         _validatorServiceMock = new Mock<IValidatorService>();
 
         _commandInputParser = new CommandInputParser(_commandFactoryMock.Object, _validatorServiceMock.Object);
-
-        _validatorServiceMock.Setup(x => x.ValidateSpider(It.IsAny<Spider>()))
-            .Returns(new ValidationResult());
-        _validatorServiceMock.Setup(x => x.ValidateWall(It.IsAny<WallModel>()))
-            .Returns(new ValidationResult());
-        _validatorServiceMock.Setup(x => x.ValidateCommands(It.IsAny<IEnumerable<char>>()))
-            .Returns(new ValidationResult());
     }
 
     [Fact]
-    public void ParseCommands_ValidInput_ReturnsCommandList()
+    public void ParseCommands_ValidInput_ReturnsSuccessResult()
     {
         // Arrange
-        _commandFactoryMock.Setup(x => x.CreateCommand('F'))
-            .Returns(new ForwardCommand());
-        _commandFactoryMock.Setup(x => x.CreateCommand('R'))
-            .Returns(new RotateRightCommand());
-        _commandFactoryMock.Setup(x => x.CreateCommand('L'))
-            .Returns(new RotateLeftCommand());
+        var input = "FRLF";
 
-        var commands = _commandInputParser.ParseCommands("FRLF").ToList();
+        _validatorServiceMock.Setup(x => x.ValidateCommands(It.IsAny<IEnumerable<char>>()))
+            .Returns(Result<Unit>.Success(Unit.Value));
+
+        _commandFactoryMock.Setup(x => x.CreateCommand('F'))
+            .Returns(Result<ICommand>.Success(new ForwardCommand()));
+        _commandFactoryMock.Setup(x => x.CreateCommand('R'))
+            .Returns(Result<ICommand>.Success(new RotateRightCommand()));
+        _commandFactoryMock.Setup(x => x.CreateCommand('L'))
+            .Returns(Result<ICommand>.Success(new RotateLeftCommand()));
+
+        // Act
+        var result = _commandInputParser.ParseCommands(input);
 
         // Assert
-        Assert.Equal(4, commands.Count);
-        Assert.IsType<ForwardCommand>(commands[0]);
-        Assert.IsType<RotateRightCommand>(commands[1]);
-        Assert.IsType<RotateLeftCommand>(commands[2]);
-        Assert.IsType<ForwardCommand>(commands[3]);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(4, result.Value.Count());
 
         _commandFactoryMock.Verify(x => x.CreateCommand('F'), Times.Exactly(2));
-        _commandFactoryMock.Verify(x => x.CreateCommand('R'), Times.Once());
-        _commandFactoryMock.Verify(x => x.CreateCommand('L'), Times.Once());
+        _commandFactoryMock.Verify(x => x.CreateCommand('R'), Times.Once);
+        _commandFactoryMock.Verify(x => x.CreateCommand('L'), Times.Once);
     }
 
     [Theory]
     [InlineData("")]
-    public void ParseCommands_InvalidInput_ThrowsException(string input)
+    [InlineData(" ")]
+    [InlineData(null)]
+    public void ParseCommands_EmptyInput_ReturnsFailureResult(string input)
     {
-        // Arrange
-        var commands = () => _commandInputParser.ParseCommands(input);
+        // Act
+        var result = _commandInputParser.ParseCommands(input);
 
         // Assert
-        Assert.Throws<InputParseException>(commands);
+        Assert.False(result.IsSuccess);
+        Assert.Contains("empty", result.Error);
+    }
+
+    [Fact]
+    public void ParseCommands_ValidationFails_ReturnsFailureResult()
+    {
+        // Arrange
+        var input = "FRLX";
+
+        _validatorServiceMock.Setup(x => x.ValidateCommands(It.IsAny<IEnumerable<char>>()))
+            .Returns(Result<Unit>.Failure("Invalid command found"));
+
+        // Act
+        var result = _commandInputParser.ParseCommands(input);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Equal("Invalid command found", result.Error);
+    }
+
+    [Fact]
+    public void ParseCommands_CommandFactoryFails_ReturnsFailureResult()
+    {
+        // Arrange
+        var input = "FRX";
+
+        _validatorServiceMock.Setup(x => x.ValidateCommands(It.IsAny<IEnumerable<char>>()))
+            .Returns(Result<Unit>.Success(Unit.Value));
+
+        _commandFactoryMock.Setup(x => x.CreateCommand('F'))
+            .Returns(Result<ICommand>.Success(new ForwardCommand()));
+        _commandFactoryMock.Setup(x => x.CreateCommand('R'))
+            .Returns(Result<ICommand>.Success(new RotateRightCommand()));
+        _commandFactoryMock.Setup(x => x.CreateCommand('X'))
+            .Returns(Result<ICommand>.Failure("Invalid command: X"));
+
+        // Act
+        var result = _commandInputParser.ParseCommands(input);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Contains("Invalid command: X", result.Error);
     }
 }

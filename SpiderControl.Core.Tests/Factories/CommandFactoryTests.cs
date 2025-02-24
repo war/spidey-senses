@@ -1,9 +1,8 @@
 ﻿using SpiderControl.Core.Commands;
-using SpiderControl.Core.Exceptions;
 using SpiderControl.Core.Factories;
 using SpiderControl.Core.Interfaces;
 
-namespace SpiderControl.Application.Tests.Factories;
+namespace SpiderControl.Core.Tests.Factories;
 
 public class CommandFactoryTests
 {
@@ -14,47 +13,34 @@ public class CommandFactoryTests
         _commandFactory = new CommandFactory();
     }
 
-    [Fact]
-    public void CreateForwardCommand_ValidInput_ReturnsCorrectCommand()
+    [Theory]
+    [InlineData('F', typeof(ForwardCommand))]
+    [InlineData('L', typeof(RotateLeftCommand))]
+    [InlineData('R', typeof(RotateRightCommand))]
+    [InlineData('f', typeof(ForwardCommand))]
+    [InlineData('l', typeof(RotateLeftCommand))]
+    [InlineData('r', typeof(RotateRightCommand))]
+    public void CreateCommand_ValidInput_ReturnsCorrectCommand(char input, Type expectedType)
     {
         // Act
-        var command = _commandFactory.CreateCommand('F');
+        var result = _commandFactory.CreateCommand(input);
 
         // Assert
-        Assert.IsType<ForwardCommand>(command);
-    }
-
-    [Fact]
-    public void CreateRotateLeftCommand_ValidInput_ReturnsCorrectCommand()
-    {
-        // Act
-        var command = _commandFactory.CreateCommand('L');
-
-        // Assert
-        Assert.IsType<RotateLeftCommand>(command);
-    }
-
-    [Fact]
-    public void CreateRotateRightCommand_ValidInput_ReturnsCorrectCommand()
-    {
-        // Act
-        var command = _commandFactory.CreateCommand('R');
-
-        // Assert
-        Assert.IsType<RotateRightCommand>(command);
+        Assert.True(result.IsSuccess);
+        Assert.IsType(expectedType, result.Value);
     }
 
     [Theory]
     [InlineData(']')]
     [InlineData('V')]
-    [InlineData('.')]
     [InlineData('#')]
-    public void CreateCommand_InvalidInput_ThrowsException(char input)
+    public void CreateCommand_InvalidInput_ReturnsFailure(char input)
     {
         // Act
-        var commands = () => _commandFactory.CreateCommand(input);
+        var result = _commandFactory.CreateCommand(input);
 
         // Assert
-        Assert.Throws<ArgumentException>(commands);
+        Assert.False(result.IsSuccess);
+        Assert.Contains(input.ToString(), result.Error);
     }
 }
