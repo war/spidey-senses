@@ -106,8 +106,11 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
         response.Headers.GetValues("api-version").Should().Contain("1.0");
     }
 
-    [Fact]
-    public async Task Process_InvalidVersion_ReturnsNotFound()
+    [Theory]
+    [InlineData("/api/v99/spider/process")]
+    [InlineData("/api/v1/notspider/process")]
+    [InlineData("/api/v1/spider/notprocess")]
+    public async Task Process_InvalidVersion_ReturnsNotFound(string url)
     {
         // Arrange
         var request = new ProcessSpiderCommand(
@@ -117,7 +120,7 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
         );
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/v99/spider/process", request);
+        var response = await Client.PostAsJsonAsync(url, request);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
