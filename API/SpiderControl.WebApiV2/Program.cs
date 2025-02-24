@@ -2,6 +2,7 @@ using Asp.Versioning;
 using SpiderControl.Api.Shared.Features.Spider.Commands;
 using SpiderControl.Application;
 using SpiderControl.Core.Configuration;
+using SpiderControl.WebApiV2.Middleware;
 
 namespace SpiderControl.WebApiV2;
 
@@ -68,6 +69,8 @@ public class Program
 
     public static void Configure(WebApplication app)
     {
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
+
         if (app.Environment.IsDevelopment())
         {
             app.UseOpenApi();
