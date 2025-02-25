@@ -131,5 +131,3 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }
-
-public record HealthCheckResponse(string Status);
