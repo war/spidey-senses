@@ -7,6 +7,7 @@ namespace SpiderControl.WebApiV2.Features.Api;
 
 [ApiController]
 [Route("api")]
+[Route("api/v{version:apiVersion}")]
 public class ApiController : ControllerBase
 {
     private readonly IWebHostEnvironment _environment;
@@ -25,7 +26,7 @@ public class ApiController : ControllerBase
         var version = Assembly.GetExecutingAssembly().GetName().Version;
         var buildDate = System.IO.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
 
-        var versionString = version?.ToString() ?? "1.0.0";
+        var versionString = version?.ToString() ?? "1.0.0.0";
         var environmentString = _environment.EnvironmentName;
         var buildDateString = buildDate.ToString("o");
 
