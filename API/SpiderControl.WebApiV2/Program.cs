@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SpiderControl.Api.Shared.Features.Spider.Commands;
 using SpiderControl.Application;
 using SpiderControl.Core.Configuration;
@@ -28,6 +29,10 @@ public class Program
         builder.Services.Configure<SpiderControlConfig>(
             configuration.GetSection("SpiderControl")
         );
+
+        builder.Services.AddHealthChecks()
+            .AddCheck("Spider Service", () => HealthCheckResult.Healthy(), tags: new[] { "ready" })
+            .AddCheck("Storage", () => HealthCheckResult.Healthy(), tags: new[] { "ready" });
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
