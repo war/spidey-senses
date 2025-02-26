@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using SpiderControl.Api.Shared.Features.Spider.Commands;
+using SpiderControl.Api.Shared.Features.Spider.Models;
 using SpiderControl.Api.Shared.Testing.Infrastructure;
 using SpiderControl.WebApiV2.Middleware;
 using System.Net;
@@ -60,7 +61,7 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/v1/spider/process", request);
-        var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        var error = await response.Content.ReadFromJsonAsync<SpiderProblemDetails>();
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -81,7 +82,7 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/v1/spider/process", request);
-        var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        var error = await response.Content.ReadFromJsonAsync<SpiderProblemDetails>();
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
