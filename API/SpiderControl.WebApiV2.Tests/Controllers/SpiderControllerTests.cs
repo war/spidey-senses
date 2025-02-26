@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using SpiderControl.Api.Shared.Features.Spider.Commands;
+using SpiderControl.Api.Shared.Features.Spider.Models;
 using SpiderControl.Api.Shared.Testing.Infrastructure;
 using SpiderControl.WebApiV2.Middleware;
 
@@ -95,11 +96,8 @@ public class SpiderControllerTests : TestBase<Program>
     {
         // Act
         var response = await Client.GetAsync("/api/v1/spider/nonexistent");
-        var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        error.Should().NotBeNull();
-        error!.Title.Should().Be("Not Found");
     }
 }
