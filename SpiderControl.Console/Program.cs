@@ -42,7 +42,7 @@ public class Program
 
         var result = spiderApplicationService.ProcessSpiderCommands(processCommandModel);
 
-        SysConsole.WriteLine($"Final Output: {result}.");
+        SysConsole.WriteLine($"Final Output: {result.Value}.");
         SysConsole.WriteLine("Press any key to continue...");
         SysConsole.ReadKey();
     }
