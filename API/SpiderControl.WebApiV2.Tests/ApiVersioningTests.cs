@@ -40,7 +40,7 @@ public class ApiVersioningTests : TestBase<Program>
             SpiderInput = "2 4 Left",
             CommandInput = "FLFLFRFFLF"
         };
-        
+
         Client.DefaultRequestHeaders.Add("x-api-version", "1.0");
 
         // Act
@@ -48,7 +48,10 @@ public class ApiVersioningTests : TestBase<Program>
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.Headers.GetValues("api-version").Should().Contain("1.0");
+
+        // Assert
+        response.Headers.Contains("api-supported-versions").Should().BeTrue();
+        response.Headers.GetValues("api-supported-versions").Should().Contain(v => v.Contains("1.0"));
     }
 
     [Fact]
@@ -64,10 +67,12 @@ public class ApiVersioningTests : TestBase<Program>
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/spider/process?api-version=1.0", request);
-
+        
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.Headers.GetValues("api-version").Should().Contain("1.0");
+
+        response.Headers.Contains("api-supported-versions").Should().BeTrue();
+        response.Headers.GetValues("api-supported-versions").Should().Contain(v => v.Contains("1.0"));
     }
 
     [Fact]
