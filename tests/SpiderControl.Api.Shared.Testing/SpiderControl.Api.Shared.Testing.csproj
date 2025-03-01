@@ -6,7 +6,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpiderControl.Api.Shared\SpiderControl.Api.Shared.csproj" />
+    <ProjectReference Include="..\..\src\api\SpiderControl.Api.Shared\SpiderControl.Api.Shared.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
