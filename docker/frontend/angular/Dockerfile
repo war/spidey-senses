@@ -16,7 +16,7 @@ COPY src/frontend/spider-control-web/ .
 RUN npm run build
 
 # Switch to nginx for hosting
-FROM nginx:stable-alpine as publish
+FROM nginx:stable-alpine AS publish
 
 WORKDIR /
 
