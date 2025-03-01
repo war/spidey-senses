@@ -15,6 +15,7 @@ Next steps:
 5. Minimal APIs (4th API implementation)
 6. FastEndpoints (5th API implementation)
 7. Serilog logging
-8. Docker - in progress
-9. Kubernetes
-10. CI/CD - in progress
+8. Docker - done
+9. Docker-compose - done
+10. Kubernetes
+11. CI/CD - in progress
