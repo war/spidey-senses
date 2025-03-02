@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ValidationMessageComponent } from './validation-message.component';
 import { SpiderService } from '../../services/spider.service';
-import { SpiderFormData } from '../../models/SpiderFormData';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-controls',
@@ -159,7 +159,11 @@ export class ControlsComponent {
   successMessage = '';
   showValidation = false;
 
-  constructor(private fb: FormBuilder, private spiderService: SpiderService) {
+  constructor(
+    private fb: FormBuilder, 
+    private spiderService: SpiderService,
+    private apiService: ApiService
+  ) {
     this.spiderForm = this.fb.group({
       WallWidth: ['', [Validators.required]],
       WallHeight: ['', [Validators.required]],
@@ -168,7 +172,7 @@ export class ControlsComponent {
       Orientation: ['Up', Validators.required],
       Commands: ['', [Validators.required, Validators.pattern(/^[LRF]+$/i)]]
     });
-    
+
     this.spiderForm.valueChanges.subscribe(() => {
       if (this.spiderForm.valid) {
         this.spiderService.updateFormData(this.spiderForm.value);
@@ -185,7 +189,29 @@ export class ControlsComponent {
     // Console log form data to send to the API and show success message
     if (this.spiderForm.valid) {
       console.log('Form data:', this.spiderForm.value);
-      this.successMessage = 'Commands submitted successfully!';
+
+      this.apiService.processSpiderCommand(this.spiderForm.value)
+        .subscribe({
+          next: (response) => {
+            console.log('API Response:', response);
+            this.successMessage = `Commands executed successfully! Final position: ${response.finalPosition}`;
+            
+            // Parse the final position to update the spider location / orientation
+            const [x, y, orientation] = response.finalPosition.split(' ');
+            const updatedFormData = {
+              ...this.spiderForm.value,
+              SpiderX: parseInt(x),
+              SpiderY: parseInt(y),
+              Orientation: orientation
+            };
+
+            this.spiderService.updateFormData(updatedFormData);
+          },
+          error: (error) => {
+            console.error('API Error:', error);
+            this.errorMessage = error.error?.detail || 'An error occurred while processing your request';
+          }
+        });
     }
   }
 }

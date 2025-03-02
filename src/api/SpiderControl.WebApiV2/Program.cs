@@ -30,6 +30,16 @@ public class Program
             configuration.GetSection("SpiderControl")
         );
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAngularApp", builder =>
+            {
+                builder.WithOrigins("http://localhost:4200") // Angular app's URL
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
+
         builder.Services.AddHealthChecks()
             .AddCheck("Spider Service", () => HealthCheckResult.Healthy(), tags: new[] { "ready" })
             .AddCheck("Storage", () => HealthCheckResult.Healthy(), tags: new[] { "ready" });
@@ -81,6 +91,8 @@ public class Program
             app.UseOpenApi();
             app.UseSwaggerUi();
         }
+
+        app.UseCors("AllowAngularApp");
 
         app.UseHttpsRedirection();
         app.UseAuthorization();
