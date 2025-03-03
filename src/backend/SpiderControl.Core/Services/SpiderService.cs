@@ -33,4 +33,9 @@ public class SpiderService : ISpiderService
 
         return Result<Spider>.Success(spider);
     }
+
+    public Result<IEnumerable<Spider>> ProcessCommandsWithHistory(Spider spider, WallModel wall, IEnumerable<ICommand> commands)
+    {
+        return Result<IEnumerable<Spider>>.Failure("failed");
+    }
 }
