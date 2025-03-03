@@ -36,6 +36,25 @@ public class SpiderService : ISpiderService
 
     public Result<IEnumerable<Spider>> ProcessCommandsWithHistory(Spider spider, WallModel wall, IEnumerable<ICommand> commands)
     {
-        return Result<IEnumerable<Spider>>.Failure("failed");
+        var commandList = commands.ToList();
+
+        var history = new List<Spider>();
+        history.Add(new Spider(spider.X, spider.Y, spider.Orientation));
+
+        for (int i = 0; i < commandList.Count; i++)
+        {
+            var result = commandList[i].Execute(spider, wall);
+
+            if (!result.IsSuccess)
+            {
+                _logger.LogWarning("Command {Index} failed: {Error}", i + 1, result.Error);
+                return Result<IEnumerable<Spider>>.Failure($"Command {i + 1} failed: {result.Error}");
+            }
+
+            history.Add(new Spider(spider.X, spider.Y, spider.Orientation));
+            _logger.LogInformation("Command {Index}/{Total} executed successfully", i + 1, commandList.Count);
+        }
+
+        return Result<IEnumerable<Spider>>.Success(history);
     }
 }
