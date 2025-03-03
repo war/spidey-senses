@@ -38,7 +38,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS publish
 EXPOSE 80
 EXPOSE 443
 
-# Copy files from 
+# Copy files from build
 WORKDIR /app
 COPY --from=build /app/publish .
 
