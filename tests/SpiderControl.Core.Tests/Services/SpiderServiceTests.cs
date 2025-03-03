@@ -42,4 +42,22 @@ public class SpiderServiceTests
         Assert.Equal(5, spider.Y);
         Assert.Equal(Orientation.Up, spider.Orientation);
     }
+
+    [Fact]
+    public void ProcessCommands_ExecuteNoCommands()
+    {
+        // Arrange
+        var spider = new Spider(2, 4, Orientation.Up);
+        var wall = new WallModel(5, 8);
+        var commands = new List<ICommand>() {};
+
+        // Act
+        var resultSpider = _spiderService.ProcessCommands(spider, wall, commands);
+
+        // Assert
+        Assert.True(resultSpider.IsSuccess);
+        Assert.Equal(spider.X, resultSpider.Value.X);
+        Assert.Equal(spider.Y, resultSpider.Value.Y);
+        Assert.Equal(spider.Orientation, resultSpider.Value.Orientation);
+    }
 }
