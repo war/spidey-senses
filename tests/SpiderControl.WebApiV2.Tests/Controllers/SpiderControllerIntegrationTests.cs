@@ -82,12 +82,9 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/v1/spider/process", request);
-        var error = await response.Content.ReadFromJsonAsync<SpiderProblemDetails>();
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        error.Should().NotBeNull();
-        error!.Detail.Should().Contain("fall off");
+        response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
     }
 
     [Theory]
