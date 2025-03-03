@@ -6,6 +6,7 @@
 !src/api/SpiderControl.WebApiV2/
 !src/backend/SpiderControl.Application/
 !src/backend/SpiderControl.Core/
+!src/backend/SpiderControl.Console/
 !src/frontend/spider-control-web/
 
 # Angular
