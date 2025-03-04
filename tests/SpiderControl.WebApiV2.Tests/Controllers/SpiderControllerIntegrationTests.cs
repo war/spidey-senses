@@ -42,9 +42,9 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
     }
 
     [Theory]
-    [InlineData("", "2 4 Left", "FLFLFRFFLF", "Wall dimensions are required")]
-    [InlineData("7 15", "", "FLFLFRFFLF", "Spider position is required")]
-    [InlineData("7 15", "2 4 Left", "", "Commands are required")]
+    [InlineData("", "2 4 Left", "FLFLFRFFLF", "Required fields cannot be empty")]
+    [InlineData("7 15", "", "FLFLFRFFLF", "Required fields cannot be empty")]
+    [InlineData("7 15", "2 4 Left", "", "Required fields cannot be empty")]
     public async Task Process_InvalidInputs_ReturnsBadRequest(
         string wallInput,
         string spiderInput,
@@ -61,10 +61,10 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/v1/spider/process", request);
-        var error = await response.Content.ReadFromJsonAsync<SpiderProblemDetails>();
+        var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         error.Should().NotBeNull();
         error!.Detail.Should().Contain(expectedError);
     }
@@ -89,7 +89,7 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
 
     [Theory]
     [InlineData("/api/v1/spider/process")]
-    [InlineData("/api/spider/process?api-version=1.0")]
+    [InlineData("/api/spider/process?api-version=1")]
     public async Task Process_DifferentVersionEndpoints_ReturnsOk(string endpoint)
     {
         // Arrange
@@ -105,7 +105,7 @@ public class SpiderControllerIntegrationTests : TestBase<Program>
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        response.Headers.GetValues("api-version").Should().Contain("1.0");
+        response.Headers.GetValues("api-version").Should().Equal("1");
     }
 
     [Theory]
