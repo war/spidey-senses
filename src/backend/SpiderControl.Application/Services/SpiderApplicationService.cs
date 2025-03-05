@@ -3,6 +3,7 @@ using SpiderControl.Application.Interfaces;
 using SpiderControl.Application.Models;
 using SpiderControl.Core.Common;
 using SpiderControl.Core.Interfaces;
+using SpiderControl.Core.Models;
 
 namespace SpiderControl.Application.Services;
 
@@ -33,27 +34,15 @@ public class SpiderApplicationService : ISpiderApplicationService
     {
         _logger.LogInformation("Processing commands for spider");
 
-        var spiderResult = _spiderInputParser.ParseSpiderPosition(model.SpiderInput);
-        if (!spiderResult.IsSuccess)
-        {
-            _logger.LogWarning("Failed to parse spider position: {Error}", spiderResult.Error);
-            return Result<string>.Failure(spiderResult.Error);
-        }
+        var spiderResult = Result<Spider>.Failure("null");
+        var wallResult = Result<WallModel>.Failure("null");
+        var commandsResult = Result<IEnumerable<ICommand>>.Failure("null");
 
-        var wallResult = _wallInputParser.ParseWallDimensions(model.WallInput);
-        if (!wallResult.IsSuccess)
-        {
-            _logger.LogWarning("Failed to parse wall dimensions: {Error}", wallResult.Error);
-            return Result<string>.Failure(wallResult.Error);
-        }
+        var parseInputs = ParseInputs(model, ref spiderResult, ref wallResult, ref commandsResult);
 
-        var commandsResult = _commandInputParser.ParseCommands(model.CommandInput);
-        if (!commandsResult.IsSuccess)
-        {
-            _logger.LogWarning("Failed to parse commands: {Error}", commandsResult.Error);
-            return Result<string>.Failure(commandsResult.Error);
-        }
-        
+        if (!parseInputs.IsSuccess)
+            return Result<string>.Failure(parseInputs.Error);
+
         var processResult = _spiderService.ProcessCommands(
             spiderResult.Value,
             wallResult.Value,
@@ -62,5 +51,40 @@ public class SpiderApplicationService : ISpiderApplicationService
         return processResult.IsSuccess
             ? Result<string>.Success(processResult.Value.ToString())
             : Result<string>.Failure(processResult.Error);
+    }
+
+    public Result<List<string>> ProcessSpiderCommandsWithHistory(ProcessCommandModel model)
+    {
+        return Result<List<string>>.Failure("init");
+    }
+
+    private Result<string> ParseInputs(
+        ProcessCommandModel model,
+        ref Result<Spider> spiderResult,
+        ref Result<WallModel> wallResult,
+        ref Result<IEnumerable<ICommand>> commandsResult)
+    {
+        spiderResult = _spiderInputParser.ParseSpiderPosition(model.SpiderInput);
+        if (!spiderResult.IsSuccess)
+        {
+            _logger.LogWarning("Failed to parse spider position: {Error}", spiderResult.Error);
+            return Result<string>.Failure(spiderResult.Error);
+        }
+
+        wallResult = _wallInputParser.ParseWallDimensions(model.WallInput);
+        if (!wallResult.IsSuccess)
+        {
+            _logger.LogWarning("Failed to parse wall dimensions: {Error}", wallResult.Error);
+            return Result<string>.Failure(wallResult.Error);
+        }
+
+        commandsResult = _commandInputParser.ParseCommands(model.CommandInput);
+        if (!commandsResult.IsSuccess)
+        {
+            _logger.LogWarning("Failed to parse commands: {Error}", commandsResult.Error);
+            return Result<string>.Failure(commandsResult.Error);
+        }
+
+        return Result<string>.Success("success");
     }
 }

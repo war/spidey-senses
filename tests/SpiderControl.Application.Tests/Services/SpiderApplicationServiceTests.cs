@@ -164,6 +164,71 @@ public class SpiderApplicationServiceTests
     }
 
     [Fact]
+    public void ProcessSpiderCommandWithHistory_ValidInput_ReturnsCorrectHistory()
+    {
+        // Arrange
+        var wallInput = "10 12";
+        var spiderInput = "6 8 Right";
+        var commandInput = "FLFLFL";
+
+        var wall = new WallModel(10, 12);
+        var spider = new Spider(6, 8, Orientation.Right);
+        var commands = new List<ICommand>();
+
+        var expectedPositions = new List<string>
+        {
+            "6 8 Right",
+            "6 8 Up",
+            "6 9 Up",
+            "6 9 Left",
+            "5 9 Left",
+            "5 9 Down",
+            "5 8 Down"
+        };
+
+        _spiderInputParserMock.Setup(x => x.ParseSpiderPosition(spiderInput))
+            .Returns(Result<Spider>.Success(spider));
+
+        _wallInputParserMock.Setup(x => x.ParseWallDimensions(wallInput))
+            .Returns(Result<WallModel>.Success(wall));
+
+        _commandInputParserMock.Setup(x => x.ParseCommands(commandInput))
+            .Returns(Result<IEnumerable<ICommand>>.Success(commands));
+
+        _spiderServiceMock.Setup(x => x.ProcessCommandsWithHistory(
+            It.IsAny<Spider>(),
+            It.IsAny<WallModel>(),
+            It.IsAny<IEnumerable<ICommand>>()
+        )).Returns(Result<IEnumerable<Spider>>.Success(expectedPositions.Select(p => {
+            var parts = p.Split(' ');
+            return new Spider(
+                int.Parse(parts[0]),
+                int.Parse(parts[1]),
+                Enum.Parse<Orientation>(parts[2])
+            );
+        }).ToList()));
+
+        var processCommandModel = new ProcessCommandModel
+        {
+            SpiderInput = spiderInput,
+            WallInput = wallInput,
+            CommandInput = commandInput,
+        };
+
+        // Act
+        var result = _spiderApplicationService.ProcessSpiderCommandsWithHistory(processCommandModel);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(expectedPositions.Count, result.Value.Count());
+
+        for (int i = 0; i < expectedPositions.Count; i++)
+        {
+            Assert.Equal(expectedPositions[i], result.Value[i]);
+        }
+    }
+
+    [Fact]
     public void Constructor_NullSpiderApplcationService_ThrowsException()
     {
         // Arrange
