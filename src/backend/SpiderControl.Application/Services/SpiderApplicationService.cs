@@ -55,7 +55,28 @@ public class SpiderApplicationService : ISpiderApplicationService
 
     public Result<List<string>> ProcessSpiderCommandsWithHistory(ProcessCommandModel model)
     {
-        return Result<List<string>>.Failure("init");
+        _logger.LogInformation("Processing commands for spider");
+
+        var spiderResult = Result<Spider>.Failure("null");
+        var wallResult = Result<WallModel>.Failure("null");
+        var commandsResult = Result<IEnumerable<ICommand>>.Failure("null");
+
+        var parseInputs = ParseInputs(model, ref spiderResult, ref wallResult, ref commandsResult);
+
+        if (!parseInputs.IsSuccess)
+            return Result<List<string>>.Failure(parseInputs.Error);
+        
+        var processResult = _spiderService.ProcessCommandsWithHistory(
+            spiderResult.Value,
+            wallResult.Value,
+            commandsResult.Value);
+
+        if (!processResult.IsSuccess)
+            return Result<List<string>>.Failure(processResult.Error);
+
+        var positionHistory = processResult.Value.Select(spider => spider.ToString()).ToList();
+
+        return Result<List<string>>.Success(positionHistory);
     }
 
     private Result<string> ParseInputs(
