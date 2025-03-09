@@ -69,7 +69,7 @@ jobs:
       id: short-sha
       run: |
         SHA_TAG=$(echo "${{ steps.meta.outputs.tags }}" | grep "sha-" | head -n 1)
-        echo "sha_tag=$SHA_TAG"
+        echo "sha_tag=$SHA_TAG" >> $GITHUB_OUTPUT
 
     - name: Debug
       run: |
