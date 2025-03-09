@@ -39,6 +39,8 @@ jobs:
   build-docker:
     needs: build-and-test
     runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
     
     steps:
     - uses: actions/checkout@v3
@@ -52,7 +54,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    
+
     - name: Extract metadata (tags, labels) for Docker
       id: meta
       uses: docker/metadata-action@v4
@@ -62,6 +64,7 @@ jobs:
           type=ref,event=branch
           type=sha,format=short
           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+
     - name: Debug
       run: |
         echo "All tags: ${{ steps.meta.outputs.tags }}"
@@ -88,11 +91,14 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Pull Docker image
-      run: docker pull ghcr.io/${{ github.repository }}/frontend:sha-${{ steps.meta.outputs.tags[1] }}
+      run: |
+        IMAGE_TAG=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 1)
+        echo "Using image tag: $IMAGE_TAG"
+        docker pull ghcr.io/${{ github.repository }}/frontend:sha-$IMAGE_TAG
     
     - name: Run container tests
       run: |
-        docker run --name frontend-test -d -p 4200:80 ghcr.io/${{ github.repository }}/frontend:sha-${{ github.sha }}
+        docker run --name frontend-test -d -p 4200:80 ghcr.io/${{ github.repository }}/frontend:sha-$IMAGE_TAG
         sleep 5
         curl -sSf http://localhost:4200/ || exit 1
         docker logs frontend-test
