@@ -40,7 +40,7 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ${{ steps.meta.outputs.tags }}
+      image_tag: ${{ steps.short-sha.outputs.sha_tag }}
     
     steps:
     - uses: actions/checkout@v3
@@ -64,6 +64,12 @@ jobs:
           type=ref,event=branch
           type=sha,format=short
           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+
+    - name: Extract short SHA tag
+      id: short-sha
+      run: |
+        SHA_TAG=$(echo "${{ steps.meta.outputs.tags }}" | grep "sha-" | head -n 1)
+        echo "sha_tag=$SHA_TAG"
 
     - name: Debug
       run: |
@@ -90,25 +96,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Get Docker image tag
-      run: |
-        IMAGE_TAG0=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 0)
-        IMAGE_TAG1=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 1)
-        IMAGE_TAG2=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 2)
-        IMAGE_TAG3=$(echo "${{ needs.build-docker.outputs.image_tag[1] }}")
-        echo "Using image0 tag: $IMAGE_TAG0"
-        echo "Using image1 tag: $IMAGE_TAG1"
-        echo "Using image2 tag: $IMAGE_TAG2"
-        echo "Using image3 tag: $IMAGE_TAG3"
-        echo "FULL THING: "
-        echo ${{ needs.build-docker.outputs.image_tag }}
-    
     - name: Pull Docker image
-      run: docker pull ghcr.io/${{ github.repository }}/frontend:sha-$IMAGE_TAG
+      run: docker pull ghcr.io/${{ github.repository }}/frontend:$IMAGE_TAG
     
     - name: Run container tests
       run: |
-        docker run --name frontend-test -d -p 4200:80 ghcr.io/${{ github.repository }}/frontend:sha-$IMAGE_TAG
+        docker run --name frontend-test -d -p 4200:80 ghcr.io/${{ github.repository }}/frontend:$IMAGE_TAG
         sleep 5
         curl -sSf http://localhost:4200/ || exit 1
         docker logs frontend-test
