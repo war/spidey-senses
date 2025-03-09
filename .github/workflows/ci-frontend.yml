@@ -62,7 +62,12 @@ jobs:
           type=ref,event=branch
           type=sha,format=short
           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
-    
+    - name: Debug
+      run: |
+        echo "All tags: ${{ steps.meta.outputs.tags }}"
+        echo "---"
+        echo "${{ toJSON(steps.meta.outputs) }}"
+
     - name: Build and push Docker image
       id: build-and-push
       uses: docker/build-push-action@v4
