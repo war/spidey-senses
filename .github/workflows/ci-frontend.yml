@@ -92,13 +92,14 @@ jobs:
     
     - name: Get Docker image tag
       run: |
-        IMAGE_TAG=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 2)
         IMAGE_TAG0=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 0)
-        IMAGE_TAG1=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 1)
-        echo "Using image2 tag: $IMAGE_TAG"
+        IMAGE_TAG1=$(echo "${{ needs.build-docker.outputs.image_tag[1] }}")
+        IMAGE_TAG2=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 2)
         echo "Using image0 tag: $IMAGE_TAG0"
         echo "Using image1 tag: $IMAGE_TAG1"
-        docker pull ghcr.io/${{ github.repository }}/frontend:sha-$IMAGE_TAG
+        echo "Using image2 tag: $IMAGE_TAG2"
+        echo "FULL THING: "
+        echo "${{ needs.build-docker.outputs.image_tag }}
     
     - name: Pull Docker image
       run: docker pull ghcr.io/${{ github.repository }}/frontend:sha-$IMAGE_TAG
