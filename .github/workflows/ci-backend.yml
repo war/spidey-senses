@@ -28,10 +28,13 @@ jobs:
     - name: Build
       run: dotnet build src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj --no-restore --configuration Release
     
+    - name: Generate coverage report
+      run: dotnet test tests/backend/ --no-build --verbosity normal --collect:"XPlat Code Coverage"
+
     - name: Create coverage report
       run: |
         dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:./tests/**/cobertura.xml -targetdir:./coverage-report -reporttypes:Html
+        reportgenerator -reports:./tests/**/coverage.cobertura.xml -targetdir:./coverage-report -reporttypes:Html
 
     - name: Upload coverage report to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
