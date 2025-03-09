@@ -35,7 +35,7 @@ jobs:
       run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
     - name: Generate HTML coverage report
-      run: reportgenerator -reports:./tests/SpiderControl.WebApiV2.Tests/**/coverage.cobertura.xml;./tests/SpiderControl.Core.Tests/**/coverage.cobertura.xml;./tests/SpiderControl.Api.Shared.Testing/**/coverage.cobertura.xml -targetdir:./coverage-report -reporttypes:Html,TextSummary
+      run: reportgenerator -reports:./tests/**/coverage.cobertura.xml -targetdir:./coverage-report -reporttypes:Html,TextSummary
 
     - name: Display coverage summary in workflow
       run: cat ./coverage-report/Summary.txt >> $GITHUB_STEP_SUMMARY
