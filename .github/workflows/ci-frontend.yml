@@ -40,7 +40,7 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     outputs:
-      image_url: ${{ steps.short-sha.outputs.sha_tag }}
+      image_url: ${{ steps.short-sha.outputs.image_url }}
     
     steps:
     - uses: actions/checkout@v3
@@ -65,17 +65,11 @@ jobs:
           type=sha,format=short
           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
-    - name: Extract short SHA tag
+    - name: Extract full docker repo url
       id: short-sha
       run: |
-        SHA_TAG=$(echo "${{ steps.meta.outputs.tags }}" | grep "sha-" | head -n 1)
-        echo "sha_tag=$SHA_TAG" >> $GITHUB_OUTPUT
-
-    - name: Debug
-      run: |
-        echo "All tags: ${{ steps.meta.outputs.tags }}"
-        echo "---"
-        echo "${{ toJSON(steps.meta.outputs) }}"
+        IMAGE_URL=$(echo "${{ steps.meta.outputs.tags }}" | grep "sha-" | head -n 1)
+        echo "image_url=$IMAGE_URL" >> $GITHUB_OUTPUT
 
     - name: Build and push Docker image
       id: build-and-push

@@ -37,6 +37,8 @@ jobs:
   build-docker:
     needs: build-and-test
     runs-on: ubuntu-latest
+    outputs:
+      image_url: ${{ steps.short-sha.outputs.image_url }}
     
     steps:
     - uses: actions/checkout@v4
@@ -60,6 +62,12 @@ jobs:
           type=ref,event=branch
           type=sha,format=short
           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+          
+    - name: Extract full docker repo url
+      id: short-sha
+      run: |
+        IMAGE_URL=$(echo "${{ steps.meta.outputs.tags }}" | grep "sha-" | head -n 1)
+        echo "image_url=$IMAGE_URL" >> $GITHUB_OUTPUT
     
     - name: Build and push Docker image
       id: build-and-push
@@ -81,11 +89,11 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Pull Docker image
-      run: docker pull ghcr.io/${{ steps.meta.outputs.tags[0] }}
+      run: docker pull ${{ needs.build-docker.outputs.image_url }}
     
     - name: Run container tests
       run: |
-        docker run --name api-test -d -p 8080:80 ghcr.io/${{ github.repository }}/backend:sha-${{ github.sha }}
+        docker run --name api-test -d -p 8080:80 ${{ needs.build-docker.outputs.image_url }}
         sleep 5
         curl -sSf http://localhost:8080/health || exit 1
         docker logs api-test
