@@ -28,24 +28,41 @@ jobs:
     - name: Build
       run: dotnet build src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj --no-restore --configuration Release
     
-    - name: Run tests with coverage
-      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
-
-    - name: Install ReportGenerator tool
-      run: dotnet tool install -g dotnet-reportgenerator-globaltool
-
-    - name: Generate HTML coverage report
-      run: reportgenerator -reports:./tests/**/coverage.cobertura.xml -targetdir:./coverage-report -reporttypes:Html,TextSummary
-
-    - name: Display coverage summary in workflow
-      run: cat ./coverage-report/Summary.txt >> $GITHUB_STEP_SUMMARY
-
-    - name: Upload coverage report as artifact
-      uses: actions/upload-artifact@v4
+    - name: Test with coverage
+      run: dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage/ /p:MergeWith="./coverage/coverage.json" /p:CoverletOutputFormat=\"opencover,json\" /p:Include="[YourProject.*]*" /p:Exclude="[*]*.Program,[*]*.Startup,[*]*Migrations*" /p:ExcludeByAttribute="Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute"
+    
+    - name: Generate coverage report
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
       with:
-        name: coverage-report
-        path: ./coverage-report
-        retention-days: 14
+        reports: '**/coverage.opencover.xml'
+        targetdir: 'coveragereport'
+        reporttypes: 'HtmlInline;Cobertura'
+    
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: CoverageReport
+        path: coveragereport
+    
+    - name: Create coverage badge
+      uses: simon-k/dotnet-code-coverage-badge@v1.0.0
+      id: create_coverage_badge
+      with:
+        label: Coverage
+        color: brightgreen
+        path: '**/coverage.opencover.xml'
+        gist-filename: code-coverage.json
+        gist-id: ${{ secrets.GIST_ID }}
+        gist-auth-token: ${{ secrets.GITHUB_TOKEN }}
+        fallback-color: red
+    
+    - name: Comment PR with coverage
+      if: github.event_name == 'pull_request'
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        header: test-coverage
+        message: |
+          ## Test Coverage: ${{ steps.create_coverage_badge.outputs.percentage }}%
     
   build-docker:
     needs: build-and-test
