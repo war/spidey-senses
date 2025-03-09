@@ -90,11 +90,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Pull Docker image
+    - name: Get Docker image tag
       run: |
-        IMAGE_TAG=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 1)
-        echo "Using image tag: $IMAGE_TAG"
+        IMAGE_TAG=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 2)
+        IMAGE_TAG0=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 0)
+        IMAGE_TAG1=$(echo "${{ needs.build-docker.outputs.image_tag }}" | head -n 1)
+        echo "Using image2 tag: $IMAGE_TAG"
+        echo "Using image0 tag: $IMAGE_TAG0"
+        echo "Using image1 tag: $IMAGE_TAG1"
         docker pull ghcr.io/${{ github.repository }}/frontend:sha-$IMAGE_TAG
+    
+    - name: Pull Docker image
+      run: docker pull ghcr.io/${{ github.repository }}/frontend:sha-$IMAGE_TAG
     
     - name: Run container tests
       run: |
