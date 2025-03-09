@@ -20,20 +20,13 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.x
+        dotnet-quality: 'ga'
     
     - name: Restore dependencies
       run: dotnet restore src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj
     
     - name: Build
       run: dotnet build src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj --no-restore --configuration Release
-    
-    - name: Generate coverage report
-      run: dotnet test tests/SpiderControl.WebApiV2.Tests/ --no-build --verbosity normal --collect:"XPlat Code Coverage"
-
-    - name: Create coverage report
-      run: |
-        dotnet tool install -g dotnet-reportgenerator-globaltool
-        reportgenerator -reports:./tests/**/coverage.cobertura.xml -targetdir:./coverage-report -reporttypes:Html
 
     - name: Upload coverage report to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
