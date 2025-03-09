@@ -40,7 +40,7 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ${{ steps.short-sha.outputs.sha_tag }}
+      image_url: ${{ steps.short-sha.outputs.sha_tag }}
     
     steps:
     - uses: actions/checkout@v3
@@ -97,11 +97,11 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Pull Docker image
-      run: docker pull ${{ needs.build-docker.outputs.sha_tag }}
+      run: docker pull ${{ needs.build-docker.outputs.image_url }}
     
     - name: Run container tests
       run: |
-        docker run --name frontend-test -d -p 4200:80 ${{ needs.build-docker.outputs.sha_tag }}
+        docker run --name frontend-test -d -p 4200:80 ${{ needs.build-docker.outputs.image_url }}
         sleep 5
         curl -sSf http://localhost:4200/ || exit 1
         docker logs frontend-test
