@@ -12,10 +12,11 @@ Next steps:
 2. Web API v2 to get/use results from SpiderControl.Application to move the web UI spider around - done
 3. GraphQL with Hot Chocolate (2nd API implementation)
 4. gRPC (3rd API implementation)
-5. Minimal APIs (4th API implementation)
-6. FastEndpoints (5th API implementation)
-7. Serilog logging
+5. Minimal APIs (4th API implementation) - in progress
+6. FastEndpoints (5th API implementation) - in progress
+7. Serilog logging - in progress
 8. Docker - done
 9. Docker-compose - done
 10. Kubernetes
-11. CI/CD - in progress
+11. CI/CD - done (build, push to github repo, code coverage, test, healthcheck)
+12. Process spider movements, but show movement history on grid - in progress
