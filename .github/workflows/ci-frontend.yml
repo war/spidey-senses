@@ -83,7 +83,7 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Pull Docker image
-      run: docker pull ghcr.io/${{ steps.meta.outputs.tags[0] }}
+      run: docker pull ghcr.io/${{ github.repository }}/frontend:sha-${{ steps.meta.outputs.tags }}
     
     - name: Run container tests
       run: |
