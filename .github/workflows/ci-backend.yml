@@ -9,8 +9,6 @@ on:
       - 'src/**'
       - 'tests/**'
       - '.github/workflows/*'
-    paths-ignore:
-      - '.github/packages/**' 
 
 jobs:
   build-and-test:
