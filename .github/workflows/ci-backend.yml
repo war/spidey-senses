@@ -2,6 +2,10 @@ name: Backend CI/CD Pipeline
 
 run-name: Backend CI/CD - ${{ github.event.head_commit.message }}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [ develop, feature/**, bugfix/** ]
