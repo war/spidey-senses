@@ -34,3 +34,5 @@
 /tests/SpiderControl.WebApiV2.Tests/bin
 /tests/SpiderControl.WebApiV2.Tests/obj
 *.user
+coverage-report/
+TestResults/

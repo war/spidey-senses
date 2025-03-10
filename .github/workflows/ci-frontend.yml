@@ -5,8 +5,6 @@ run-name: Frontend CI/CD - ${{ github.event.head_commit.message }}
 on:
   push:
     branches: [ develop, feature/**, bugfix/** ]
-  pull_request:
-    branches: [ main, develop, release/** ]
 
 jobs:
   build-and-test:
