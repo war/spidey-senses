@@ -9,8 +9,6 @@ on:
       - 'src/**'
       - 'tests/**'
       - '.github/workflows/*'
-    tags-ignore:
-      - '*'
 
 jobs:
   build-and-test:
