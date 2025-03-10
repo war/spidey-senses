@@ -5,6 +5,9 @@ run-name: Backend CI/CD - ${{ github.event.head_commit.message }}
 on:
   push:
     branches: [ develop, feature/**, bugfix/** ]
+    paths:
+      - 'src/**'
+      - 'tests/**'
     paths-ignore:
       - '.github/packages/**' 
 
