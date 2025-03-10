@@ -1,0 +1,109 @@
+name: Backend CI/CD Pipeline
+
+run-name: Backend CI/CD - ${{ github.event.head_commit.message }}
+
+on:
+  push:
+    branches: [ develop, feature/**, bugfix/** ]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/*'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+        dotnet-quality: 'ga'
+    
+    - name: Restore dependencies
+      run: dotnet restore src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj
+    
+    - name: Build
+      run: dotnet build src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj --no-restore --configuration Release
+    
+    - name: Test with coverage
+      run: dotnet test --collect:"XPlat Code Coverage"
+    
+  build-docker:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    outputs:
+      image_url: ${{ steps.short-sha.outputs.image_url }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ghcr.io/${{ github.repository }}/backend
+        tags: |
+          type=ref,event=branch
+          type=sha,format=short
+          type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+          
+    - name: Extract full docker repo url
+      id: short-sha
+      run: |
+        IMAGE_URL=$(echo "${{ steps.meta.outputs.tags }}" | grep "sha-" | head -n 1)
+        echo "image_url=$IMAGE_URL" >> $GITHUB_OUTPUT
+    
+    - name: Build and push Docker image
+      id: build-and-push
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: docker/api/web-api-v2/Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        
+  test-container:
+    needs: build-docker
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Pull Docker image
+      run: docker pull ${{ needs.build-docker.outputs.image_url }}
+    
+    - name: Run container
+      run: |
+        docker run --name api-test -d -p 8080:80 ${{ needs.build-docker.outputs.image_url }}
+        
+    - name: Wait for container to initialize
+      run: sleep 15
+        
+    - name: Check container status
+      run: |
+        echo "Container status:"
+        docker ps -a | grep api-test
+        echo "Container logs:"
+        docker logs api-test
+    
+    - name: Test api endpoint
+      run: |
+        curl -v http://localhost:8080/api/ping || true
