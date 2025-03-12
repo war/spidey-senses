@@ -2,8 +2,9 @@ name: PR Coverage Report
 
 on:
   workflow_run:
-    workflows: ["*"]
-    types: [completed]
+    workflows: [API CI Pipeline]
+    types:
+      - completed
 
 jobs:
   debug-trigger:
