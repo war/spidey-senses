@@ -11,7 +11,7 @@ on:
 jobs:
   # Build Web API v2
   build-web-api-v2:
-    uses: ./.github/workflows/reusable-api-build.yml
+    uses: ./.github/workflows/reusable-dotnet-build.yml
     with:
       service-name: web-api-v2
       project-path: src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj
@@ -19,7 +19,7 @@ jobs:
   # Test Web API v2
   test-web-api-v2:
     needs: build-web-api-v2
-    uses: ./.github/workflows/reusable-api-test.yml
+    uses: ./.github/workflows/reusable-dotnet-test.yml
     with:
       service-name: web-api-v2
       test-project-path: tests/SpiderControl.WebApiV2.Tests/SpiderControl.WebApiV2.Tests.csproj

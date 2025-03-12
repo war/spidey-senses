@@ -11,14 +11,14 @@ on:
 jobs:
   # Angular UI
   build-angular-ui:
-    uses: ./.github/workflows/reusable-frontend-build.yml
+    uses: ./.github/workflows/reusable-nodejs-build.yml
     with:
       service-name: angular-ui
       working-directory: src/frontend/spider-control-web
   
   # test-angular-ui:
   #   needs: build-angular-ui
-  #   uses: ./.github/workflows/reusable-frontend-test.yml
+  #   uses: ./.github/workflows/reusable-nodejs-test.yml
   #   with:
   #     service-name: angular-ui
   #     working-directory: src/frontend/spider-control-web

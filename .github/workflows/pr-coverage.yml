@@ -1,22 +1,14 @@
 name: PR Coverage Report
 
 on:
-  workflow_run:
-    workflows:
-      - ".github/workflows/ci-backend.yml"
-      - ".github/workflows/ci-frontend.yml"
-    types: [completed]
+  pull_request:
+    branches: [main, develop, feature/*]
+    types:
+      - opened
+      - synchronize 
+      - reopened
 
 jobs:
-  debug-trigger:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Debug workflow trigger
-        run: |
-          echo "Workflow name: ${{ github.event.workflow.name }}"
-          echo "Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
-          echo "Source branch: ${{ github.event.workflow_run.head_branch }}"
-
   generate-coverage:
     runs-on: ubuntu-latest
     
