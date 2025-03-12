@@ -1,0 +1,79 @@
+name: Reusable Frontend Test
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+        description: "Name of the frontend service"
+      working-directory:
+        required: true
+        type: string
+        description: "Directory containing package.json"
+      node-version:
+        required: false
+        type: string
+        default: "22.x"
+        description: "Version of Node.js to use"
+    outputs:
+      test-success:
+        description: "Indicates if the tests were successful"
+        value: ${{ jobs.test.outputs.success }}
+      coverage-file:
+        description: "Path to the generated coverage file"
+        value: ${{ jobs.test.outputs.coverage-file }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    outputs:
+      success: ${{ steps.status.outputs.success }}
+      coverage-file: ${{ steps.coverage.outputs.file }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: 'npm'
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ${{ inputs.working-directory }}
+        run: npm ci
+      
+      - name: Run Tests
+        working-directory: ${{ inputs.working-directory }}
+        run: npm test -- --coverage --ci --no-watch --reporters=default --reporters=jest-junit
+      
+      - name: Find coverage file
+        id: coverage
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          COVERAGE_FILE=$(find ./coverage -name "coverage-final.json" | head -1)
+          echo "file=$COVERAGE_FILE" >> $GITHUB_OUTPUT
+      
+      - name: Generate HTML report
+        working-directory: ${{ inputs.working-directory }}
+        run: npx nyc report --reporter=html --report-dir=./coverage-report
+      
+      - name: Generate Summary
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          echo "# ${{ inputs.service-name }} Coverage Summary" > ./coverage-report/summary.md
+          npx nyc report --reporter=text-summary | tee -a ./coverage-report/summary.md
+      
+      - name: Set output status
+        id: status
+        run: echo "success=true" >> $GITHUB_OUTPUT
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.service-name }}-coverage
+          path: ${{ inputs.working-directory }}/coverage-report
+          retention-days: 1

@@ -1,8 +1,11 @@
 name: PR Coverage Report
 
 on:
-  pull_request:
-    branches: [ main, develop ]
+  workflow_run:
+    workflows: [API CI Pipeline, Frontend CI Pipeline]
+    types:
+      - completed
+    branches: [main, develop, feature/**]
 
 jobs:
   generate-coverage:
@@ -46,4 +49,3 @@ jobs:
       with:
         recreate: true
         path: ./coverage-report/Summary.md
-    
