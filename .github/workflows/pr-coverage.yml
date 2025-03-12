@@ -51,3 +51,9 @@ jobs:
       with:
         recreate: true
         path: ./coverage-report/Summary.md
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./coverage-report
