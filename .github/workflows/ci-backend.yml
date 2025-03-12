@@ -34,7 +34,7 @@ jobs:
 
   # Coverage Report
   coverage-report:
-    needs: [test-web-api-v2]
+    needs: test-web-api-v2
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/reusable-coverage-report.yml
     with:
