@@ -2,7 +2,11 @@ name: PR Coverage Report
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop, feature/*]
+    types:
+      - opened
+      - synchronize 
+      - reopened
 
 jobs:
   generate-coverage:
@@ -46,4 +50,9 @@ jobs:
       with:
         recreate: true
         path: ./coverage-report/Summary.md
-    
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./coverage-report
