@@ -11,71 +11,50 @@ on:
 jobs:
   # WebAPI v2
   build-webapiv2:
-    uses: ./.github/workflows/reusable/api-build.yml
+    uses: ./.github/workflows/reusable/reusable-api-build.yml
     with:
       service-name: webapiv2
       project-path: src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj
   
   test-webapiv2:
     needs: build-webapiv2
-    uses: ./.github/workflows/reusable/api-test.yml
+    uses: ./.github/workflows/reusable/reusable-api-test.yml
     with:
       service-name: webapiv2
       test-project-path: tests/SpiderControl.WebApiV2.Tests/SpiderControl.WebApiV2.Tests.csproj
   
   docker-webapiv2:
     needs: test-webapiv2
-    uses: ./.github/workflows/reusable/docker-build.yml
+    uses: ./.github/workflows/reusable/reusable-docker-build.yml
     with:
       service-name: webapiv2
       dockerfile-path: docker/api/webapiv2/Dockerfile
   
-  # Minimal API
-  build-minimalapi:
-    uses: ./.github/workflows/reusable/api-build.yml
-    with:
-      service-name: minimalapi
-      project-path: src/api/SpiderControl.MinimalApi/SpiderControl.MinimalApi.csproj
-  
-  test-minimalapi:
-    needs: build-minimalapi
-    uses: ./.github/workflows/reusable/api-test.yml
-    with:
-      service-name: minimalapi
-      test-project-path: tests/SpiderControl.MinimalApi.Tests/SpiderControl.MinimalApi.Tests.csproj
-  
-  docker-minimalapi:
-    needs: test-minimalapi
-    uses: ./.github/workflows/reusable/docker-build.yml
-    with:
-      service-name: minimalapi
-      dockerfile-path: docker/api/minimalapi/Dockerfile
-  
   # Core API
   build-coreapi:
-    uses: ./.github/workflows/reusable/api-build.yml
+    uses: ./.github/workflows/reusable/reusable-api-build.yml
     with:
       service-name: core
       project-path: src/api/SpiderControl.Core/SpiderControl.Core.csproj
   
   test-coreapi:
     needs: build-coreapi
-    uses: ./.github/workflows/reusable/api-test.yml
+    uses: ./.github/workflows/reusable/reusable-api-test.yml
     with:
       service-name: core
       test-project-path: tests/SpiderControl.Core.Tests/SpiderControl.Core.Tests.csproj
   
   # Shared Tests
   test-shared:
-    uses: ./.github/workflows/reusable/api-test.yml
+    uses: ./.github/workflows/reusable/reusable-api-test.yml
     with:
       service-name: shared
       test-project-path: tests/SpiderControl.Api.Shared.Testing/SpiderControl.Api.Shared.Testing.csproj
 
   # Coverage Report
   coverage-report:
-    needs: [test-webapiv2, test-minimalapi, test-coreapi, test-shared]
+    needs: [test-webapiv2, test-coreapi, test-shared]
     if: github.event_name == 'pull_request'
-    uses: ./.github/workflows/reusable/coverage-report.yml
+    uses: ./.github/workflows/reusable/reusable-coverage-report.yml
     with:
-      coverage-artifacts: webapiv2-coverage,minimalapi-coverage,core-coverage,shared-coverage
+      coverage-artifacts: webapiv2-coverage,core-coverage,shared-coverage
