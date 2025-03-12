@@ -11,21 +11,21 @@ on:
 jobs:
   # Angular UI
   build-angular-ui:
-    uses: ./.github/workflows/reusable/frontend-build.yml
+    uses: ./.github/workflows/frontend-build.yml
     with:
       service-name: angular-ui
       working-directory: src/frontend/spider-control-web
   
   # test-angular-ui:
   #   needs: build-angular-ui
-  #   uses: ./.github/workflows/reusable/frontend-test.yml
+  #   uses: ./.github/workflows/frontend-test.yml
   #   with:
   #     service-name: angular-ui
   #     working-directory: src/frontend/spider-control-web
   
   docker-angular-ui:
     needs: build-angular-ui
-    uses: ./.github/workflows/reusable/docker-build.yml
+    uses: ./.github/workflows/docker-build.yml
     with:
       service-name: angular-ui
       dockerfile-path: docker/frontend/angular/Dockerfile

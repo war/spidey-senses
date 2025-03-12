@@ -28,7 +28,7 @@ jobs:
     uses: ./.github/workflows/reusable-docker-build.yml
     with:
       service-name: webapiv2
-      dockerfile-path: docker/api/webapiv2/Dockerfile
+      dockerfile-path: docker/api/web-api-v2/Dockerfile
 
   # Coverage Report
   coverage-report:
