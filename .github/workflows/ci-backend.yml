@@ -36,4 +36,4 @@ jobs:
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/reusable-coverage-report.yml
     with:
-      coverage-artifacts: webapiv2-coverage,core-coverage,shared-coverage
+      coverage-artifacts: webapiv2-coverage
