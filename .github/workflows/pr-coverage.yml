@@ -5,7 +5,7 @@ on:
     workflows: [API CI Pipeline, Frontend CI Pipeline]
     types:
       - completed
-    branches: [main, develop, feature/**]
+    branches: [main, develop, feature/*]
 
 jobs:
   generate-coverage:

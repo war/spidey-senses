@@ -2,7 +2,7 @@ name: API CI Pipeline
 
 on:
   push:
-    branches: [ main, develop, feature/**, bugfix/** ]
+    branches: [main, develop, feature/*]
     paths:
       - 'src/**'
       - 'tests/**'
