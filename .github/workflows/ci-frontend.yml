@@ -23,6 +23,7 @@ jobs:
   #     service-name: angular-ui
   #     working-directory: src/frontend/spider-control-web
   
+  # Build Angular UI Docker Image
   docker-angular-ui:
     needs: build-angular-ui
     uses: ./.github/workflows/reusable-docker-build.yml

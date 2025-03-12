@@ -9,13 +9,14 @@ on:
       - '.github/**'
 
 jobs:
-  # WebAPI v2
+  # Build Web API v2
   build-webapiv2:
     uses: ./.github/workflows/reusable-api-build.yml
     with:
       service-name: webapiv2
       project-path: src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj
   
+  # Test Web API v2
   test-webapiv2:
     needs: build-webapiv2
     uses: ./.github/workflows/reusable-api-test.yml
@@ -23,6 +24,7 @@ jobs:
       service-name: webapiv2
       test-project-path: tests/SpiderControl.WebApiV2.Tests/SpiderControl.WebApiV2.Tests.csproj
   
+  # Build Web API v2 Docker Image & Push
   docker-webapiv2:
     needs: test-webapiv2
     uses: ./.github/workflows/reusable-docker-build.yml
