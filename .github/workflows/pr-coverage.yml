@@ -2,12 +2,20 @@ name: PR Coverage Report
 
 on:
   workflow_run:
-    workflows: API CI Pipeline
-    types:
-      - completed
+    workflows: ["API CI Pipeline"]
+    types: [completed]
     branches: [main, develop, feature/*]
 
 jobs:
+  debug-trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug workflow trigger
+        run: |
+          echo "Workflow name: ${{ github.event.workflow.name }}"
+          echo "Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Source branch: ${{ github.event.workflow_run.head_branch }}"
+
   generate-coverage:
     runs-on: ubuntu-latest
     
