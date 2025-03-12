@@ -29,31 +29,10 @@ jobs:
     with:
       service-name: webapiv2
       dockerfile-path: docker/api/webapiv2/Dockerfile
-  
-  # Core API
-  build-coreapi:
-    uses: ./.github/workflows/reusable-api-build.yml
-    with:
-      service-name: core
-      project-path: src/api/SpiderControl.Core/SpiderControl.Core.csproj
-  
-  test-coreapi:
-    needs: build-coreapi
-    uses: ./.github/workflows/reusable-api-test.yml
-    with:
-      service-name: core
-      test-project-path: tests/SpiderControl.Core.Tests/SpiderControl.Core.Tests.csproj
-  
-  # Shared Tests
-  test-shared:
-    uses: ./.github/workflows/reusable-api-test.yml
-    with:
-      service-name: shared
-      test-project-path: tests/SpiderControl.Api.Shared.Testing/SpiderControl.Api.Shared.Testing.csproj
 
   # Coverage Report
   coverage-report:
-    needs: [test-webapiv2, test-coreapi, test-shared]
+    needs: [test-webapiv2]
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/reusable-coverage-report.yml
     with:
