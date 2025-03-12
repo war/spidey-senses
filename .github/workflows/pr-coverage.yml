@@ -2,7 +2,7 @@ name: PR Coverage Report
 
 on:
   workflow_run:
-    workflows: [".github/workflows/ci-backend.yml"]
+    workflows: ["*"]
     types: [completed]
 
 jobs:
