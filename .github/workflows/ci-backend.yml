@@ -10,32 +10,32 @@ on:
 
 jobs:
   # Build Web API v2
-  build-webapiv2:
+  build-web-api-v2:
     uses: ./.github/workflows/reusable-api-build.yml
     with:
-      service-name: webapiv2
+      service-name: web-api-v2
       project-path: src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj
   
   # Test Web API v2
-  test-webapiv2:
-    needs: build-webapiv2
+  test-web-api-v2:
+    needs: build-web-api-v2
     uses: ./.github/workflows/reusable-api-test.yml
     with:
-      service-name: webapiv2
+      service-name: web-api-v2
       test-project-path: tests/SpiderControl.WebApiV2.Tests/SpiderControl.WebApiV2.Tests.csproj
   
   # Build Web API v2 Docker Image & Push
-  docker-webapiv2:
-    needs: test-webapiv2
+  docker-web-api-v2:
+    needs: test-web-api-v2
     uses: ./.github/workflows/reusable-docker-build.yml
     with:
-      service-name: webapiv2
+      service-name: web-api-v2
       dockerfile-path: docker/api/web-api-v2/Dockerfile
 
   # Coverage Report
   coverage-report:
-    needs: [test-webapiv2]
+    needs: [test-web-api-v2]
     if: github.event_name == 'pull_request'
     uses: ./.github/workflows/reusable-coverage-report.yml
     with:
-      coverage-artifacts: webapiv2-coverage
+      coverage-artifacts: web-api-v2-coverage
