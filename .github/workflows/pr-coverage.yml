@@ -4,7 +4,6 @@ on:
   workflow_run:
     workflows: ["API CI Pipeline"]
     types: [completed]
-    branches: [main, develop, feature/*]
 
 jobs:
   debug-trigger:
