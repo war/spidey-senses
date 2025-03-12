@@ -2,9 +2,10 @@ name: PR Coverage Report
 
 on:
   workflow_run:
-    workflows: [API CI Pipeline]
-    types:
-      - completed
+    workflows:
+      - ".github/workflows/ci-backend.yml"
+      - ".github/workflows/ci-frontend.yml"
+    types: [completed]
 
 jobs:
   debug-trigger:
