@@ -11,11 +11,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
 
-  angular:
+  angular-js:
     build:
       context: .
-      dockerfile: docker/frontend/angular/Dockerfile
-    image: spidercontrol/angular:1.0.0
+      dockerfile: docker/frontend/angular-js/Dockerfile
+    image: spidercontrol/angular-js:1.0.0
     ports:
       - "4200:80"
     depends_on:
