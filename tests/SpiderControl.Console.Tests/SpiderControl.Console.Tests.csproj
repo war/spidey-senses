@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\backend\SpiderControl.Console\SpiderControl.Console.csproj" />
+    <ProjectReference Include="..\..\src\frontend\SpiderControl.Console\SpiderControl.Console.csproj" />
   </ItemGroup>
 
   <ItemGroup>
