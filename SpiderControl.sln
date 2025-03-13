@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.WebApiV2.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Application", "src\backend\SpiderControl.Application\SpiderControl.Application.csproj", "{F427361A-CD93-4C35-81E9-1DA97196B988}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Console", "src\backend\SpiderControl.Console\SpiderControl.Console.csproj", "{2AC6C3A6-1362-4501-A45D-9EA7B3877A24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Console", "src\frontend\SpiderControl.Console\SpiderControl.Console.csproj", "{2AC6C3A6-1362-4501-A45D-9EA7B3877A24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Core", "src\backend\SpiderControl.Core\SpiderControl.Core.csproj", "{A646CBCA-F909-42E0-AF00-ADA33F03D487}"
 EndProject

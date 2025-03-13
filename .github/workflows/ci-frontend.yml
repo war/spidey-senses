@@ -10,23 +10,23 @@ on:
 
 jobs:
   # Angular UI
-  build-angular-ui:
+  build-angular-js:
     uses: ./.github/workflows/reusable-nodejs-build.yml
     with:
-      service-name: angular-ui
-      working-directory: src/frontend/spider-control-web
+      service-name: angular-js
+      working-directory: src/frontend/angular-js
   
-  # test-angular-ui:
-  #   needs: build-angular-ui
+  # test-angular-js:
+  #   needs: build-angular-js
   #   uses: ./.github/workflows/reusable-nodejs-test.yml
   #   with:
-  #     service-name: angular-ui
-  #     working-directory: src/frontend/spider-control-web
+  #     service-name: angular-js
+  #     working-directory: src/frontend/angular-js
   
   # Build Angular UI Docker Image
-  docker-angular-ui:
-    needs: build-angular-ui
+  docker-angular-js:
+    needs: build-angular-js
     uses: ./.github/workflows/reusable-docker-build.yml
     with:
-      service-name: angular-ui
-      dockerfile-path: docker/frontend/angular/Dockerfile
+      service-name: angular-js
+      dockerfile-path: docker/frontend/angular-js/Dockerfile

@@ -7,7 +7,7 @@
 !src/backend/SpiderControl.Application/
 !src/backend/SpiderControl.Core/
 !src/backend/SpiderControl.Console/
-!src/frontend/spider-control-web/
+!src/frontend/angular-js/
 
 # Angular
 **/node_modules/
