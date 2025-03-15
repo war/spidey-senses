@@ -23,6 +23,8 @@ jobs:
     with:
       service-name: web-api-v2
       test-project-path: tests/SpiderControl.WebApiV2.Tests/SpiderControl.WebApiV2.Tests.csproj
+    secrets:
+      REPORTGENERATOR_LICENSE: ${{ secrets.REPORTGENERATOR_LICENSE }}
   
   # Build Web API v2 Docker Image & Push
   docker-web-api-v2:

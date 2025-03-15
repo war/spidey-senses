@@ -17,6 +17,8 @@ jobs:
       report-title: "SpiderControl PR Coverage Report"
       deploy-to-pages: true
       comment-on-pr: true
+    secrets:
+      REPORTGENERATOR_LICENSE: ${{ secrets.REPORTGENERATOR_LICENSE }}
 
   # Add check that fails if coverage is below threshold
   coverage-check:

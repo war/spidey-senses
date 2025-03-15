@@ -2,6 +2,9 @@ name: Reusable DotNet Test
 
 on:
   workflow_call:
+    secrets:
+      REPORTGENERATOR_LICENSE:
+        required: true
     inputs:
       service-name:
         required: true

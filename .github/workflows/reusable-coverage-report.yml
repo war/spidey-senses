@@ -2,6 +2,9 @@ name: Reusable Coverage Report
 
 on:
   workflow_call:
+    secrets:
+      REPORTGENERATOR_LICENSE:
+        required: true
     inputs:
       coverage-artifacts:
         required: true
