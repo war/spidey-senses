@@ -58,6 +58,7 @@ jobs:
       
       - name: Generate coverage report
         run: |
+          echo "Running ReportGenerator with license parameter"
           reportgenerator \
             -reports:"${{ steps.coverage.outputs.file }}" \
             -targetdir:"./coverage-report/${{ inputs.service-name }}" \
