@@ -1,8 +1,8 @@
 # Summary
 |||
 |:---|:---|
-| Generated on: | 03/13/2025 - 18:35:23 |
-| Coverage date: | 03/13/2025 - 18:35:13 - 03/13/2025 - 18:35:21 |
+| Generated on: | 03/15/2025 - 09:59:34 |
+| Coverage date: | 03/15/2025 - 09:59:23 - 03/15/2025 - 09:59:32 |
 | Parser: | MultiReport (4x Cobertura) |
 | Assemblies: | 6 |
 | Classes: | 49 |
@@ -11,7 +11,7 @@
 | Covered lines: | 680 |
 | Uncovered lines: | 131 |
 | Coverable lines: | 811 |
-| Total lines: | 1531 |
+| Total lines: | 1530 |
 | **Branch coverage:** | 77.4% (127 of 164) |
 | Covered branches: | 127 |
 | Total branches: | 164 |
@@ -67,10 +67,10 @@
 |SpiderControl.Core.Validators.SpiderModelValidator|12|0|12|22|100%|0|0||
 |SpiderControl.Core.Validators.SpiderPositionValidator|10|0|10|22|100%|1|2|50%|
 |SpiderControl.Core.Validators.WallModelValidator|9|0|9|18|100%|0|0||
-|**SpiderControl.WebApiV2**|**207**|**39**|**246**|**429**|**84.1%**|**20**|**34**|**58.8%**|
+|**SpiderControl.WebApiV2**|**207**|**39**|**246**|**428**|**84.1%**|**20**|**34**|**58.8%**|
 |SpiderControl.WebApiV2.Features.Api.ApiController|64|0|64|118|100%|2|4|50%|
 |SpiderControl.WebApiV2.Features.Health.HealthController|23|0|23|55|100%|2|4|50%|
-|SpiderControl.WebApiV2.Features.Spider.SpiderController|41|14|55|102|74.5%|14|18|77.7%|
+|SpiderControl.WebApiV2.Features.Spider.SpiderController|41|14|55|101|74.5%|14|18|77.7%|
 |SpiderControl.WebApiV2.Middleware.ErrorResponse|1|0|1|3|100%|0|0||
 |SpiderControl.WebApiV2.Middleware.ExceptionHandlingMiddleware|10|22|32|50|31.2%|0|6|0%|
 |SpiderControl.WebApiV2.Program|68|3|71|101|95.7%|2|2|100%|
