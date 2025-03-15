@@ -1,8 +1,8 @@
 # Summary - SpiderControl PR Coverage Report
 |||
 |:---|:---|
-| Generated on: | 03/15/2025 - 12:46:42 |
-| Coverage date: | 03/15/2025 - 12:46:31 - 03/15/2025 - 12:46:39 |
+| Generated on: | 03/15/2025 - 12:54:02 |
+| Coverage date: | 03/15/2025 - 12:53:51 - 03/15/2025 - 12:53:59 |
 | Parser: | MultiReport (4x Cobertura) |
 | Assemblies: | 6 |
 | Classes: | 49 |
