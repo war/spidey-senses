@@ -52,6 +52,9 @@ jobs:
         with:
           dotnet-version: 9.0.x
           dotnet-quality: 'ga'
+    
+      - name: Test with coverage
+        run: dotnet test --collect:"XPlat Code Coverage"
       
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
