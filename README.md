@@ -68,10 +68,12 @@ SpiderControl/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - .NET 9.0 SDK or later
 - Editor (Visual Studio 2022, VS Code, Rider, etc)
 
 ### Building the Project
+
 ```bash
 # Clone the repository
 git clone https://github.com/war/spidey-senses.git
@@ -155,6 +157,7 @@ Key testing patterns used:
 ## 🛠️ Technical Highlights
 
 ### Tech Stack
+
 | Backend | Frontend | Testing & QA | DevOps |
 |---------|----------|--------------|--------|
 | **.NET 9** - Latest runtime | **Angular** - SPA framework | **xUnit** - Testing framework | **Docker** - Containerization |
@@ -163,6 +166,7 @@ Key testing patterns used:
 | **FluentValidation** - Validation | **Responsive Design** - All devices | **98% Code Coverage** - Quality | **Metrics Collection** - Performance |
 
 ### Patterns & Principles
+
 - Command Pattern for executing spider movements
 - Result Pattern for elegant error handling
 - Dependency Injection throughout
@@ -170,6 +174,7 @@ Key testing patterns used:
 - Clean Architecture
 
 ### Technologies
+
 - .NET 9.0 (C# 13)
 - ASP.NET Core for the Web API
 - Swagger/OpenAPI for API documentation
@@ -179,6 +184,7 @@ Key testing patterns used:
 - Health checks for monitoring
 
 ### Architecture Decisions
+
 - Feature-based folder organization
 - Middleware for centralized error handling
 - Versioned API endpoints
