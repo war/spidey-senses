@@ -31,9 +31,6 @@ on:
       coverage-file:
         description: "Path to the generated coverage file"
         value: ${{ jobs.test.outputs.coverage-file }}
-      coverage-percentage:
-        description: "Code coverage percentage for this service"
-        value: ${{ jobs.test.outputs.coverage-percentage }}
 
 jobs:
   test:
@@ -41,7 +38,6 @@ jobs:
     outputs:
       success: ${{ steps.status.outputs.success }}
       coverage-file: ${{ steps.coverage.outputs.file }}
-      coverage-percentage: ${{ steps.extract-coverage.outputs.percentage }}
     
     steps:
       - name: Checkout code

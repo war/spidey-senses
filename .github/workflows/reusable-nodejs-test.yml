@@ -28,9 +28,6 @@ on:
       coverage-file:
         description: "Path to the generated coverage file"
         value: ${{ jobs.test.outputs.coverage-file }}
-      coverage-percentage:
-        description: "Code coverage percentage for this service"
-        value: ${{ jobs.test.outputs.coverage-percentage }}
 
 jobs:
   test:
@@ -38,7 +35,6 @@ jobs:
     outputs:
       success: ${{ steps.status.outputs.success }}
       coverage-file: ${{ steps.coverage.outputs.file }}
-      coverage-percentage: ${{ steps.extract-coverage.outputs.percentage }}
     
     steps:
       - name: Checkout code
@@ -88,14 +84,6 @@ jobs:
         run: |
           echo "# ${{ inputs.service-name }} Coverage Summary" > ./coverage-report/summary.md
           npx nyc report --reporter=text-summary | tee -a ./coverage-report/summary.md
-      
-      - name: Extract coverage percentage
-        id: extract-coverage
-        working-directory: ${{ inputs.working-directory }}
-        run: |
-          # Extract percentage from nyc text-summary
-          PERCENTAGE=$(npx nyc report --reporter=text-summary | grep "All files" | awk '{print $3}' | tr -d '%')
-          echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
       
       - name: Set output status
         id: status
