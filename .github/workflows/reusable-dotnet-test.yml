@@ -85,17 +85,6 @@ jobs:
             -title:"${{ inputs.service-name }} Coverage Report" \
             -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
       
-      - name: Extract coverage percentage
-        id: extract-coverage
-        if: inputs.generate-individual-report
-        run: |
-          if [ -f "./coverage-report/${{ inputs.service-name }}/Summary.json" ]; then
-            PERCENTAGE=$(grep -o '"lineCoverage":[0-9.]*' ./coverage-report/${{ inputs.service-name }}/Summary.json | cut -d':' -f2)
-            echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
-          else
-            echo "percentage=0" >> $GITHUB_OUTPUT
-          fi
-      
       - name: Set output status
         id: status
         run: echo "success=true" >> $GITHUB_OUTPUT

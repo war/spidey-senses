@@ -25,10 +25,6 @@ on:
         type: boolean
         default: true
         description: "Whether to add a comment to the PR with the coverage summary"
-    outputs:
-      coverage-percentage:
-        description: "Overall code coverage percentage"
-        value: ${{ jobs.generate-report.outputs.coverage-percentage }}
     
 jobs:
   generate-report:
@@ -71,16 +67,6 @@ jobs:
             -reporttypes:"Html,MarkdownSummary,JsonSummary,Badges" \
             -title:"${{ inputs.report-title }}" \
             -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
-      
-      - name: Extract coverage percentage
-        id: extract-coverage
-        run: |
-          if [ -f "./combined-coverage/Summary.json" ]; then
-            PERCENTAGE=$(grep -o '"lineCoverage":[0-9.]*' ./combined-coverage/Summary.json | cut -d':' -f2)
-            echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
-          else
-            echo "percentage=0" >> $GITHUB_OUTPUT
-          fi
       
       - name: Add coverage PR comment
         if: inputs.comment-on-pr && github.event_name == 'pull_request'

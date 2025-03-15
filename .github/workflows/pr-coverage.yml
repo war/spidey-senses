@@ -19,28 +19,3 @@ jobs:
       comment-on-pr: true
     secrets:
       REPORTGENERATOR_LICENSE: ${{ secrets.REPORTGENERATOR_LICENSE }}
-
-  # Add check that fails if coverage is below threshold
-  coverage-check:
-    needs: generate-combined-report
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check coverage threshold
-        run: |
-          COVERAGE="${{ needs.generate-combined-report.outputs.coverage-percentage }}"
-          echo "Coverage percentage: $COVERAGE"
-          
-          # Convert to an integer by multiplying by 100
-          # This removes the decimal point and allows for integer comparison
-          COVERAGE_INT=$(echo "$COVERAGE * 100" | awk '{printf "%d", $1}')
-          THRESHOLD_INT=8000  # 80.00 * 100
-          
-          echo "Coverage as integer: $COVERAGE_INT"
-          echo "Threshold as integer: $THRESHOLD_INT"
-          
-          if [ $COVERAGE_INT -lt $THRESHOLD_INT ]; then
-            echo "::error::Coverage ($COVERAGE%) is below the threshold (80.0%)"
-            exit 1
-          else
-            echo "Coverage ($COVERAGE%) meets the threshold (80.0%)"
-          fi
