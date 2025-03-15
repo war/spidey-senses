@@ -2,13 +2,8 @@ name: PR Coverage Report
 
 on:
   workflow_run:
-    workflows: ["API CI Pipeline"]
-    types:
-      - completed
-    branches:
-      - 'feature/*'
-      - 'main'
-      - 'develop'
+    workflows: [API CI Pipeline]
+    types: [completed]
 
 jobs:
   # Generate combined coverage report
