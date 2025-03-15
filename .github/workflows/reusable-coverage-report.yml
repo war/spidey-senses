@@ -2,11 +2,29 @@ name: Reusable Coverage Report
 
 on:
   workflow_call:
+    secrets:
+      REPORTGENERATOR_LICENSE:
+        required: true
     inputs:
       coverage-artifacts:
         required: true
         type: string
         description: "Comma-separated list of coverage artifact names to download"
+      report-title:
+        required: false
+        type: string
+        default: "Code Coverage Report"
+        description: "Title for the coverage report"
+      deploy-to-pages:
+        required: false
+        type: boolean
+        default: false
+        description: "Whether to deploy the report to GitHub Pages"
+      comment-on-pr:
+        required: false
+        type: boolean
+        default: true
+        description: "Whether to add a comment to the PR with the coverage summary"
     
 jobs:
   generate-report:
@@ -23,27 +41,48 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./coverage-reports
-          pattern: "*-coverage"
+          pattern: ${{ inputs.coverage-artifacts }}
           merge-multiple: true
       
-      - name: Prepare coverage report
-        id: prepare-report
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+          dotnet-quality: 'ga'
+    
+      - name: Test with coverage
+        run: dotnet test --collect:"XPlat Code Coverage"
+      
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+      
+      - name: Generate combined coverage report
         run: |
-          echo "# Code Coverage Summary" > coverage-summary.md
-          echo "## Summary by Service" >> coverage-summary.md
-          
-          # Find and concatenate all summary files
-          find ./coverage-reports -name "summary.md" -o -name "Summary.md" | while read file; do
-            echo "" >> coverage-summary.md
-            cat "$file" >> coverage-summary.md
-          done
-          
-          echo "report-content<<EOF" >> $GITHUB_OUTPUT
-          cat coverage-summary.md >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "Running ReportGenerator with license parameter"
+          reportgenerator \
+            -reports:"**/coverage.cobertura.xml" \
+            -targetdir:"./combined-coverage" \
+            -reporttypes:"Html,MarkdownSummary,JsonSummary,Badges" \
+            -title:"${{ inputs.report-title }}" \
+            -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
       
       - name: Add coverage PR comment
+        if: inputs.comment-on-pr && github.event_name == 'pull_request'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           recreate: true
-          message: ${{ steps.prepare-report.outputs.report-content }}
+          path: ./combined-coverage/Summary.md
+      
+      - name: Upload combined coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: combined-coverage-report
+          path: ./combined-coverage
+          retention-days: 14
+      
+      - name: Deploy to GitHub Pages
+        if: inputs.deploy-to-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./combined-coverage

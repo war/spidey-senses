@@ -2,57 +2,20 @@ name: PR Coverage Report
 
 on:
   pull_request:
-    branches: [main, develop, feature/*]
+    branches: [main, develop, feature/**]
     types:
       - opened
       - synchronize 
       - reopened
 
 jobs:
-  generate-coverage:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
-        dotnet-quality: 'ga'
-    
-    - name: Restore dependencies
-      run: dotnet restore src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj
-    
-    - name: Build
-      run: dotnet build src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj --no-restore --configuration Release
-    
-    - name: Test with coverage
-      run: dotnet test --collect:"XPlat Code Coverage"
-      
-    - name: Install ReportGenerator
-      run: dotnet tool install -g dotnet-reportgenerator-globaltool
-      
-    - name: Generate coverage report
-      run: reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Html,MarkdownSummary
-      
-    - name: Upload coverage report artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage-report
-        retention-days: 7
-
-    - name: Add coverage PR comment
-      if: github.event_name == 'pull_request'
-      uses: marocchino/sticky-pull-request-comment@v2
-      with:
-        recreate: true
-        path: ./coverage-report/Summary.md
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./coverage-report
+  # Generate combined coverage report
+  generate-combined-report:
+    uses: ./.github/workflows/reusable-coverage-report.yml
+    with:
+      coverage-artifacts: "*-coverage-data"
+      report-title: "SpiderControl PR Coverage Report"
+      deploy-to-pages: true
+      comment-on-pr: true
+    secrets:
+      REPORTGENERATOR_LICENSE: ${{ secrets.REPORTGENERATOR_LICENSE }}

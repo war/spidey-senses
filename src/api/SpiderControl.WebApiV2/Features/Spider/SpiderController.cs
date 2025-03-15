@@ -38,7 +38,6 @@ public class SpiderController : ControllerBase
         try
         {
             // TODO: maybe use fluent validation here
-            // basic validation - missing required fields
             if (string.IsNullOrWhiteSpace(request.WallInput) ||
                 string.IsNullOrWhiteSpace(request.SpiderInput) ||
                 string.IsNullOrWhiteSpace(request.CommandInput))
