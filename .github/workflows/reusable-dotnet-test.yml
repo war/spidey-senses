@@ -58,11 +58,12 @@ jobs:
           "-license:${{ secrets.REPORTGENERATOR_LICENSE }}"
       
       - name: Generate coverage report
-        run: reportgenerator  \
-          "-reports:${{ steps.coverage.outputs.file }}" \
-          "-targetdir:./coverage-report/${{ inputs.service-name }}" \
-          "-reporttypes:Html,Markdown" \
-          "-license:${{ secrets.REPORTGENERATOR_LICENSE }}"
+        run: |
+          reportgenerator \
+            "-reports:${{ steps.coverage.outputs.file }}" \
+            "-targetdir:./coverage-report/${{ inputs.service-name }}" \
+            "-reporttypes:Html,Markdown" \
+            "-license:${{ secrets.REPORTGENERATOR_LICENSE }}"
       
       - name: Set output status
         id: status
