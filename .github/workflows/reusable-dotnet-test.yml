@@ -54,10 +54,15 @@ jobs:
           echo "file=$COVERAGE_FILE" >> $GITHUB_OUTPUT
           
       - name: Install ReportGenerator tool
-        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool 
+          "-license:${{ secrets.REPORTGENERATOR_LICENSE }}"
       
       - name: Generate coverage report
-        run: reportgenerator -reports:${{ steps.coverage.outputs.file }} -targetdir:./coverage-report/${{ inputs.service-name }} -reporttypes:Html,MarkdownSummary
+        run: reportgenerator  \
+          "-reports:${{ steps.coverage.outputs.file }}" \
+          "-targetdir:./coverage-report/${{ inputs.service-name }}" \
+          "-reporttypes:Html,Markdown" \
+          "-license:${{ secrets.REPORTGENERATOR_LICENSE }}"
       
       - name: Set output status
         id: status
