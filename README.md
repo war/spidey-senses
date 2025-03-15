@@ -1,6 +1,6 @@
 ﻿# 🕷️ Robot Spiders Control System
 
-[![.NET](https://img.shields.io/badge/.NET-9-512BD4.svg)](https://dotnet.microsoft.com/download)
+[![.NET](https://img.shields.io/badge/.NET-9.0-512BD4.svg)](https://dotnet.microsoft.com/download)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-blue.svg)](https://github.com/features/actions)
 [![API Documentation](https://img.shields.io/badge/API-Documented-brightgreen.svg)](https://swagger.io/)
 
