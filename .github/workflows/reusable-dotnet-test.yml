@@ -61,7 +61,7 @@ jobs:
           reportgenerator \
             "-reports:${{ steps.coverage.outputs.file }}" \
             "-targetdir:./coverage-report/${{ inputs.service-name }}" \
-            "-reporttypes:Html,Markdown" \
+            "-reporttypes:Html,MarkdownSummary" \
             "-license:${{ secrets.REPORTGENERATOR_LICENSE }}"
       
       - name: Set output status
