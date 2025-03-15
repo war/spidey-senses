@@ -2,9 +2,6 @@ name: Reusable Coverage Report
 
 on:
   workflow_call:
-    secrets:
-      REPORTGENERATOR_LICENSE:
-        required: true
     inputs:
       coverage-artifacts:
         required: true
@@ -25,16 +22,13 @@ on:
         type: boolean
         default: true
         description: "Whether to add a comment to the PR with the coverage summary"
-    outputs:
-      coverage-percentage:
-        description: "Overall code coverage percentage"
-        value: ${{ jobs.generate-report.outputs.coverage-percentage }}
+    secrets:
+      REPORTGENERATOR_LICENSE:
+        required: true
     
 jobs:
   generate-report:
     runs-on: ubuntu-latest
-    outputs:
-      coverage-percentage: ${{ steps.extract-coverage.outputs.percentage }}
     
     steps:
       - name: Checkout code
@@ -55,9 +49,6 @@ jobs:
         with:
           dotnet-version: 9.0.x
           dotnet-quality: 'ga'
-    
-      - name: Test with coverage
-        run: dotnet test --collect:"XPlat Code Coverage"
       
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
