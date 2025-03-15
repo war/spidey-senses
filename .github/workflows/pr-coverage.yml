@@ -28,11 +28,19 @@ jobs:
       - name: Check coverage threshold
         run: |
           COVERAGE="${{ needs.generate-combined-report.outputs.coverage-percentage }}"
-          THRESHOLD=80.0
+          echo "Coverage percentage: $COVERAGE"
           
-          if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
-            echo "::error::Coverage ($COVERAGE%) is below the threshold ($THRESHOLD%)"
+          # Convert to an integer by multiplying by 100
+          # This removes the decimal point and allows for integer comparison
+          COVERAGE_INT=$(echo "$COVERAGE * 100" | awk '{printf "%d", $1}')
+          THRESHOLD_INT=8000  # 80.00 * 100
+          
+          echo "Coverage as integer: $COVERAGE_INT"
+          echo "Threshold as integer: $THRESHOLD_INT"
+          
+          if [ $COVERAGE_INT -lt $THRESHOLD_INT ]; then
+            echo "::error::Coverage ($COVERAGE%) is below the threshold (80.0%)"
             exit 1
           else
-            echo "Coverage ($COVERAGE%) meets the threshold ($THRESHOLD%)"
+            echo "Coverage ($COVERAGE%) meets the threshold (80.0%)"
           fi
