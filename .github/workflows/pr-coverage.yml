@@ -39,7 +39,7 @@ jobs:
         reportgenerator \
         -reports:"**/coverage.cobertura.xml" \
         -targetdir:"coverage-report" \
-        -reporttypes:Html,MarkdownSummary \
+        -reporttypes:"Html,MarkdownSummary" \
         -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
       
     - name: Upload coverage report artifact
