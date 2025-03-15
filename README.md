@@ -3,6 +3,7 @@
 [![.NET](https://img.shields.io/badge/.NET-9.0-512BD4.svg)](https://dotnet.microsoft.com/download)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-blue.svg)](https://github.com/features/actions)
 [![API Documentation](https://img.shields.io/badge/API-Documented-brightgreen.svg)](https://swagger.io/)
+[![Code Coverage](https://war.github.io/spidey-senses/coverage.svg)](https://github.com/war/spidey-senses/)
 
 A robust, production-ready system for controlling robotic spiders that explore micro fractures on building walls. This project follows clean architecture principles and includes extensive test coverage.
 

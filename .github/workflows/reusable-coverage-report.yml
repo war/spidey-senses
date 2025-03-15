@@ -86,3 +86,17 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./combined-coverage
+
+      - name: Copy badge to gh-pages
+        #if: github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p badge
+          cp ./combined-coverage/badge_shieldsio_branchcoverage_blue.svg badge/coverage.svg
+        
+      - name: Upload badge to gh-pages
+        # Deploy badge to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./badge
+          keep_files: true
