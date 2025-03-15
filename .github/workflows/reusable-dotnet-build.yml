@@ -35,6 +35,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ inputs.dotnet-version }}
+          dotnet-quality: 'ga'
       
       - name: Restore dependencies
         run: dotnet restore ${{ inputs.project-path }}
