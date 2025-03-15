@@ -91,7 +91,7 @@ jobs:
         #if: github.ref == 'refs/heads/main'
         run: |
           mkdir -p badge
-          cp ./combined-coverage/badge_shieldsio_branchcoverage_blue.svg badge/coverage.svg
+          cp ./combined-coverage/badge_shieldsio_methodcoverage_blue.svg badge/coverage.svg
         
       - name: Upload badge to gh-pages
         # Deploy badge to gh-pages
