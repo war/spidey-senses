@@ -1,4 +1,4 @@
-name: Reusable Frontend Build
+name: Reusable NodeJs Build
 
 on:
   workflow_call:
@@ -6,7 +6,7 @@ on:
       service-name:
         required: true
         type: string
-        description: "Name of the frontend service"
+        description: "Name of the NodeJs service"
       working-directory:
         required: true
         type: string

@@ -1,4 +1,4 @@
-name: Reusable Frontend Test
+name: Reusable NodeJs Test
 
 on:
   workflow_call:
@@ -16,6 +16,11 @@ on:
         type: string
         default: "22.x"
         description: "Version of Node.js to use"
+      convert-to-cobertura:
+        required: false
+        type: boolean
+        default: true
+        description: "Whether to convert coverage to Cobertura format for unified reporting"
     outputs:
       test-success:
         description: "Indicates if the tests were successful"
@@ -23,6 +28,9 @@ on:
       coverage-file:
         description: "Path to the generated coverage file"
         value: ${{ jobs.test.outputs.coverage-file }}
+      coverage-percentage:
+        description: "Code coverage percentage for this service"
+        value: ${{ jobs.test.outputs.coverage-percentage }}
 
 jobs:
   test:
@@ -30,6 +38,7 @@ jobs:
     outputs:
       success: ${{ steps.status.outputs.success }}
       coverage-file: ${{ steps.coverage.outputs.file }}
+      coverage-percentage: ${{ steps.extract-coverage.outputs.percentage }}
     
     steps:
       - name: Checkout code
@@ -57,6 +66,19 @@ jobs:
           COVERAGE_FILE=$(find ./coverage -name "coverage-final.json" | head -1)
           echo "file=$COVERAGE_FILE" >> $GITHUB_OUTPUT
       
+      - name: Convert to Cobertura format
+        if: inputs.convert-to-cobertura
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          # Install converter if needed
+          npm install -g istanbul-cobertura-converter
+          
+          # Convert JSON coverage to Cobertura XML
+          istanbul-cobertura-converter -i $(basename ${{ steps.coverage.outputs.file }}) -o coverage.cobertura.xml --path ./coverage
+          
+          # Update the coverage file output
+          echo "file=$(pwd)/coverage/coverage.cobertura.xml" >> $GITHUB_OUTPUT
+      
       - name: Generate HTML report
         working-directory: ${{ inputs.working-directory }}
         run: npx nyc report --reporter=html --report-dir=./coverage-report
@@ -67,13 +89,29 @@ jobs:
           echo "# ${{ inputs.service-name }} Coverage Summary" > ./coverage-report/summary.md
           npx nyc report --reporter=text-summary | tee -a ./coverage-report/summary.md
       
+      - name: Extract coverage percentage
+        id: extract-coverage
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          # Extract percentage from nyc text-summary
+          PERCENTAGE=$(npx nyc report --reporter=text-summary | grep "All files" | awk '{print $3}' | tr -d '%')
+          echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
+      
       - name: Set output status
         id: status
         run: echo "success=true" >> $GITHUB_OUTPUT
       
+      - name: Upload coverage data
+        if: inputs.convert-to-cobertura
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.service-name }}-coverage-data
+          path: ${{ steps.coverage.outputs.file }}
+          retention-days: 1
+      
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.service-name }}-coverage
+          name: ${{ inputs.service-name }}-coverage-report
           path: ${{ inputs.working-directory }}/coverage-report
           retention-days: 1

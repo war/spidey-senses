@@ -1,4 +1,4 @@
-name: Reusable API Build
+name: Reusable DotNet Build
 
 on:
   workflow_call:
