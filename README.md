@@ -246,4 +246,4 @@ The project uses GitHub Actions for CI/CD with the following workflow:
 
 ## 👤 Author
 
-war - [GitHub](https://github.com/war) - [LinkedIn]
+war - [GitHub](https://github.com/war) - [LinkedIn](https://github.com/war/spidey-senses)
