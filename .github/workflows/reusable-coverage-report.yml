@@ -34,8 +34,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Create artifacts directory
-        run: mkdir -p ./coverage-reports
+      - name: Create artifacts directory & badges dir
+        run: |
+          mkdir -p ./coverage-reports
+          mkdir -p ./combined-coverage/badge
       
       - name: Download coverage artifacts
         uses: actions/download-artifact@v4
@@ -65,7 +67,9 @@ jobs:
             -reporttypes:"Html,MarkdownSummary,JsonSummary,Badges" \
             -title:"${{ inputs.report-title }}" \
             -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
-          mkdir -p ./combined-coverage/badge
+
+      - name: Copy badge from coverage report to badge dir
+        run: |
           cp ./combined-coverage/badge_shieldsio_methodcoverage_blue.svg badge/coverage.svg
       
       - name: Add coverage PR comment
