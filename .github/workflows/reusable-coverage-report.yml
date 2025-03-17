@@ -68,6 +68,10 @@ jobs:
             -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
           rm ./combined-coverage/index.htm
 
+      - name: Add CSS fix for Firefox
+        run: |
+          sed -i '/<\/head>/i <style>.overview.table-fixed { table-layout: inherit !important; }<\/style>' ./combined-coverage/index.html
+
       - name: Copy badge from coverage report to badge dir
         run: |
           mkdir -p ./combined-coverage/badge
