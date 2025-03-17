@@ -1,15 +1,15 @@
 # Summary - SpiderControl PR Coverage Report
 |||
 |:---|:---|
-| Generated on: | 03/17/2025 - 12:44:51 |
-| Coverage date: | 03/17/2025 - 12:44:40 - 03/17/2025 - 12:44:49 |
+| Generated on: | 03/17/2025 - 14:29:42 |
+| Coverage date: | 03/17/2025 - 14:29:31 - 03/17/2025 - 14:29:39 |
 | Parser: | MultiReport (4x Cobertura) |
 | Assemblies: | 6 |
 | Classes: | 49 |
 | Files: | 46 |
-| **Line coverage:** | 83.8% (680 of 811) |
-| Covered lines: | 680 |
-| Uncovered lines: | 131 |
+| **Line coverage:** | 84.2% (683 of 811) |
+| Covered lines: | 683 |
+| Uncovered lines: | 128 |
 | Coverable lines: | 811 |
 | Total lines: | 1530 |
 | **Branch coverage:** | 77.4% (127 of 164) |
@@ -71,10 +71,10 @@
 |SpiderControl.Core.Validators.SpiderModelValidator|12|0|12|22|100%|0|0||1|1|100%|0%|
 |SpiderControl.Core.Validators.SpiderPositionValidator|10|0|10|22|100%|1|2|50%|1|1|100%|0%|
 |SpiderControl.Core.Validators.WallModelValidator|9|0|9|18|100%|0|0||1|1|100%|0%|
-|**SpiderControl.WebApiV2**|**207**|**39**|**246**|**428**|**84.1%**|**20**|**34**|**58.8%**|**20**|**21**|**95.2%**|**38%**|
+|**SpiderControl.WebApiV2**|**210**|**36**|**246**|**428**|**85.3%**|**20**|**34**|**58.8%**|**20**|**21**|**95.2%**|**38%**|
 |SpiderControl.WebApiV2.Features.Api.ApiController|64|0|64|118|100%|2|4|50%|8|8|100%|37.5%|
 |SpiderControl.WebApiV2.Features.Health.HealthController|23|0|23|55|100%|2|4|50%|4|4|100%|50%|
 |SpiderControl.WebApiV2.Features.Spider.SpiderController|41|14|55|101|74.5%|14|18|77.7%|2|2|100%|50%|
 |SpiderControl.WebApiV2.Middleware.ErrorResponse|1|0|1|3|100%|0|0||1|1|100%|100%|
 |SpiderControl.WebApiV2.Middleware.ExceptionHandlingMiddleware|10|22|32|50|31.2%|0|6|0%|2|3|66.6%|33.3%|
-|SpiderControl.WebApiV2.Program|68|3|71|101|95.7%|2|2|100%|3|3|100%|0%|
+|SpiderControl.WebApiV2.Program|71|0|71|101|100%|2|2|100%|3|3|100%|0%|
