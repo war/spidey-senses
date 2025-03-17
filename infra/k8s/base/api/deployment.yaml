@@ -27,7 +27,7 @@ spec:
             memory: "128Mi"
         readinessProbe:
           httpGet:
-            path: /health
+            path: /api/ping
             port: 8080
           initialDelaySeconds: 15
           periodSeconds: 10
