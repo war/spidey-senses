@@ -7,6 +7,7 @@ on:
       - 'src/frontend/**'
       - 'tests/**'
       - '.github/**'
+      - 'infra/**'
 
 jobs:
   # Angular UI

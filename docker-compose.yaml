@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: docker/api/web-api-v2/Dockerfile
-    image: spidercontrol/web-api-v2:1.0.0
+    image: spidey-senses/web-api-v2:1.0.0
     ports:
       - "8080:80"
       - "8443:443"
@@ -15,7 +15,7 @@ services:
     build:
       context: .
       dockerfile: docker/frontend/angular-js/Dockerfile
-    image: spidercontrol/angular-js:1.0.0
+    image: spidey-senses/angular-js:1.0.0
     ports:
       - "4200:80"
     depends_on:
