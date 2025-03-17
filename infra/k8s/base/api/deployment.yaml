@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: spidey-senses
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: ghcr.io/war/spidey-senses/web-api-v2
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+        readinessProbe:
+          httpGet:
+            path: /api/ping
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"

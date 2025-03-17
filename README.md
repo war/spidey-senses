@@ -1,9 +1,9 @@
 ﻿# 🕷️ Robot Spiders Control System
 
 [![.NET](https://img.shields.io/badge/.NET-9.0-512BD4.svg)](https://dotnet.microsoft.com/download)
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-blue.svg)](https://github.com/features/actions)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-blue.svg)](https://github.com/war/spidey-senses/actions)
 [![API Documentation](https://img.shields.io/badge/API-Documented-brightgreen.svg)](https://swagger.io/)
-[![Code Coverage](https://war.github.io/spidey-senses/coverage.svg)](https://github.com/war/spidey-senses/)
+[![Code Coverage](https://war.github.io/spidey-senses/badge/coverage.svg)](https://war.github.io/spidey-senses/)
 
 A robust, production-ready system for controlling robotic spiders that explore micro fractures on building walls. This project follows clean architecture principles and includes extensive test coverage.
 
@@ -58,6 +58,11 @@ SpiderControl/
 │       ├── modules/                    # Reusable infrastructure components
 │       ├── environments/               # Environment configurations
 │       └── ci/                         # CI/CD infrastructure
+│
+├── scripts/                            # Infrastructure as Code
+│   ├── docker/                         # Docker scripts
+│   ├── k8s/                            # Kubernetes scripts
+│   └── terraform/                      # Terraform scripts
 │
 ├── .dockerignore                       # Docker ignore file
 ├── .gitignore                          # Git ignore file
@@ -161,7 +166,7 @@ Key testing patterns used:
 
 | Backend | Frontend | Testing & QA | DevOps |
 |---------|----------|--------------|--------|
-| **.NET 9** - Latest runtime | **Angular** - SPA framework | **xUnit** - Testing framework | **Docker** - Containerization |
+| **.NET 9** Runtime | **Angular** - SPA framework | **xUnit** - Testing framework | **Docker** - Containerization |
 | **ASP.NET Core** - Web API | **TypeScript** - Type-safe JS | **Moq** - Mocking framework | **CI/CD Pipeline** - Automation |
 | **MediatR** - CQRS pattern | **TailwindCSS** - UI styling | **GitHub Actions** - CI | **Health Monitoring** - Production |
 | **FluentValidation** - Validation | **Responsive Design** - All devices | **98% Code Coverage** - Quality | **Metrics Collection** - Performance |
@@ -246,4 +251,4 @@ The project uses GitHub Actions for CI/CD with the following workflow:
 
 ## 👤 Author
 
-war - [GitHub](https://github.com/war) - [LinkedIn]
+war - [GitHub](https://github.com/war) - [LinkedIn](https://github.com/war/spidey-senses)

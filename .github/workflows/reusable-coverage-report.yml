@@ -35,7 +35,8 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Create artifacts directory
-        run: mkdir -p ./coverage-reports
+        run: |
+          mkdir -p ./coverage-reports
       
       - name: Download coverage artifacts
         uses: actions/download-artifact@v4
@@ -62,9 +63,21 @@ jobs:
           reportgenerator \
             -reports:"**/coverage.cobertura.xml" \
             -targetdir:"./combined-coverage" \
-            -reporttypes:"Html,MarkdownSummary,JsonSummary,Badges" \
+            -reporttypes:"Html,MarkdownSummary,Badges" \
             -title:"${{ inputs.report-title }}" \
             -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
+          rm ./combined-coverage/index.htm
+
+      - name: Add CSS fix for Firefox
+        run: |
+          sed -i '/<\/head>/i <style>table.overview.table-fixed.stripped tbody tr th:first-child { width: 602px; min-width: 602px; }<\/style>' ./combined-coverage/index.html
+          sed -i '/<\/head>/i <style>.overview.table-fixed { table-layout: inherit !important; }<\/style>' ./combined-coverage/index.html
+          sed -i '/<\/head>/i <style>.overview.table-fixed .column-min-200 { width: 602px; }<\/style>' ./combined-coverage/index.html
+
+      - name: Copy badge from coverage report to badge dir
+        run: |
+          mkdir -p ./combined-coverage/badge
+          cp ./combined-coverage/badge_shieldsio_methodcoverage_blue.svg ./combined-coverage/badge/coverage.svg
       
       - name: Add coverage PR comment
         if: inputs.comment-on-pr && github.event_name == 'pull_request'
@@ -86,14 +99,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./combined-coverage
-
-      - name: Copy badge to gh-pages
-        run: |
-          mkdir -p badge
-          cp ./combined-coverage/badge_shieldsio_methodcoverage_blue.svg badge/coverage.svg
-        
-      - name: Upload badge to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./badge
