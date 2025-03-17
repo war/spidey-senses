@@ -22,3 +22,4 @@
 *.user
 coverage-report/
 TestResults/
+/combined-coverage
