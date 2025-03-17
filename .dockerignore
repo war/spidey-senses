@@ -1,0 +1,27 @@
+# Ignore everything by default
+*
+
+# Allow specific source directories needed for the build
+!src/api/SpiderControl.Api.Shared/
+!src/api/SpiderControl.WebApiV2/
+!src/backend/SpiderControl.Application/
+!src/backend/SpiderControl.Core/
+!src/backend/SpiderControl.Console/
+!src/frontend/angular-js/
+
+# Angular
+**/node_modules/
+
+# Visual Studio files
+**/.vs/
+**/*.user
+**/*.userosscache
+**/*.suo
+**/*.userprefs
+
+# Build artifacts
+**/bin/
+**/obj/
+
+# .NET dev files
+**/*.http
