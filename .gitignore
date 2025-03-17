@@ -1,8 +1,4 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/.vs
+﻿/.vs
 /src/api/SpiderControl.Api.Shared/bin
 /src/api/SpiderControl.Api.Shared/obj
 /tests/SpiderControl.Api.Shared.Testing/bin
