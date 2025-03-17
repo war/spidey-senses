@@ -1,7 +1,5 @@
-# Set error action preference to stop on any error
 $ErrorActionPreference = "Stop"
 
-# Variables
 $namespace = "spidey-senses"
 $kubeContext = kubectl config current-context
 
@@ -10,7 +8,6 @@ Write-Host "Cleaning up spidey-senses deployment"
 Write-Host "Using Kubernetes context: $kubeContext"
 Write-Host "=========================================================="
 
-# Function to check if namespace exists
 function Test-NamespaceExists {
     param (
         [string]$Namespace
@@ -20,7 +17,6 @@ function Test-NamespaceExists {
     return $output -ne $null -and $output -ne ""
 }
 
-# Check if namespace exists
 if (Test-NamespaceExists -Namespace $namespace) {
     $confirm = Read-Host "Are you sure you want to delete the entire $namespace namespace? (y/n)"
     
@@ -28,7 +24,6 @@ if (Test-NamespaceExists -Namespace $namespace) {
         Write-Host "Deleting namespace $namespace..." -ForegroundColor Yellow
         kubectl delete namespace $namespace
         
-        # Wait for namespace to be deleted
         $retries = 0
         $maxRetries = 30
         while ((Test-NamespaceExists -Namespace $namespace) -and ($retries -lt $maxRetries)) {

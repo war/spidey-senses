@@ -1,7 +1,5 @@
-# Set error action preference to stop on any error
 $ErrorActionPreference = "Stop"
 
-# Variables
 $frontendImageName = "spidey-senses/angular-js"
 $apiImageName = "spidey-senses/web-api-v2"
 $imageTag = "local"
@@ -17,7 +15,6 @@ function Exit-NoDocker {
     exit 1
 }
 
-# Check if Docker is installed and running
 try {
     $dockerVersion = docker version --format '{{.Server.Version}}' 2>$null
     if ($dockerVersion) {
@@ -29,7 +26,6 @@ try {
     Exit-NoDocker
 }
 
-# Function to build an image
 function Build-DockerImage {
     param (
         [string]$Directory,
@@ -56,13 +52,10 @@ function Build-DockerImage {
     }
 }
 
-# Build frontend image
 $frontendBuilt = Build-DockerImage -Directory $frontendDockerDir -ImageName $frontendImageName -Tag $imageTag
 
-# Build API image
 $apiBuilt = Build-DockerImage -Directory $apiDockerDir -ImageName $apiImageName -Tag $imageTag
 
-# Summary
 Write-Host "`n=========================================================="
 if ($frontendBuilt -and $apiBuilt) {
     Write-Host "[OK] All images built successfully!" -ForegroundColor Green
