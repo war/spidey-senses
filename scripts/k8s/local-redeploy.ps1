@@ -1,3 +1,8 @@
+# Parse command line parameters
+param (
+    [switch]$SkipBuild = $false
+)
+
 # Set error action preference to stop on any error
 $ErrorActionPreference = "Stop"
 
@@ -33,7 +38,7 @@ function Execute-Script {
         [string]$Description,
         [bool]$Required = $true
     )
-    
+   
     if (-not (Test-Path $ScriptPath)) {
         if ($Required) {
             Write-Host "[ERROR] Required script not found: $ScriptPath" -ForegroundColor Red
@@ -43,26 +48,32 @@ function Execute-Script {
             return $true
         }
     }
-    
+   
     Write-Host "`n=========================================================="
     Write-Host "STEP: $Description"
     Write-Host "==========================================================`n"
-    
+   
     & $ScriptPath
     $exitCode = $LASTEXITCODE
-    
+   
     if ($exitCode -ne 0) {
         Write-Host "[ERROR] Script failed with exit code: $exitCode" -ForegroundColor Red
         return $false
     }
-    
+   
     return $true
 }
 
-# Step 1: Build Docker images
-if (-not (Execute-Script -ScriptPath $buildScript -Description "Building Docker images")) {
-    Write-Host "[ERROR] Failed to build Docker images. Aborting redeploy." -ForegroundColor Red
-    exit 1
+# Step 1: Build Docker images (if not skipped)
+if (-not $SkipBuild) {
+    if (-not (Execute-Script -ScriptPath $buildScript -Description "Building Docker images")) {
+        Write-Host "[ERROR] Failed to build Docker images. Aborting redeploy." -ForegroundColor Red
+        exit 1
+    }
+} else {
+    Write-Host "`n=========================================================="
+    Write-Host "STEP: Building Docker images (SKIPPED)"
+    Write-Host "==========================================================`n"
 }
 
 # Step 2: Clean existing deployment
@@ -88,4 +99,4 @@ Write-Host "==========================================================`n"
 # Show access URLs
 Write-Host "Access your application at:"
 Write-Host "  Frontend: http://spidey-senses.local/"
-Write-Host "  API: http://api.spidey-senses.local/"
+Write-Host "  API:      http://api.spidey-senses.local/"
