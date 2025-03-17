@@ -1,0 +1,54 @@
+name: Deploy API Documentation
+
+on:
+    pull_request:
+        branches: [main, develop, feature/**]
+        types:
+        - opened
+        - closed
+        - synchronize
+        - reopened
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+          dotnet-quality: 'ga'
+      
+      - name: Restore dependencies
+        run: dotnet restore src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj
+      
+      - name: Install NSwag
+        run: dotnet tool install -g NSwag.ConsoleCore
+      
+      - name: Build project
+        run: dotnet build src/api/SpiderControl.WebApiV2/SpiderControl.WebApiV2.csproj --configuration Release
+      
+      - name: Generate Swagger JSON
+        run: |
+          mkdir -p swagger-output
+          nswag aspnetcore2openapi /assembly:./src/api/SpiderControl.WebApiV2/bin/Release/net9.0/SpiderControl.WebApiV2.dll /output:swagger-output/swagger.json
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      
+      - name: Install and build Swagger UI
+        run: |
+          npx @redocly/cli build-docs swagger-output/swagger.json --output=swagger-output/index.html
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./swagger-output
+          destination_dir: api-docs
