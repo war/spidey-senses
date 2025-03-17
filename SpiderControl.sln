@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Api.Shared", "src\api\SpiderControl.Api.Shared\SpiderControl.Api.Shared.csproj", "{2E43ACF2-4F0B-4813-8C67-1F5CE664E105}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.WebApiV2", "src\api\SpiderControl.WebApiV2\SpiderControl.WebApiV2.csproj", "{0F900407-7A73-454E-B1B4-C87F5F3044FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Api.Shared.Testing", "tests\SpiderControl.Api.Shared.Testing\SpiderControl.Api.Shared.Testing.csproj", "{D277563E-239F-4C74-899F-BE583BEF185A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Application.Tests", "tests\SpiderControl.Application.Tests\SpiderControl.Application.Tests.csproj", "{015428D0-D23C-48D9-BFE8-4A605BDC6F3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Console.Tests", "tests\SpiderControl.Console.Tests\SpiderControl.Console.Tests.csproj", "{F9460E46-04AA-4A2B-961E-6BB884CFCC7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Core.Tests", "tests\SpiderControl.Core.Tests\SpiderControl.Core.Tests.csproj", "{4E284D4B-DC02-4324-A669-B06437B7C775}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.WebApiV2.Tests", "tests\SpiderControl.WebApiV2.Tests\SpiderControl.WebApiV2.Tests.csproj", "{D2F4F2C5-9E1D-4DB9-8C1E-13D49D2C0AD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Application", "src\backend\SpiderControl.Application\SpiderControl.Application.csproj", "{F427361A-CD93-4C35-81E9-1DA97196B988}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Console", "src\frontend\SpiderControl.Console\SpiderControl.Console.csproj", "{2AC6C3A6-1362-4501-A45D-9EA7B3877A24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpiderControl.Core", "src\backend\SpiderControl.Core\SpiderControl.Core.csproj", "{A646CBCA-F909-42E0-AF00-ADA33F03D487}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E43ACF2-4F0B-4813-8C67-1F5CE664E105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E43ACF2-4F0B-4813-8C67-1F5CE664E105}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E43ACF2-4F0B-4813-8C67-1F5CE664E105}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E43ACF2-4F0B-4813-8C67-1F5CE664E105}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F900407-7A73-454E-B1B4-C87F5F3044FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F900407-7A73-454E-B1B4-C87F5F3044FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F900407-7A73-454E-B1B4-C87F5F3044FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F900407-7A73-454E-B1B4-C87F5F3044FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D277563E-239F-4C74-899F-BE583BEF185A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D277563E-239F-4C74-899F-BE583BEF185A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D277563E-239F-4C74-899F-BE583BEF185A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D277563E-239F-4C74-899F-BE583BEF185A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{015428D0-D23C-48D9-BFE8-4A605BDC6F3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{015428D0-D23C-48D9-BFE8-4A605BDC6F3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{015428D0-D23C-48D9-BFE8-4A605BDC6F3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{015428D0-D23C-48D9-BFE8-4A605BDC6F3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9460E46-04AA-4A2B-961E-6BB884CFCC7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9460E46-04AA-4A2B-961E-6BB884CFCC7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9460E46-04AA-4A2B-961E-6BB884CFCC7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9460E46-04AA-4A2B-961E-6BB884CFCC7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E284D4B-DC02-4324-A669-B06437B7C775}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E284D4B-DC02-4324-A669-B06437B7C775}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E284D4B-DC02-4324-A669-B06437B7C775}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E284D4B-DC02-4324-A669-B06437B7C775}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F4F2C5-9E1D-4DB9-8C1E-13D49D2C0AD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F4F2C5-9E1D-4DB9-8C1E-13D49D2C0AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F4F2C5-9E1D-4DB9-8C1E-13D49D2C0AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F4F2C5-9E1D-4DB9-8C1E-13D49D2C0AD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F427361A-CD93-4C35-81E9-1DA97196B988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F427361A-CD93-4C35-81E9-1DA97196B988}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F427361A-CD93-4C35-81E9-1DA97196B988}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F427361A-CD93-4C35-81E9-1DA97196B988}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AC6C3A6-1362-4501-A45D-9EA7B3877A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AC6C3A6-1362-4501-A45D-9EA7B3877A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AC6C3A6-1362-4501-A45D-9EA7B3877A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AC6C3A6-1362-4501-A45D-9EA7B3877A24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A646CBCA-F909-42E0-AF00-ADA33F03D487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A646CBCA-F909-42E0-AF00-ADA33F03D487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A646CBCA-F909-42E0-AF00-ADA33F03D487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A646CBCA-F909-42E0-AF00-ADA33F03D487}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
