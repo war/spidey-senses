@@ -65,6 +65,8 @@ jobs:
             -reporttypes:"Html,MarkdownSummary,JsonSummary,Badges" \
             -title:"${{ inputs.report-title }}" \
             -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
+          mkdir -p ./combined-coverage/badge
+          cp ./combined-coverage/badge_shieldsio_methodcoverage_blue.svg badge/coverage.svg
       
       - name: Add coverage PR comment
         if: inputs.comment-on-pr && github.event_name == 'pull_request'
@@ -86,14 +88,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./combined-coverage
-
-      - name: Copy badge to gh-pages
-        run: |
-          mkdir -p badge
-          cp ./combined-coverage/badge_shieldsio_methodcoverage_blue.svg badge/coverage.svg
-        
-      - name: Upload badge to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./badge
