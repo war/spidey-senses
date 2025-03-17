@@ -1,8 +1,3 @@
-# deploy-local.ps1
-#
-# This script cleans up any existing deployment and deploys the spidey-senses
-# application to your local Kubernetes cluster using the local overlay
-
 # Set error action preference to stop on any error
 $ErrorActionPreference = "Stop"
 
@@ -15,6 +10,7 @@ $apiImageTag = "local"
 
 $frontendFullImage = "$frontendImageName`:$frontendImageTag"
 $apiFullImage = "$apiImageName`:$apiImageTag"
+$k8sDir = "./infra/k8s"
 
 try {
     $kubeContext = kubectl config current-context
@@ -31,7 +27,8 @@ try {
 
 # Check if kubectl is installed
 try {
-    kubectl version --client | Out-Null
+    # kubectl version --client | Out-Null
+    $null = kubectl version --client 2>$null
     Write-Host "[OK] kubectl is installed" -ForegroundColor Green
 } catch {
     Write-Host "[ERROR] kubectl is not installed. Please install kubectl first." -ForegroundColor Red
@@ -53,8 +50,8 @@ function Test-NamespaceExists {
         [string]$Namespace
     )
     
-    $result = kubectl get namespace $Namespace --ignore-not-found -o name
-    return $result -ne ""
+    $result = kubectl get namespace $Namespace --ignore-not-found 2>$null
+    return $result -ne $null -and $result -ne ""
 }
 
 # Function to delete namespace and wait for it to be fully deleted
@@ -123,16 +120,22 @@ if (Test-NamespaceExists -Namespace $namespace) {
 }
 
 # Create namespace if it doesn't exist
-if (-not (Test-NamespaceExists -Namespace $namespace)) {
+$namespaceExists = Test-NamespaceExists -Namespace $namespace
+if (-not $namespaceExists) {
     Write-Host "Creating namespace $namespace..." -ForegroundColor Yellow
-    kubectl create namespace $namespace
+    kubectl apply -f $k8sDir/base/common/namespace.yaml
     Write-Host "[OK] Namespace $namespace created" -ForegroundColor Green
+} else {
+    Write-Host "[OK] Namespace $namespace already exists" -ForegroundColor Green
 }
 
 # Apply the kustomization
 Write-Host "Deploying spidey-senses with local overlay..." -ForegroundColor Yellow
+
 try {
-    kubectl apply -k ./infra/k8s/overlays/local
+    # Apply resources
+    Write-Host "Applying resources..." -ForegroundColor Yellow
+    kubectl apply -k $k8sDir/overlays/local
     Write-Host "[OK] Deployment successful" -ForegroundColor Green
 } catch {
     Write-Host "[ERROR] Deployment failed: $_" -ForegroundColor Red
@@ -142,7 +145,7 @@ try {
 # Wait for pods to be ready
 Write-Host "Waiting for pods to be ready..." -ForegroundColor Yellow
 try {
-    kubectl wait --namespace=$namespace --for=condition=Ready pods --all --timeout=120s
+    kubectl wait --namespace=$namespace --for=condition=Ready pods --all --timeout=60s
     Write-Host "[OK] All pods are ready" -ForegroundColor Green
 } catch {
     Write-Host "[WARNING] Not all pods are ready within the timeout period: $_" -ForegroundColor Yellow

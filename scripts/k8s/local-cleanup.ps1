@@ -1,5 +1,3 @@
-# This script completely removes the spidey-senses deployment from your Kubernetes cluster
-
 # Set error action preference to stop on any error
 $ErrorActionPreference = "Stop"
 
@@ -18,8 +16,8 @@ function Test-NamespaceExists {
         [string]$Namespace
     )
     
-    $result = kubectl get namespace $Namespace --ignore-not-found -o name
-    return $result -ne ""
+    $output = kubectl get namespace $Namespace --ignore-not-found 2>$null
+    return $output -ne $null -and $output -ne ""
 }
 
 # Check if namespace exists

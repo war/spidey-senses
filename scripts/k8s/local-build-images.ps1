@@ -1,18 +1,12 @@
-# build-local-images.ps1
-#
-# This script builds the local Docker images for spidey-senses application
-# Assumes your source code is in src/frontend and src/api
-
 # Set error action preference to stop on any error
 $ErrorActionPreference = "Stop"
 
 # Variables
 $frontendImageName = "spidey-senses/angular-js"
-$frontendImageTag = "local"
 $apiImageName = "spidey-senses/web-api-v2"
-$apiImageTag = "local"
-$frontendDir = "./src/frontend"
-$apiDir = "./src/api"
+$imageTag = "local"
+$frontendDockerDir = "./docker/frontend/angular-js"
+$apiDockerDir = "./docker/api/web-api-v2/"
 
 Write-Host "=========================================================="
 Write-Host "Building local Docker images for spidey-senses"
@@ -48,7 +42,7 @@ function Build-DockerImage {
     if (Test-Path $Directory) {
         Write-Host "Building $fullImageName from $Directory..." -ForegroundColor Yellow
         try {
-            docker build -t $fullImageName $Directory
+            docker build --no-cache -t $fullImageName -f $Directory/Dockerfile .
             Write-Host "[OK] Successfully built $fullImageName" -ForegroundColor Green
             return $true
         } catch {
@@ -63,16 +57,15 @@ function Build-DockerImage {
 }
 
 # Build frontend image
-$frontendBuilt = Build-DockerImage -Directory $frontendDir -ImageName $frontendImageName -Tag $frontendImageTag
+$frontendBuilt = Build-DockerImage -Directory $frontendDockerDir -ImageName $frontendImageName -Tag $imageTag
 
 # Build API image
-$apiBuilt = Build-DockerImage -Directory $apiDir -ImageName $apiImageName -Tag $apiImageTag
+$apiBuilt = Build-DockerImage -Directory $apiDockerDir -ImageName $apiImageName -Tag $imageTag
 
 # Summary
 Write-Host "`n=========================================================="
 if ($frontendBuilt -and $apiBuilt) {
     Write-Host "[OK] All images built successfully!" -ForegroundColor Green
-    Write-Host "Run ./local-deploy.ps1 to deploy the application to Kubernetes"
 } elseif ($frontendBuilt -or $apiBuilt) {
     Write-Host "[WARNING] Some images built successfully, but there were failures." -ForegroundColor Yellow
 } else {
