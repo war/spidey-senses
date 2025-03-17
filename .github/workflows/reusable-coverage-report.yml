@@ -64,8 +64,9 @@ jobs:
             -reports:"**/coverage.cobertura.xml" \
             -targetdir:"./combined-coverage" \
             -reporttypes:"Html,MarkdownSummary,Badges" \
-            -title:"${{ inputs.report-title }}"
-            # -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
+            -title:"${{ inputs.report-title }}" \
+            -license:"${{ secrets.REPORTGENERATOR_LICENSE }}"
+          rm ./combined-coverage/index.htm
 
       - name: Copy badge from coverage report to badge dir
         run: |
