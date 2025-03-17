@@ -70,7 +70,7 @@ jobs:
 
       - name: Add CSS fix for Firefox
         run: |
-          sed -i '/<\/head>/i <style>.overview.table-fixed { table-layout: inherit !important; }<\/style>' ./combined-coverage/index.html
+          sed -i '/<\/head>/i <style>.overview.table-fixed .column-min-200 { width: 585px; }<\/style>' ./combined-coverage/index.html
 
       - name: Copy badge from coverage report to badge dir
         run: |
