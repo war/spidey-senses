@@ -59,6 +59,11 @@ SpiderControl/
 │       ├── environments/               # Environment configurations
 │       └── ci/                         # CI/CD infrastructure
 │
+├── scripts/                            # Infrastructure as Code
+│   ├── docker/                         # Docker scripts
+│   ├── k8s/                            # Kubernetes scripts
+│   └── terraform/                      # Terraform scripts
+│
 ├── .dockerignore                       # Docker ignore file
 ├── .gitignore                          # Git ignore file
 ├── docker-compose.yml                  # Docker Compose for local development
