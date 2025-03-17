@@ -1,10 +1,13 @@
 name: Deploy API Documentation
 
 on:
-  workflow_run:
-    workflows: [PR Coverage Report]
+  pull_request:
+    branches: [main, develop, feature/**]
     types:
-    - completed
+    - opened
+    - closed
+    - synchronize
+    - reopened
 
 jobs:
   generate-and-deploy:
