@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../../base/frontend
+  - ingress.yaml
 
 images:
   - name: ghcr.io/war/spidey-senses/angular-js

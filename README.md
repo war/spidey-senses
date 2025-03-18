@@ -106,7 +106,6 @@ The API is fully documented using Swagger/OpenAPI. When running the API locally,
 ```
 https://localhost:5001/swagger
 ```
-(change the port in src/api/SpiderControl.WebApiV2/Properties/launchsettings.json)
 
 ### API Endpoints
 
@@ -243,7 +242,7 @@ The project uses GitHub Actions for CI/CD with the following workflow:
 - [ ] Serilog logging
 - [x] Docker
 - [x] Docker-compose
-- [ ] Kubernetes - in progress
+- [x] Kubernetes
 - [ ] Terraform - in progress
 - [ ] Enhanced telemetry and monitoring
 - [ ] Process spider movements with history (UI)
