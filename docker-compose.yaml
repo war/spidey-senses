@@ -3,19 +3,21 @@ services:
     build:
       context: .
       dockerfile: docker/api/web-api-v2/Dockerfile
-    image: spidey-senses/web-api-v2:1.0.0
+    image: spidey-senses/web-api-v2:local
     ports:
       - "8080:80"
       - "8443:443"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Local
       - ASPNETCORE_URLS=http://+:80
 
   angular-js:
     build:
       context: .
       dockerfile: docker/frontend/angular-js/Dockerfile
-    image: spidey-senses/angular-js:1.0.0
+      args:
+        - ANGULAR_ENV=local
+    image: spidey-senses/angular-js:local
     ports:
       - "4200:80"
     depends_on:

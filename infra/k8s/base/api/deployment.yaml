@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api
-  namespace: spidey-senses
 spec:
   replicas: 1
   selector:
@@ -31,6 +30,3 @@ spec:
             port: 8080
           initialDelaySeconds: 15
           periodSeconds: 10
-        env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: "Production"
