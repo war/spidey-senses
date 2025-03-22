@@ -5,6 +5,12 @@ resources:
   - ../../../base/frontend
   - ingress.yaml
 
+patches:
+- path: deployment.yaml
+  target:
+    kind: Deployment
+    name: frontend
+
 images:
   - name: ghcr.io/war/spidey-senses/angular-js
     newName: spidey-senses/angular-js

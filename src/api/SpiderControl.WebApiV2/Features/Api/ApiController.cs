@@ -10,13 +10,20 @@ namespace SpiderControl.WebApiV2.Features.Api;
 [Route("api/v{version:apiVersion}")]
 public class ApiController : ControllerBase
 {
+    private readonly CorsSettings _corsSettings;
     private readonly IWebHostEnvironment _environment;
+    private readonly IConfiguration _configuration;
     private static readonly Stopwatch _uptime = Stopwatch.StartNew();
 
-    public ApiController(ILogger<ApiController> logger, IWebHostEnvironment environment)
+    public ApiController(ILogger<ApiController> logger, IWebHostEnvironment environment, IConfiguration configuration)
     {
-        _environment = environment;
         _ = _uptime.Elapsed;
+
+        _environment = environment;
+        _configuration = configuration;
+        _corsSettings = new CorsSettings();
+
+        configuration.GetSection("CorsSettings").Bind(_corsSettings);
     }
 
     [HttpGet("version")]
@@ -114,5 +121,22 @@ public class ApiController : ControllerBase
         var result = new ConfigResponse(apiRateLimit, maxCommandLength, validCommands, maxWallDimensions);
 
         return Ok(result);
+    }
+
+    [HttpGet("cors")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetCors()
+    {
+        var corsConfig = _configuration.GetSection("Cors");
+        var currentEnv = _environment.EnvironmentName;
+
+        return Ok(new
+        {
+            Environment = currentEnv,
+            AllowedOrigins = _corsSettings.AllowedOrigins,
+            CurrentOrigin = Request.Headers.Origin.ToString(),
+            Headers = Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString()),
+            CorsConfig = corsConfig
+        });
     }
 }

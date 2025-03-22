@@ -19,11 +19,6 @@ public class Program
         app.Run();
     }
 
-    public class CorsSettings
-    {
-        public string[] AllowedOrigins { get; set; } = Array.Empty<string>();
-    }
-
     public static WebApplication ConfigureServices(WebApplicationBuilder builder)
     {
         IConfiguration configuration = new ConfigurationBuilder()

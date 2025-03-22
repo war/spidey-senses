@@ -4,13 +4,15 @@ kind: Kustomization
 resources:
   - ../../../base/api
   - ingress.yaml
+  - configmap.yaml
+
+patches:
+- path: deployment.yaml
+  target:
+    kind: Deployment
+    name: api
 
 images:
   - name: ghcr.io/war/spidey-senses/web-api-v2
     newName: spidey-senses/web-api-v2
     newTag: local
-
-configMapGenerator:
-  - name: api-config
-    literals:
-      - ASPNETCORE_ENVIRONMENT=Development
