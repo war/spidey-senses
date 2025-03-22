@@ -13,12 +13,12 @@ $k8sDir = "./infra/k8s"
 try {
     $kubeContext = kubectl config current-context
     Write-Host "=========================================================="
-    Write-Host "Deploying spidey-senses to Kubernetes - Local Environment"
+    Write-Host "Deploying spidey-senses-local to Kubernetes - Local Environment"
     Write-Host "Using Kubernetes context: $kubeContext"
     Write-Host "=========================================================="
 } catch {
     Write-Host "=========================================================="
-    Write-Host "Deploying spidey-senses to Kubernetes - Local Environment"
+    Write-Host "Deploying spidey-senses-local to Kubernetes - Local Environment"
     Write-Host "Could not determine current Kubernetes context"
     Write-Host "=========================================================="
 }
@@ -110,16 +110,7 @@ if (Test-NamespaceExists -Namespace $namespace) {
     }
 }
 
-$namespaceExists = Test-NamespaceExists -Namespace $namespace
-if (-not $namespaceExists) {
-    Write-Host "Creating namespace $namespace..." -ForegroundColor Yellow
-    kubectl apply -f $k8sDir/base/common/namespace.yaml
-    Write-Host "[OK] Namespace $namespace created" -ForegroundColor Green
-} else {
-    Write-Host "[OK] Namespace $namespace already exists" -ForegroundColor Green
-}
-
-Write-Host "Deploying spidey-senses with local overlay..." -ForegroundColor Yellow
+Write-Host "Deploying spidey-senses-local with local overlay..." -ForegroundColor Yellow
 
 try {
     Write-Host "Applying resources..." -ForegroundColor Yellow

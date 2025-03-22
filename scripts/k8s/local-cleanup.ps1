@@ -4,7 +4,7 @@ $namespace = "spidey-senses-local"
 $kubeContext = kubectl config current-context
 
 Write-Host "=========================================================="
-Write-Host "Cleaning up spidey-senses deployment"
+Write-Host "Cleaning up spidey-senses-local deployment"
 Write-Host "Using Kubernetes context: $kubeContext"
 Write-Host "=========================================================="
 
