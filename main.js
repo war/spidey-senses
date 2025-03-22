@@ -284,12 +284,13 @@ var assemblies = [
   {
     "name": "SpiderControl.WebApiV2",
     "classes": [
-      { "name": "SpiderControl.WebApiV2.Features.Api.ApiController", "rp": "SpiderControl.WebApiV2_ApiController.html", "cl": 64, "ucl": 0, "cal": 64, "tl": 118, "cb": 2, "tb": 4, "cm": 8, "fcm": 3, "tm": 8, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { "crp": 4,  "cc": 4,  "cov": 100,  "bcov": 50.0 } },
+      { "name": "SpiderControl.WebApiV2.CorsSettings", "rp": "SpiderControl.WebApiV2_CorsSettings.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 9, "cb": 0, "tb": 0, "cm": 4, "fcm": 4, "tm": 4, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { "crp": 1,  "cc": 1,  "cov": 100,  "bcov": 100 } },
+      { "name": "SpiderControl.WebApiV2.Features.Api.ApiController", "rp": "SpiderControl.WebApiV2_ApiController.html", "cl": 67, "ucl": 12, "cal": 79, "tl": 142, "cb": 2, "tb": 4, "cm": 8, "fcm": 2, "tm": 9, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { "crp": 4,  "cc": 4,  "cov": 0,  "bcov": 50.0 } },
       { "name": "SpiderControl.WebApiV2.Features.Health.HealthController", "rp": "SpiderControl.WebApiV2_HealthController.html", "cl": 23, "ucl": 0, "cal": 23, "tl": 55, "cb": 2, "tb": 4, "cm": 4, "fcm": 2, "tm": 4, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { "crp": 2,  "cc": 2,  "cov": 100,  "bcov": 50.0 } },
       { "name": "SpiderControl.WebApiV2.Features.Spider.SpiderController", "rp": "SpiderControl.WebApiV2_SpiderController.html", "cl": 41, "ucl": 14, "cal": 55, "tl": 101, "cb": 14, "tb": 18, "cm": 2, "fcm": 1, "tm": 2, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { "crp": 25,  "cc": 18,  "cov": 72.00,  "bcov": 77.77 } },
       { "name": "SpiderControl.WebApiV2.Middleware.ErrorResponse", "rp": "SpiderControl.WebApiV2_ErrorResponse.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 3, "cb": 0, "tb": 0, "cm": 1, "fcm": 1, "tm": 1, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { "crp": 1,  "cc": 1,  "cov": 100,  "bcov": 100 } },
       { "name": "SpiderControl.WebApiV2.Middleware.ExceptionHandlingMiddleware", "rp": "SpiderControl.WebApiV2_ExceptionHandlingMiddleware.html", "cl": 10, "ucl": 22, "cal": 32, "tl": 50, "cb": 0, "tb": 6, "cm": 2, "fcm": 1, "tm": 3, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { "crp": 42,  "cc": 6,  "cov": 0,  "bcov": 0 } },
-      { "name": "SpiderControl.WebApiV2.Program", "rp": "SpiderControl.WebApiV2_Program.html", "cl": 71, "ucl": 0, "cal": 71, "tl": 101, "cb": 2, "tb": 2, "cm": 3, "fcm": 0, "tm": 3, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { "crp": 2,  "cc": 2,  "cov": 100,  "bcov": 100 } },
+      { "name": "SpiderControl.WebApiV2.Program", "rp": "SpiderControl.WebApiV2_Program.html", "cl": 73, "ucl": 3, "cal": 76, "tl": 108, "cb": 6, "tb": 8, "cm": 3, "fcm": 0, "tm": 3, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { "crp": 6,  "cc": 6,  "cov": 94.54,  "bcov": 66.66 } },
     ]},
 ];
 

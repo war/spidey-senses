@@ -1,25 +1,25 @@
 # Summary - SpiderControl PR Coverage Report
 |||
 |:---|:---|
-| Generated on: | 03/17/2025 - 16:45:19 |
-| Coverage date: | 03/17/2025 - 16:45:08 - 03/17/2025 - 16:45:17 |
+| Generated on: | 03/22/2025 - 20:15:11 |
+| Coverage date: | 03/22/2025 - 20:15:02 - 03/22/2025 - 20:15:08 |
 | Parser: | MultiReport (4x Cobertura) |
 | Assemblies: | 6 |
-| Classes: | 49 |
-| Files: | 46 |
-| **Line coverage:** | 84.2% (683 of 811) |
-| Covered lines: | 683 |
-| Uncovered lines: | 128 |
-| Coverable lines: | 811 |
-| Total lines: | 1530 |
-| **Branch coverage:** | 77.4% (127 of 164) |
-| Covered branches: | 127 |
-| Total branches: | 164 |
-| **Method coverage:** | 86.6% (104 of 120) |
-| **Full method coverage:** | 53.3% (64 of 120) |
-| Covered methods: | 104 |
-| Fully covered methods: | 64 |
-| Total methods: | 120 |
+| Classes: | 50 |
+| Files: | 47 |
+| **Line coverage:** | 82.8% (692 of 835) |
+| Covered lines: | 692 |
+| Uncovered lines: | 143 |
+| Coverable lines: | 835 |
+| Total lines: | 1570 |
+| **Branch coverage:** | 77% (131 of 170) |
+| Covered branches: | 131 |
+| Total branches: | 170 |
+| **Method coverage:** | 86.4% (108 of 125) |
+| **Full method coverage:** | 53.6% (67 of 125) |
+| Covered methods: | 108 |
+| Fully covered methods: | 67 |
+| Total methods: | 125 |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|**Full method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -71,10 +71,11 @@
 |SpiderControl.Core.Validators.SpiderModelValidator|12|0|12|22|100%|0|0||1|1|100%|0%|
 |SpiderControl.Core.Validators.SpiderPositionValidator|10|0|10|22|100%|1|2|50%|1|1|100%|0%|
 |SpiderControl.Core.Validators.WallModelValidator|9|0|9|18|100%|0|0||1|1|100%|0%|
-|**SpiderControl.WebApiV2**|**210**|**36**|**246**|**428**|**85.3%**|**20**|**34**|**58.8%**|**20**|**21**|**95.2%**|**38%**|
-|SpiderControl.WebApiV2.Features.Api.ApiController|64|0|64|118|100%|2|4|50%|8|8|100%|37.5%|
+|**SpiderControl.WebApiV2**|**219**|**51**|**270**|**468**|**81.1%**|**24**|**40**|**60%**|**24**|**26**|**92.3%**|**42.3%**|
+|SpiderControl.WebApiV2.CorsSettings|4|0|4|9|100%|0|0||4|4|100%|100%|
+|SpiderControl.WebApiV2.Features.Api.ApiController|67|12|79|142|84.8%|2|4|50%|8|9|88.8%|22.2%|
 |SpiderControl.WebApiV2.Features.Health.HealthController|23|0|23|55|100%|2|4|50%|4|4|100%|50%|
 |SpiderControl.WebApiV2.Features.Spider.SpiderController|41|14|55|101|74.5%|14|18|77.7%|2|2|100%|50%|
 |SpiderControl.WebApiV2.Middleware.ErrorResponse|1|0|1|3|100%|0|0||1|1|100%|100%|
 |SpiderControl.WebApiV2.Middleware.ExceptionHandlingMiddleware|10|22|32|50|31.2%|0|6|0%|2|3|66.6%|33.3%|
-|SpiderControl.WebApiV2.Program|71|0|71|101|100%|2|2|100%|3|3|100%|0%|
+|SpiderControl.WebApiV2.Program|73|3|76|108|96%|6|8|75%|3|3|100%|0%|
