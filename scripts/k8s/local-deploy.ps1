@@ -39,40 +39,6 @@ try {
     exit 1
 }
 
-function Test-NamespaceExists {
-    param (
-        [string]$Namespace
-    )
-    
-    $result = kubectl get namespace $Namespace --ignore-not-found 2>$null
-    return $result -ne $null -and $result -ne ""
-}
-
-function Remove-NamespaceAndWait {
-    param (
-        [string]$Namespace
-    )
-    
-    Write-Host "Deleting namespace $Namespace..." -ForegroundColor Yellow
-    kubectl delete namespace $Namespace --wait=true
-    
-    $retries = 0
-    $maxRetries = 30
-
-    while ((Test-NamespaceExists -Namespace $Namespace) -and ($retries -lt $maxRetries)) {
-        Write-Host "Waiting for namespace $Namespace to be deleted... ($retries/$maxRetries)" -ForegroundColor Yellow
-        Start-Sleep -Seconds 2
-        $retries++
-    }
-    
-    if (Test-NamespaceExists -Namespace $Namespace) {
-        Write-Host "[ERROR] Timed out waiting for namespace $Namespace to be deleted." -ForegroundColor Red
-        exit 1
-    } else {
-        Write-Host "[OK] Namespace $Namespace deleted" -ForegroundColor Green
-    }
-}
-
 Write-Host "Checking for local Docker images..." -ForegroundColor Yellow
 
 try {
@@ -98,19 +64,6 @@ try {
 } catch {
     Write-Host "[WARNING] Could not check for API image: $_" -ForegroundColor Yellow
 }
-
-if (Test-NamespaceExists -Namespace $namespace) {
-    Write-Host "Found existing namespace $namespace" -ForegroundColor Yellow
-    $cleanupChoice = Read-Host "Do you want to clean up the existing deployment? (y/n)"
-    
-    if ($cleanupChoice -eq "y") {
-        Remove-NamespaceAndWait -Namespace $namespace
-    } else {
-        Write-Host "Skipping cleanup, will update existing deployment" -ForegroundColor Yellow
-    }
-}
-
-Write-Host "Deploying spidey-senses-local with local overlay..." -ForegroundColor Yellow
 
 try {
     Write-Host "Applying resources..." -ForegroundColor Yellow

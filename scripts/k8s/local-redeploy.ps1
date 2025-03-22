@@ -1,22 +1,10 @@
-# Parse command line parameters
-param (
-    [switch]$SkipBuild = $false
-)
-
-# Set error action preference to stop on any error
 $ErrorActionPreference = "Stop"
 
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$buildScript = Join-Path -Path $scriptPath -ChildPath "local-build-images.ps1"
 $cleanScript = Join-Path -Path $scriptPath -ChildPath "local-cleanup.ps1"
 $deployScript = Join-Path -Path $scriptPath -ChildPath "local-deploy.ps1"
 
 # Check if the required scripts exist
-if (-not (Test-Path $buildScript)) {
-    Write-Host "[ERROR] Build script not found at: $buildScript" -ForegroundColor Red
-    exit 1
-}
-
 if (-not (Test-Path $cleanScript)) {
     Write-Host "[ERROR] Clean script not found at: $cleanScript" -ForegroundColor Red
     exit 1
@@ -64,19 +52,7 @@ function Execute-Script {
     return $true
 }
 
-# Step 1: Build Docker images (if not skipped)
-if (-not $SkipBuild) {
-    if (-not (Execute-Script -ScriptPath $buildScript -Description "Building Docker images")) {
-        Write-Host "[ERROR] Failed to build Docker images. Aborting redeploy." -ForegroundColor Red
-        exit 1
-    }
-} else {
-    Write-Host "`n=========================================================="
-    Write-Host "STEP: Building Docker images (SKIPPED)"
-    Write-Host "==========================================================`n"
-}
-
-# Step 2: Clean existing deployment
+# Clean existing deployment
 $cleanResult = Execute-Script -ScriptPath $cleanScript -Description "Cleaning existing deployment" -Required $false
 if (-not $cleanResult) {
     $continue = Read-Host "Clean script failed or was cancelled. Continue with deployment anyway? (y/n)"
@@ -86,7 +62,7 @@ if (-not $cleanResult) {
     }
 }
 
-# Step 3: Deploy application
+# Deploy application
 if (-not (Execute-Script -ScriptPath $deployScript -Description "Deploying full application")) {
     Write-Host "[ERROR] Failed to deploy application. Redeploy process failed." -ForegroundColor Red
     exit 1
