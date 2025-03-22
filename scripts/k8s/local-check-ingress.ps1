@@ -7,7 +7,7 @@ try {
     exit 1
 }
 
-$namespace = "spidey-senses"
+$namespace = "spidey-senses-local"
 $namespaceExists = $false
 
 try {

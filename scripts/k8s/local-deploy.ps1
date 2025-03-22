@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$namespace = "spidey-senses"
+$namespace = "spidey-senses-local"
 $frontendImageName = "spidey-senses/angular-js"
 $frontendImageTag = "local"
 $apiImageName = "spidey-senses/web-api-v2"
