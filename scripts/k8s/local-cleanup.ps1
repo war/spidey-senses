@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$namespace = "spidey-senses"
+$namespace = "spidey-senses-local"
 $kubeContext = kubectl config current-context
 
 Write-Host "=========================================================="
