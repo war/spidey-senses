@@ -12,6 +12,12 @@ RUN npm install
 # Copy all source files
 COPY src/frontend/angular-js/ .
 
+# Accept build arg with default value
+ARG ANGULAR_ENV=local
+
+# Use the specified environment file
+RUN cp src/environments/environment.${ANGULAR_ENV}.ts src/environments/environment.ts
+
 # Build the project
 RUN npm run build
 
