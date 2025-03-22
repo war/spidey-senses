@@ -19,6 +19,11 @@ public class Program
         app.Run();
     }
 
+    public class CorsSettings
+    {
+        public string[] AllowedOrigins { get; set; } = Array.Empty<string>();
+    }
+
     public static WebApplication ConfigureServices(WebApplicationBuilder builder)
     {
         IConfiguration configuration = new ConfigurationBuilder()
@@ -30,11 +35,14 @@ public class Program
             configuration.GetSection("SpiderControl")
         );
 
+        var corsSettings = new CorsSettings();
+        builder.Configuration.GetSection("CorsSettings").Bind(corsSettings);
+
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowAngularApp", builder =>
+            options.AddPolicy("AllowedOrigins", builder =>
             {
-                builder.WithOrigins("http://localhost:4200") // Angular app's URL
+                builder.WithOrigins(corsSettings.AllowedOrigins)
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             });
@@ -86,13 +94,17 @@ public class Program
     {
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-        if (app.Environment.IsDevelopment())
+        if (app.Environment.EnvironmentName == "Local" ||
+            app.Environment.EnvironmentName == "K8sLocal" ||
+            app.Environment.EnvironmentName == "Development")
         {
             app.UseOpenApi();
             app.UseSwaggerUi();
+
+            app.UseDeveloperExceptionPage();
         }
 
-        app.UseCors("AllowAngularApp");
+        app.UseCors("AllowedOrigins");
 
         app.UseHttpsRedirection();
         app.UseAuthorization();
