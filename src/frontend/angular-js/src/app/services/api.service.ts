@@ -10,6 +10,7 @@ import { SpiderFormData } from '../models/SpiderFormData';
 
 export class ApiService {
   private baseUrl = environment.apiUrl;
+  private apiUrl = `${this.baseUrl}/api/v1`;
 
   constructor(private http: HttpClient) { }
 
@@ -20,6 +21,6 @@ export class ApiService {
       CommandInput: formData.Commands
     };
     
-    return this.http.post(`${this.baseUrl}/api/v1/spider/process`, request);
+    return this.http.post(`${this.apiUrl}/spider/process`, request);
   }
 }
