@@ -12,8 +12,19 @@ RUN npm install
 # Copy all source files
 COPY src/frontend/angular-js/ .
 
+# Accept build arg with default value
+ARG ANGULAR_ENV=local
+
 # Build the project
-RUN npm run build
+RUN if [ "$ANGULAR_ENV" = "prod" ] ; then \
+      npm run build:prod ; \
+    elif [ "$ANGULAR_ENV" = "dev" ] ; then \
+      npm run build:dev ; \
+    elif [ "$ANGULAR_ENV" = "k8s-local" ] ; then \
+      npm run build:k8s-local ; \
+    else \
+      npm run build:local ; \
+    fi
 
 # Switch to nginx for hosting
 FROM nginx:stable-alpine AS publish
