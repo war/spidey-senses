@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: spidey-senses-api-config
 data:
-  ASPNETCORE_ENVIRONMENT: "K8sLocal"
+  ASPNETCORE_ENVIRONMENT: "Development"
