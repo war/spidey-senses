@@ -13,4 +13,4 @@ patches:
 
 images:
   - name: ghcr.io/war/spidey-senses/angular-js
-    newTag: dev
+    newTag: develop

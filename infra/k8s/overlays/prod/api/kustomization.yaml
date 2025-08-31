@@ -14,4 +14,3 @@ patches:
 
 images:
   - name: ghcr.io/war/spidey-senses/web-api-v2
-    newTag: prod
